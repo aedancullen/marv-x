@@ -41,7 +41,7 @@ public class MarvXCommon {
     enum BackTarget {RIGHT, LEFT}
     enum DropTarget {FARTHER, LESSER, NEUTRAL}
 
-    enum AutomationState {HUMAN_INTAKE, HORIZONTAL, TRANSFER, VERTICAL, HUMAN_DROP, RESET}
+    enum AutomationState {HUMAN_INTAKE, HORIZONTAL, TRANSFER, VERTICAL, HUMAN_DROP}
 
     IntakeState intakeState = IntakeState.UP_NEUTRAL;
     ExpandoHorizState expandoHorizState = ExpandoHorizState.MANUAL;
@@ -83,7 +83,7 @@ public class MarvXCommon {
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        expandoVertL.setTargetPosition(0);
+        expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
         expandoVertL.setPower(1);
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
@@ -91,8 +91,8 @@ public class MarvXCommon {
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        expandoVertL.setTargetPosition(0);
-        expandoVertL.setPower(1);
+        expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
+        expandoVertR.setPower(1);
 
         horizSpin = hardwareMap.dcMotor.get("horizSpin");
         horizSpin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -225,6 +225,10 @@ public class MarvXCommon {
 
             if (System.currentTimeMillis() > strobeDownStartTime + MarvNavConstants.HORIZ_BOX_TODOWN_MILLIS){intakeState = IntakeState.DOWN_NEUTRAL;}
         }
+
+
+        if (intakeState != IntakeState.STROBE_UP) {strobeUpStartTime = -1;}
+        if (intakeState != IntakeState.STROBE_DOWN) {strobeDownStartTime = -1;}
     }
 
     long strobeDownStartTime = -1;
@@ -295,12 +299,93 @@ public class MarvXCommon {
     }
 
     public void runBoxSpinStateMachine() {
-
+        if (boxSpinState == BoxSpinState.RESET) {
+            vertSpin.setPosition(MarvNavConstants.VERT_SPIN_NEUTRAL);
+        }
+        else if (boxSpinState == BoxSpinState.SET_BACK) {
+            if (backTarget == BackTarget.RIGHT) {
+                vertSpin.setPosition(MarvNavConstants.VERT_SPIN_R2BACK);
+            }
+            else if (backTarget == BackTarget.LEFT) {
+                vertSpin.setPosition(MarvNavConstants.VERT_SPIN_L2BACK);
+            }
+        }
+        else if (boxSpinState == BoxSpinState.SET_DROP) {
+            if (backTarget == BackTarget.RIGHT) {
+                if (dropTarget == DropTarget.FARTHER) {vertSpin.setPosition(MarvNavConstants.VERT_SPIN_R2BACK_FARTHER);}
+                else if (dropTarget == DropTarget.LESSER) {vertSpin.setPosition(MarvNavConstants.VERT_SPIN_R2BACK_LESSER);}
+            }
+            else if (backTarget == BackTarget.LEFT) {
+                if (dropTarget == DropTarget.FARTHER) {vertSpin.setPosition(MarvNavConstants.VERT_SPIN_L2BACK_FARTHER);}
+                else if (dropTarget == DropTarget.LESSER) {vertSpin.setPosition(MarvNavConstants.VERT_SPIN_L2BACK_LESSER);}
+            }
+        }
     }
 
-    public void runAutomationStateMachine(boolean go, boolean cancel) {
-
+    public void automationCancel() {
+        intakeState = IntakeState.UP_NEUTRAL;
+        expandoHorizState = ExpandoHorizState.MANUAL;
+        expandoVertState = ExpandoVertState.DOWN;
+        boxLiftState = BoxLiftState.DOWN;
+        boxSpinState = BoxSpinState.RESET;
     }
+
+    public void runAutomationStateMachine(boolean go, boolean cancel, float intakeManualPower, float expandoHorizManualPower) {
+        runIntakeStateMachine(intakeManualPower);
+        runExpandoHorizStateMachine(expandoHorizManualPower);
+        runExpandoVertStateMachine();
+        runBoxLiftStateMachine();
+        runBoxSpinStateMachine();
+
+        if (cancel) {automationCancel();}
+
+        if (automationState == AutomationState.HUMAN_INTAKE) {
+            if (go) {
+                intakeState = IntakeState.STROBE_UP;
+                expandoHorizState = ExpandoHorizState.STROBE_DUMP;
+
+                automationState = AutomationState.HORIZONTAL;
+            }
+        }
+        else if (automationState == AutomationState.HORIZONTAL) {
+            if (expandoHorizState == ExpandoHorizState.MANUAL) {
+                intakeState = IntakeState.UP_DUMPING;
+
+                automationState = AutomationState.TRANSFER;
+            }
+        }
+        else if (automationState == AutomationState.TRANSFER) {
+            if (true /*TODO Wait for color, set back+drop targets*/) {
+                intakeState = IntakeState.UP_NEUTRAL;
+                expandoVertState = ExpandoVertState.UP;
+
+                automationState = AutomationState.VERTICAL;
+            }
+        }
+        else if (automationState == AutomationState.VERTICAL) {
+            if ((expandoVertL.getCurrentPosition() + expandoVertR.getCurrentPosition()) / 2.0 > MarvNavConstants.EXPANDO_VERT_BOXFREE) {
+                boxLiftState = BoxLiftState.UP;
+                boxSpinState = BoxSpinState.SET_BACK;
+            }
+            if (go) {
+                boxSpinState = BoxSpinState.SET_DROP;
+
+                humanDropStartTime = System.currentTimeMillis();
+                automationState = AutomationState.HUMAN_DROP;
+            }
+        }
+        else if (automationState == AutomationState.HUMAN_DROP) {
+            if (System.currentTimeMillis() > humanDropStartTime + MarvNavConstants.VERT_SPIN_TODROP_MILLIS) {
+                expandoVertState = ExpandoVertState.DOWN;
+                boxLiftState = BoxLiftState.DOWN;
+                boxSpinState = BoxSpinState.RESET;
+
+                automationState = AutomationState.HUMAN_INTAKE;
+            }
+        }
+    }
+
+    long humanDropStartTime = -1;
 
 
 }
