@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoControllerEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -12,48 +15,38 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @TeleOp(name="Marv Mk10 UserTests")
 public class MarvXUserControl extends OpMode {
 
-    MarvXCommon marv;
-
-    static double LP_HORIZ_DIV = 1.5;
-    static double LP_DIFF_DIV = 1.5;
-    static double HP_HORIZ_DIV = 1;
-    static double HP_DIFF_DIV = 1;
+    Servo testServo1;
+    Servo testServo2;
+    DcMotor testMotor1;
+    DcMotor testMotor2;
 
     public void init(){
-        marv = new MarvXCommon(hardwareMap);
+        testServo1 = hardwareMap.servo.get("testServo1");
+        setServoExtendedRange(testServo1, 500, 2500);
+        testServo2 = hardwareMap.servo.get("testServo2");
+        setServoExtendedRange(testServo2, 500, 2500);
+        testServo2.setDirection(Servo.Direction.REVERSE);
+        testMotor1 = hardwareMap.dcMotor.get("testMotor1");
+        testMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        testMotor2 = hardwareMap.dcMotor.get("testMotor2");
+        testMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
-    public void init_loop() {
-        telemetry.addData("qpX", marv.getQuadPacerX());
-        telemetry.addData("qpY", marv.getQuadPacerY());
-        Orientation angles = marv.imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.ZYX, AngleUnit.RADIANS);
-        telemetry.addData("first", angles.firstAngle);
-        telemetry.addData("second", angles.secondAngle);
-        telemetry.addData("third", angles.thirdAngle);
-        telemetry.update();
+    public void setServoExtendedRange(Servo servo, int min, int max) {
+        ServoControllerEx controller = (ServoControllerEx) servo.getController();
+        int servoPort = servo.getPortNumber();
+        PwmControl.PwmRange range = new PwmControl.PwmRange(min, max);
+        controller.setServoPwmRange(servoPort, range);
     }
 
     public void loop(){
 
-        /*if (gamepad1.right_bumper) {
-            marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-        else {
-            marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        }
-        if (gamepad1.left_bumper) {
-            double horiz;
-            horiz = (gamepad1.right_trigger / HP_HORIZ_DIV) - (gamepad1.left_trigger / HP_HORIZ_DIV);
-            marv.drive(-gamepad1.left_stick_y / HP_DIFF_DIV, -gamepad1.right_stick_y / HP_DIFF_DIV, horiz);
-        }
-        else {
-            double horiz;
-            horiz = (gamepad1.right_trigger / LP_HORIZ_DIV) - (gamepad1.left_trigger / LP_HORIZ_DIV);
-            marv.drive(-gamepad1.left_stick_y / LP_DIFF_DIV, -gamepad1.right_stick_y / LP_DIFF_DIV, horiz);
-        }*/
+        telemetry.addData("motor1", testMotor1.getCurrentPosition());
+        telemetry.addData("motor2", testMotor2.getCurrentPosition());
 
-        telemetry.addData("qpX", marv.getQuadPacerX());
-        telemetry.addData("qpY", marv.getQuadPacerY());
+        telemetry.addData("servo", gamepad2.right_trigger);
+        testServo1.setPosition(gamepad2.right_trigger);
+        testServo2.setPosition(gamepad2.right_trigger);
 
     }
 

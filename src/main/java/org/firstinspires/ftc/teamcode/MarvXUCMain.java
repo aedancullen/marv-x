@@ -25,7 +25,7 @@ public class MarvXUCMain extends OpMode {
 
     public void loop(){
 
-        /*if (gamepad1.right_bumper) {
+        if (gamepad1.right_bumper) {
             marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         else {
@@ -41,28 +41,10 @@ public class MarvXUCMain extends OpMode {
             horiz = (gamepad1.right_trigger / LP_HORIZ_DIV) - (gamepad1.left_trigger / LP_HORIZ_DIV);
             marv.drive(-gamepad1.left_stick_y / LP_DIFF_DIV, -gamepad1.right_stick_y / LP_DIFF_DIV, horiz);
         }
-*/
+
         telemetry.addData("expando", marv.expandoHoriz.getCurrentPosition());
+        telemetry.addData("horizSpin", marv.horizSpin.getCurrentPosition());
 
-        if (gamepad2.right_bumper && gamepad2.right_trigger == 0) {
-            marv.testSetExpandoHorizSpeed(-1);
-        }
-        else if (!gamepad2.right_bumper && gamepad2.right_trigger > 0) {
-            marv.testSetExpandoHorizSpeed(gamepad2.right_trigger);
-        }
-        else {
-            marv.testSetExpandoHorizSpeed(0);
-        }
-
-        if (gamepad2.dpad_up) {
-            marv.testSetSpinMax();
-        }
-        if (gamepad2.dpad_right || gamepad2.dpad_left) {
-            marv.testSetSpinMid();
-        }
-        if (gamepad2.dpad_down) {
-            marv.testSetSpinMin();
-        }
 
     }
 
