@@ -42,8 +42,8 @@ public class MarvXUCMain extends OpMode {
             marv.drive(-gamepad1.left_stick_y / LP_DIFF_DIV, -gamepad1.right_stick_y / LP_DIFF_DIV, horiz);
         }
 
-        telemetry.addData("expando", marv.expandoHoriz.getCurrentPosition());
-        telemetry.addData("horizSpin", marv.horizSpin.getCurrentPosition());
+
+
 
 
     }

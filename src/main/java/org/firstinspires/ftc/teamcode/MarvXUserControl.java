@@ -2,14 +2,18 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoControllerEx;
 
+import org.firstinspires.ftc.robotcontroller.external.samples.SensorREVColorDistance;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name="Marv Mk10 UserTests")
@@ -21,6 +25,12 @@ public class MarvXUserControl extends OpMode {
     Servo testServo4;
     DcMotor testMotor1;
     DcMotor testMotor2;
+
+    ColorSensor color1;
+    DistanceSensor distance1;
+    ColorSensor color2;
+    DistanceSensor distance2;
+
 
     public void init(){
         testServo1 = hardwareMap.servo.get("testServo1");
@@ -35,6 +45,11 @@ public class MarvXUserControl extends OpMode {
         testMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         testMotor2 = hardwareMap.dcMotor.get("testMotor2");
         testMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
+        color1 = hardwareMap.get(ColorSensor.class, "cd1");
+        distance1 = hardwareMap.get(DistanceSensor.class, "cd1");
+        color2 = hardwareMap.get(ColorSensor.class, "cd2");
+        distance2 = hardwareMap.get(DistanceSensor.class, "cd2");
     }
 
     public void setServoExtendedRange(Servo servo, int min, int max) {
@@ -54,6 +69,11 @@ public class MarvXUserControl extends OpMode {
         testServo2.setPosition(gamepad2.right_trigger);
         testServo3.setPosition(gamepad2.right_trigger);
         testServo4.setPosition(gamepad2.right_trigger);
+
+        telemetry.addData("distance1", distance1.getDistance(DistanceUnit.MM));
+        telemetry.addData("color1", color1.argb());
+        telemetry.addData("distance2", distance2.getDistance(DistanceUnit.MM));
+        telemetry.addData("color2", color2.argb());
     }
 
 }

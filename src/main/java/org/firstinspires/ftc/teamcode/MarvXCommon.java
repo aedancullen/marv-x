@@ -40,6 +40,7 @@ public class MarvXCommon {
 
     enum BackTarget {RIGHT, LEFT}
     enum DropTarget {FARTHER, LESSER, NEUTRAL}
+    enum ArmTarget {NEAR, BOUND, FAR}
 
     enum AutomationState {HUMAN_INTAKE, HORIZONTAL, TRANSFER, VERTICAL, HUMAN_DROP}
 
@@ -53,6 +54,7 @@ public class MarvXCommon {
 
     BackTarget backTarget = null;
     DropTarget dropTarget = null;
+    ArmTarget armTarget = null;
 
     AutomationState automationState = AutomationState.HUMAN_INTAKE;
 
@@ -180,10 +182,10 @@ public class MarvXCommon {
         if (intakeState == IntakeState.UP_NEUTRAL) {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
             horizBoxR.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
-            if(horizSpin.getCurrentPosition() % MarvNavConstants.HORIZ_SPIN_CLEAR_MODULUS > MarvNavConstants.HORIZ_SPIN_MODULUS_TOLERANCE){
+            /*if(horizSpin.getCurrentPosition() % MarvNavConstants.HORIZ_SPIN_CLEAR_MODULUS > MarvNavConstants.HORIZ_SPIN_MODULUS_TOLERANCE){
                 horizSpin.setPower(1);
             }
-            else{horizSpin.setPower(0);}
+            else{horizSpin.setPower(0);}*/
         }
         else if (intakeState == IntakeState.UP_DUMPING) {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_UP_DUMPING);
@@ -328,6 +330,7 @@ public class MarvXCommon {
         expandoVertState = ExpandoVertState.DOWN;
         boxLiftState = BoxLiftState.DOWN;
         boxSpinState = BoxSpinState.RESET;
+        automationState = AutomationState.HUMAN_INTAKE;
     }
 
     public void runAutomationStateMachine(boolean go, boolean cancel, float intakeManualPower, float expandoHorizManualPower) {
@@ -341,7 +344,7 @@ public class MarvXCommon {
 
         if (automationState == AutomationState.HUMAN_INTAKE) {
             if (go) {
-                intakeState = IntakeState.STROBE_UP;
+                if (intakeState != IntakeState.UP_NEUTRAL && intakeState != IntakeState.STROBE_UP) {intakeState = IntakeState.STROBE_UP;}
                 expandoHorizState = ExpandoHorizState.STROBE_DUMP;
 
                 automationState = AutomationState.HORIZONTAL;
@@ -355,16 +358,16 @@ public class MarvXCommon {
             }
         }
         else if (automationState == AutomationState.TRANSFER) {
-            if (true /*TODO Wait for color, set back+drop targets*/) {
+            if (true /*TODO Wait for color, set back+drop+arm targets*/ || go) {
                 intakeState = IntakeState.UP_NEUTRAL;
-                expandoVertState = ExpandoVertState.UP;
+                expandoVertState = ExpandoVertState.SET_UP;
 
                 automationState = AutomationState.VERTICAL;
             }
         }
         else if (automationState == AutomationState.VERTICAL) {
             if ((expandoVertL.getCurrentPosition() + expandoVertR.getCurrentPosition()) / 2.0 > MarvNavConstants.EXPANDO_VERT_BOXFREE) {
-                boxLiftState = BoxLiftState.UP;
+                boxLiftState = BoxLiftState.SET_UP;
                 boxSpinState = BoxSpinState.SET_BACK;
             }
             if (go) {
