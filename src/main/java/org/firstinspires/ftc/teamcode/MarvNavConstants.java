@@ -32,6 +32,10 @@ public class MarvNavConstants {
 
     public static int EXPANDO_VERT_BOXFREE = 20;
 
+    public static double EXPANDO_VERT_TOUP_SPEED = 1.0;
+    public static double EXPANDO_VERT_TODOWN_SPEED = 0.2;
+    public static double EXPANDO_VERT_TOSAFE_SPEED = 1.0;
+
     public static int VERT_SPIN_TODROP_MILLIS = 200;
 
     public static double VERT_SPIN_NEUTRAL = 0;

@@ -71,9 +71,9 @@ public class MarvXUserControl extends OpMode {
         testServo4.setPosition(gamepad2.right_trigger);
 
         telemetry.addData("distance1", distance1.getDistance(DistanceUnit.MM));
-        telemetry.addData("color1", color1.argb());
+        telemetry.addData("color1", (float)color1.red() / color1.blue());
         telemetry.addData("distance2", distance2.getDistance(DistanceUnit.MM));
-        telemetry.addData("color2", color2.argb());
+        telemetry.addData("color2", (float)color2.red() / color2.blue());
     }
 
 }
