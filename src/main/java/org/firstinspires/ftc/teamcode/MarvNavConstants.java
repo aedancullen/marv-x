@@ -9,7 +9,7 @@ public class MarvNavConstants {
 
     public static int HORIZ_SPIN_CLEAR_MODULUS = 192/4;
     public static int HORIZ_SPIN_READY_MODULUS = 192/2;
-    public static int HORIZ_SPIN_MODULUS_TOLERANCE = 10;
+    public static int HORIZ_SPIN_MODULUS_TOLERANCE = 20;
 
     public static double HORIZ_BOX_TOUP_MILLIS = 500;
     public static int HORIZ_BOX_TODOWN_MILLIS = 500;
@@ -21,7 +21,7 @@ public class MarvNavConstants {
 
     public static double VERT_BOX_UP_NEAR = 0;
     public static double VERT_BOX_UP_BOUND = 0;
-    public static double VERT_BOX_UP_FAR = 0;
+    public static double VERT_BOX_UP_FAR = 0.898;
     public static double VERT_BOX_DOWN = 0.133;
     public static double VERT_BOX_SAFE = 0.2;
 

@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoControllerEx;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
 public class MarvXCommon {
@@ -18,9 +22,9 @@ public class MarvXCommon {
     DcMotor bl;
     DcMotor br;
 
-    DcMotor expandoHoriz;
-    DcMotor expandoVertL;
-    DcMotor expandoVertR;
+    public DcMotor expandoHoriz;
+    public DcMotor expandoVertL;
+    public DcMotor expandoVertR;
 
     DcMotor horizSpin;
     Servo horizBoxL;
@@ -30,38 +34,54 @@ public class MarvXCommon {
     Servo vertBoxR;
     Servo vertSpin;
 
-    enum IntakeState {UP_NEUTRAL, UP_DUMPING, DOWN_NEUTRAL,   STROBE_UP,STROBE_DOWN,    SAFE}
-    enum ExpandoHorizState {STROBE_DUMP, MANUAL}
+    ColorSensor color1;
+    DistanceSensor distance1;
+    ColorSensor color2;
+    DistanceSensor distance2;
 
-    enum ExpandoVertState {SET_UP, DOWN, SAFE}
-    enum BoxLiftState {SET_UP, DOWN, SAFE}
+    public enum IntakeState {UP_NEUTRAL, UP_DUMPING, DOWN_NEUTRAL,   STROBE_UP,STROBE_DOWN,    SAFE}
+    public enum ExpandoHorizState {STROBE_DUMP, MANUAL}
 
-    enum BoxSpinState {RESET, SET_BACK, SET_DROP}
+    public enum ExpandoVertState {SET_UP, DOWN, SAFE}
+    public enum BoxLiftState {SET_UP, DOWN, SAFE}
 
-    enum BackTarget {RIGHT, LEFT}
-    enum DropTarget {FARTHER, LESSER, NEUTRAL}
-    enum ArmTarget {NEAR, BOUND, FAR}
+    public enum BoxSpinState {RESET, SET_BACK, SET_DROP}
 
-    enum AutomationState {HUMAN_INTAKE, HORIZONTAL, TRANSFER, VERTICAL, HUMAN_DROP}
+    public enum BackTarget {RIGHT, LEFT}
+    public enum DropTarget {FARTHER, LESSER, NEUTRAL}
+    public enum ArmTarget {NEAR, BOUND, FAR}
 
-    IntakeState intakeState = IntakeState.SAFE;
-    ExpandoHorizState expandoHorizState = ExpandoHorizState.MANUAL;
-    ExpandoHorizState lastExpandoHorizState = null;
-    ExpandoVertState expandoVertState = ExpandoVertState.DOWN;
-    ExpandoVertState lastExpandoVertState = null;
-    BoxLiftState boxLiftState = BoxLiftState.SAFE;
-    BoxSpinState boxSpinState = BoxSpinState.RESET;
+    public enum AutomationState {HUMAN_INTAKE, HORIZONTAL, TRANSFER, VERTICAL, HUMAN_DROP}
+
+    public IntakeState intakeState = IntakeState.SAFE;
+    public ExpandoHorizState expandoHorizState = ExpandoHorizState.MANUAL;
+    public ExpandoHorizState lastExpandoHorizState = null;
+    public ExpandoVertState expandoVertState = ExpandoVertState.DOWN;
+    public ExpandoVertState lastExpandoVertState = null;
+    public BoxLiftState boxLiftState = BoxLiftState.SAFE;
+    public BoxSpinState boxSpinState = BoxSpinState.RESET;
 
     BackTarget backTarget = null;
     DropTarget dropTarget = null;
     ArmTarget armTarget = null;
 
-    AutomationState automationState = AutomationState.HUMAN_INTAKE;
+    public AutomationState automationState = AutomationState.HUMAN_INTAKE;
 
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
-    public MarvXCommon(HardwareMap hardwareMap) {
+    public MarvXCommon(HardwareMap hardwareMap, boolean maintainFromAuto) {
+
+        if (maintainFromAuto) {
+            intakeState = IntakeState.UP_NEUTRAL;
+            boxLiftState = BoxLiftState.DOWN;
+        }
+
+        color1 = hardwareMap.get(ColorSensor.class, "cd1");
+        distance1 = hardwareMap.get(DistanceSensor.class, "cd1");
+        color2 = hardwareMap.get(ColorSensor.class, "cd2");
+        distance2 = hardwareMap.get(DistanceSensor.class, "cd2");
+
         fl = hardwareMap.dcMotor.get("fl");
 
         fr = hardwareMap.dcMotor.get("fr");
@@ -72,34 +92,34 @@ public class MarvXCommon {
         br = hardwareMap.dcMotor.get("br");
         br.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        this.setEncoderBehavior(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainFromAuto) {this.setEncoderBehavior(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         this.setEncoderBehavior(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         expandoHoriz = hardwareMap.dcMotor.get("expandoHoriz");
         expandoHoriz.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoHoriz.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        expandoHoriz.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainFromAuto) {expandoHoriz.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoHoriz.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainFromAuto) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
         expandoVertL.setPower(1);
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainFromAuto) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
         expandoVertR.setPower(1);
 
         horizSpin = hardwareMap.dcMotor.get("horizSpin");
         horizSpin.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        horizSpin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainFromAuto) {horizSpin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         horizSpin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // ONE REVERSE
@@ -184,6 +204,12 @@ public class MarvXCommon {
 
 
     public void runIntakeStateMachine(float manualPower) {
+        if (intakeState == IntakeState.SAFE) {
+            horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_SAFE);
+            horizBoxR.setPosition(MarvNavConstants.HORIZ_BOX_SAFE);
+        }
+
+
         if (intakeState == IntakeState.UP_NEUTRAL) {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
             horizBoxR.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
@@ -343,6 +369,14 @@ public class MarvXCommon {
         automationState = AutomationState.HUMAN_INTAKE;
     }
 
+    public void runAllMachinesNoInput() {
+        runIntakeStateMachine(0);
+        runExpandoHorizStateMachine(0);
+        runExpandoVertStateMachine();
+        runBoxLiftStateMachine();
+        runBoxSpinStateMachine();
+    }
+
     public void runAutomationStateMachine(boolean go, boolean cancel, float intakeManualPower, float expandoHorizManualPower) {
         runIntakeStateMachine(intakeManualPower);
         runExpandoHorizStateMachine(expandoHorizManualPower);
@@ -368,9 +402,31 @@ public class MarvXCommon {
             }
         }
         else if (automationState == AutomationState.TRANSFER) {
-            if (true /*TODO Wait for color, set back+drop+arm targets*/ || go) {
+            if (distance1.getDistance(DistanceUnit.MM) < 60 && distance2.getDistance(DistanceUnit.MM) < 60|| go) {
                 intakeState = IntakeState.UP_NEUTRAL;
                 expandoVertState = ExpandoVertState.SET_UP;
+
+                double lWarmScore = (float)color1.red() / color1.blue();
+                double rWarmScore = (float)color2.red() / color2.blue();
+
+                if (lWarmScore < 1.5 && rWarmScore < 1.5) {
+                    backTarget = BackTarget.LEFT;
+                    dropTarget = DropTarget.NEUTRAL;
+                }
+                else if (lWarmScore > 1.5 && rWarmScore > 1.5) {
+                    backTarget = BackTarget.RIGHT;
+                    dropTarget = DropTarget.FARTHER;
+                }
+                else if (lWarmScore > 1.5 && rWarmScore < 1.5){
+                    // Cube on left
+                    backTarget = BackTarget.LEFT;
+                    dropTarget = DropTarget.FARTHER;
+                }
+                else if (lWarmScore < 1.5 && rWarmScore > 1.5) {
+                    // Cube on right
+                    backTarget = BackTarget.RIGHT;
+                    dropTarget = DropTarget.LESSER;
+                }
 
                 automationState = AutomationState.VERTICAL;
             }
