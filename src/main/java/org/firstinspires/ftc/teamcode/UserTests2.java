@@ -14,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name="UserTests2")
-public class MarvXUCMain extends OpMode {
+public class UserTests2 extends OpMode {
 
     MarvXCommon marv;
 
@@ -104,6 +104,19 @@ public class MarvXUCMain extends OpMode {
         vertBoxR.setPosition(gamepad2.right_trigger);
         horizBoxL.setPosition(gamepad2.right_trigger);
         horizBoxR.setPosition(gamepad2.right_trigger);
+
+        if (gamepad2.a) {
+            expandoVertL.setPower(0.2);
+            expandoVertR.setPower(0.2);
+        }
+        else if (gamepad2.b) {
+            expandoVertL.setPower(-0.2);
+            expandoVertR.setPower(-0.2);
+        }
+        else {
+            expandoVertL.setPower(0);
+            expandoVertR.setPower(0);
+        }
 
 
     }

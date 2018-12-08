@@ -17,7 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @TeleOp(name="UserTests1")
-public class MarvXUserControl extends OpMode {
+public class UserTests1 extends OpMode {
 
     Servo testServo1;
     Servo testServo2;

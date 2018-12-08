@@ -274,15 +274,20 @@ public class MarvXCommon {
 
     public void runExpandoVertStateMachine() {
         if (lastExpandoVertState != ExpandoVertState.SET_UP && expandoVertState == ExpandoVertState.SET_UP) {
-            // SPEEDS
-            //expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_UP);
-            //expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_UP);
+            expandoVertL.setPower(MarvNavConstants.EXPANDO_VERT_TOUP_SPEED);
+            expandoVertR.setPower(MarvNavConstants.EXPANDO_VERT_TOUP_SPEED);
+            expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_UP_FAR);
+            expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_UP_FAR);
         }
         else if (lastExpandoVertState != ExpandoVertState.DOWN && expandoVertState == ExpandoVertState.DOWN) {
+            expandoVertL.setPower(MarvNavConstants.EXPANDO_VERT_TODOWN_SPEED);
+            expandoVertR.setPower(MarvNavConstants.EXPANDO_VERT_TODOWN_SPEED);
             expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
             expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
         }
         else if (lastExpandoVertState != ExpandoVertState.SAFE && expandoVertState == ExpandoVertState.SAFE) {
+            expandoVertL.setPower(MarvNavConstants.EXPANDO_VERT_TOSAFE_SPEED);
+            expandoVertR.setPower(MarvNavConstants.EXPANDO_VERT_TOSAFE_SPEED);
             expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_SAFE);
             expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_SAFE);
         }
@@ -293,8 +298,8 @@ public class MarvXCommon {
 
     public void runBoxLiftStateMachine() {
         if (boxLiftState == BoxLiftState.SET_UP) {
-            //vertBoxL.setPosition(MarvNavConstants.VERT_BOX_UP);
-            //vertBoxR.setPosition(MarvNavConstants.VERT_BOX_UP);
+            vertBoxL.setPosition(MarvNavConstants.VERT_BOX_UP_FAR);
+            vertBoxR.setPosition(MarvNavConstants.VERT_BOX_UP_FAR);
         }
         else if (boxLiftState == BoxLiftState.DOWN) {
             vertBoxL.setPosition(MarvNavConstants.VERT_BOX_DOWN);

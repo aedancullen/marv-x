@@ -25,13 +25,13 @@ public class MarvNavConstants {
     public static double VERT_BOX_DOWN = 0.133;
     public static double VERT_BOX_SAFE = 0.2;
 
-    public static int EXPANDO_VERT_UP_NEAR = 100;
-    public static int EXPANDO_VERT_UP_BOUND = 200;
-    public static int EXPANDO_VERT_UP_FAR = 300;
+    public static int EXPANDO_VERT_UP_NEAR = 3200;
+    public static int EXPANDO_VERT_UP_BOUND = 3200;
+    public static int EXPANDO_VERT_UP_FAR = 3200;
     public static int EXPANDO_VERT_DOWN = 0;
-    public static int EXPANDO_VERT_SAFE = 50;
+    public static int EXPANDO_VERT_SAFE = 3200;
 
-    public static int EXPANDO_VERT_BOXFREE = 20;
+    public static int EXPANDO_VERT_BOXFREE = 1950;
 
     public static double EXPANDO_VERT_TOUP_SPEED = 1.0;
     public static double EXPANDO_VERT_TODOWN_SPEED = 0.2;
