@@ -14,15 +14,16 @@ public class MarvNavConstants {
     public static double HORIZ_BOX_TOUP_MILLIS = 200;
     public static int HORIZ_BOX_TODOWN_MILLIS = 200;
 
-    public static double HORIZ_BOX_UP_NEUTRAL = 0;
-    public static double HORIZ_BOX_UP_DUMPING = 0;
-    public static double HORIZ_BOX_DOWN = 0;
+    public static double HORIZ_BOX_UP_NEUTRAL = 0.5;
+    public static double HORIZ_BOX_UP_DUMPING = 1.0;
+    public static double HORIZ_BOX_DOWN = 0.07;
+    public static double HORIZ_BOX_SAFE = 0;
 
     public static double VERT_BOX_UP_NEAR = 0;
     public static double VERT_BOX_UP_BOUND = 0;
     public static double VERT_BOX_UP_FAR = 0;
-    public static double VERT_BOX_DOWN = 0;
-    public static double VERT_BOX_SAFE = 0;
+    public static double VERT_BOX_DOWN = 0.133;
+    public static double VERT_BOX_SAFE = 0.2;
 
     public static int EXPANDO_VERT_UP_NEAR = 100;
     public static int EXPANDO_VERT_UP_BOUND = 200;

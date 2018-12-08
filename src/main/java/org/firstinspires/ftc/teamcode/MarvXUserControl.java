@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="Marv Mk10 UserTests")
+@TeleOp(name="UserTests1")
 public class MarvXUserControl extends OpMode {
 
     Servo testServo1;
