@@ -16,7 +16,7 @@ public class MarvXAPTrackTest extends OpMode {
     AutopilotSystem ap;
 
     public void init() {
-        marv = new MarvXCommon(hardwareMap);
+        marv = new MarvXCommon(hardwareMap, false);
         marv.setEncoderBehavior(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         marv.setEncoderBehavior(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         tracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], MarvNavConstants.QUADPACER_TPU, marv.imu, 1);

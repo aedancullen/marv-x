@@ -99,12 +99,12 @@ public class UserTests2 extends OpMode {
         telemetry.update();
 
 
-        vertSpin.setPosition(gamepad2.right_trigger);
+        vertSpin.setPosition(gamepad2.right_trigger);/*
         vertBoxL.setPosition(gamepad2.right_trigger);
         vertBoxR.setPosition(gamepad2.right_trigger);
         horizBoxL.setPosition(gamepad2.right_trigger);
         horizBoxR.setPosition(gamepad2.right_trigger);
-
+*/
         if (gamepad2.a) {
             expandoVertL.setPower(0.2);
             expandoVertR.setPower(0.2);

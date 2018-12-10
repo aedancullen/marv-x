@@ -16,7 +16,7 @@ public class MarvXAPDriveTest extends OpMode {
     AutopilotSystem ap;
 
     public void init() {
-        marv = new MarvXCommon(hardwareMap);
+        marv = new MarvXCommon(hardwareMap, false);
         marv.setEncoderBehavior(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         marv.setEncoderBehavior(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

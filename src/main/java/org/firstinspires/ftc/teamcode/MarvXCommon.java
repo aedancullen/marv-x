@@ -210,13 +210,13 @@ public class MarvXCommon {
         }
 
 
-        if (intakeState == IntakeState.UP_NEUTRAL) {
+        else if (intakeState == IntakeState.UP_NEUTRAL) {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
             horizBoxR.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
-            if(horizSpin.getCurrentPosition() % MarvNavConstants.HORIZ_SPIN_CLEAR_MODULUS > MarvNavConstants.HORIZ_SPIN_MODULUS_TOLERANCE){
+            /*if(horizSpin.getCurrentPosition() % MarvNavConstants.HORIZ_SPIN_CLEAR_MODULUS > MarvNavConstants.HORIZ_SPIN_MODULUS_TOLERANCE){
                 horizSpin.setPower(0.5);
             }
-            else{horizSpin.setPower(0);}
+            else{horizSpin.setPower(0);}*/
         }
         else if (intakeState == IntakeState.UP_DUMPING) {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_UP_DUMPING);
@@ -235,7 +235,7 @@ public class MarvXCommon {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
             horizBoxR.setPosition(MarvNavConstants.HORIZ_BOX_UP_NEUTRAL);
             if(horizSpin.getCurrentPosition() % MarvNavConstants.HORIZ_SPIN_READY_MODULUS > MarvNavConstants.HORIZ_SPIN_MODULUS_TOLERANCE){
-                horizSpin.setPower(0.5);
+                horizSpin.setPower(1);
             }
             else{
                 horizSpin.setPower(0);
@@ -250,7 +250,7 @@ public class MarvXCommon {
             horizBoxL.setPosition(MarvNavConstants.HORIZ_BOX_DOWN);
             horizBoxR.setPosition(MarvNavConstants.HORIZ_BOX_DOWN);
             if(horizSpin.getCurrentPosition() % MarvNavConstants.HORIZ_SPIN_READY_MODULUS > MarvNavConstants.HORIZ_SPIN_MODULUS_TOLERANCE){
-                horizSpin.setPower(-0.5);
+                horizSpin.setPower(-1);
             }
             else{
                 horizSpin.setPower(0);
@@ -271,7 +271,7 @@ public class MarvXCommon {
         if (lastExpandoHorizState == ExpandoHorizState.MANUAL && expandoHorizState == ExpandoHorizState.STROBE_DUMP) {
             expandoHoriz.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             expandoHoriz.setTargetPosition(MarvNavConstants.EXPANDO_HORIZ_DUMP);
-            expandoHoriz.setPower(1);
+            expandoHoriz.setPower(0.5);
         }
         else if (lastExpandoHorizState == ExpandoHorizState.STROBE_DUMP && expandoHorizState == ExpandoHorizState.MANUAL) {
             expandoHoriz.setPower(0);
@@ -283,7 +283,7 @@ public class MarvXCommon {
             if (manualPower > 0 && expandoHoriz.getCurrentPosition() < MarvNavConstants.EXPANDO_HORIZ_LIMIT) {
                 expandoHoriz.setPower(manualPower);
             }
-            if (manualPower < 0 && expandoHoriz.getCurrentPosition() > 0) {
+            else if (manualPower < 0 && expandoHoriz.getCurrentPosition() > 0) {
                 expandoHoriz.setPower(manualPower);
             }
             else {
@@ -402,7 +402,7 @@ public class MarvXCommon {
             }
         }
         else if (automationState == AutomationState.TRANSFER) {
-            if (distance1.getDistance(DistanceUnit.MM) < 60 && distance2.getDistance(DistanceUnit.MM) < 60|| go) {
+            if (distance1.getDistance(DistanceUnit.MM) < 60 && distance2.getDistance(DistanceUnit.MM) < 60) {
                 intakeState = IntakeState.UP_NEUTRAL;
                 expandoVertState = ExpandoVertState.SET_UP;
 
@@ -414,18 +414,18 @@ public class MarvXCommon {
                     dropTarget = DropTarget.NEUTRAL;
                 }
                 else if (lWarmScore > 1.5 && rWarmScore > 1.5) {
-                    backTarget = BackTarget.RIGHT;
-                    dropTarget = DropTarget.FARTHER;
+                    backTarget = BackTarget.LEFT;
+                    dropTarget = DropTarget.LESSER;
                 }
                 else if (lWarmScore > 1.5 && rWarmScore < 1.5){
                     // Cube on left
-                    backTarget = BackTarget.LEFT;
-                    dropTarget = DropTarget.FARTHER;
+                    backTarget = BackTarget.RIGHT;
+                    dropTarget = DropTarget.LESSER;
                 }
                 else if (lWarmScore < 1.5 && rWarmScore > 1.5) {
                     // Cube on right
-                    backTarget = BackTarget.RIGHT;
-                    dropTarget = DropTarget.LESSER;
+                    backTarget = BackTarget.LEFT;
+                    dropTarget = DropTarget.FARTHER;
                 }
 
                 automationState = AutomationState.VERTICAL;
