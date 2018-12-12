@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 
 import org.firstinspires.ftc.teamcode.MarvXCommonV2;
 
-@TeleOp(name="UserControl")
+@TeleOp(name="UserControlV2")
 public class MarvXUserControlV2 extends OpMode {
 
     static double LP_HORIZ_M = .40;
@@ -43,7 +43,11 @@ public class MarvXUserControlV2 extends OpMode {
         }
 
 
-        if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
+
+        marv.runAutomation(gamepad2.a, gamepad2.back);
+
+
+        /*if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
             if (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_UP && marv.expandoHorizR.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_UP) {
                 marv.expandoHorizL.setPower(gamepad2.right_trigger);
                 marv.expandoHorizR.setPower(gamepad2.right_trigger);
@@ -83,7 +87,7 @@ public class MarvXUserControlV2 extends OpMode {
                 marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
                 marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             }
-        }
+        }*/
     }
 }
 
