@@ -12,9 +12,12 @@ public class MarvConstantsV2 {
     public static double HORIZ_LIFT_DOWN = 0.07;
     public static double HORIZ_LIFT_SAFE = 0.29;
 
-    public static double VERT_LIFT_UP = 0.898;
-    public static double VERT_LIFT_DOWN = 0.133;
+    public static double VERT_LIFT_UP = 0.89;
+    public static double VERT_LIFT_DOWN = 0.13;
     public static double VERT_LIFT_SAFE = 0.2;
+
+    public static int VERT_LIFT_TOMINUSG_MILLIS = 1000;
+    public static double VERT_LIFT_MINUSG = VERT_LIFT_DOWN + (0.9 * (VERT_LIFT_UP - VERT_LIFT_DOWN));
 
     public static int EXPANDO_VERT_UP = 3200;
     public static int EXPANDO_VERT_DOWN = 0;

@@ -19,11 +19,9 @@ public class MarvXUserControlV2 extends OpMode {
 
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
-        telemetry.addData("AutomationState", marv.automationState);
     }
 
     public void loop() {
-        telemetry.update();
 
         if (gamepad1.right_bumper) {
             marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -44,17 +42,15 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-        marv.runAutomation(gamepad2.a, gamepad2.back);
+        marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);
 
 
-        /*if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
-            if (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_UP && marv.expandoHorizR.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_UP) {
-                marv.expandoHorizL.setPower(gamepad2.right_trigger);
-                marv.expandoHorizR.setPower(gamepad2.right_trigger);
+        if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
+            if (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_UP) {
+                marv.expandoHorizL.setPower(gamepad2.right_trigger * 0.5);
             }
             else {
                 marv.expandoHorizL.setPower(0);
-                marv.expandoHorizR.setPower(0);
             }
 
             if (marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) {
@@ -63,9 +59,8 @@ public class MarvXUserControlV2 extends OpMode {
             }
         }
         else if (gamepad2.right_trigger == 0 && gamepad2.right_bumper) {
-            if (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_SAFE && marv.expandoHorizR.getCurrentPosition() < MarvConstantsV2.EXPANDO_HORIZ_SAFE) {
-                marv.expandoHorizL.setPower(-1);
-                marv.expandoHorizR.setPower(-1);
+            if (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV2.EXPANDO_HORIZ_SAFE) {
+                marv.expandoHorizL.setPower(-0.5);
 
                 if (marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) {
                     marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
@@ -74,20 +69,18 @@ public class MarvXUserControlV2 extends OpMode {
             }
             else {
                 marv.expandoHorizL.setPower(0);
-                marv.expandoHorizR.setPower(0);
                 marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
                 marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
             }
         }
         else {
             marv.expandoHorizL.setPower(0);
-            marv.expandoHorizR.setPower(0);
 
             if (marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) {
                 marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
                 marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             }
-        }*/
+        }
     }
 }
 

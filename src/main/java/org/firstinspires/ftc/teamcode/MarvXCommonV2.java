@@ -45,11 +45,11 @@ public class MarvXCommonV2 {
 
     public enum BackTarget {RIGHT, LEFT}
     public enum DropTarget {FARTHER, LESSER, NEUTRAL}
-    public enum AutomationState {DOWN, FREE, UP, DROP};
+    public enum AutomationState {CLEAR_READY, CLEARING, RELEASE_READY, RELEASING};
 
     BackTarget backTarget = null;
     DropTarget dropTarget = null;
-    public AutomationState automationState = AutomationState.DOWN;
+    public AutomationState automationState = AutomationState.CLEAR_READY;
     public AutomationState lastAutomationState = null;
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
@@ -186,18 +186,12 @@ public class MarvXCommonV2 {
         double horizLiftLPosition = horizLiftL.getPosition();
 
 
-        if (automationState == AutomationState.DOWN) {
-            expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
-            expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
-            expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
-            expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
-            vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
-            vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
-
-            vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_NEUTRAL);
-
+        if (automationState == AutomationState.CLEAR_READY) {
             if ((horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL && lastHorizLiftLPosition == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) || fstart) {
-                automationState = AutomationState.FREE;
+
+                if (distance1.getDistance(DistanceUnit.MM) < 55 || distance2.getDistance(DistanceUnit.MM) < 55) {
+                    automationState = AutomationState.CLEARING;
+                }
 
                 double lWarmScore = (float)color1.red() / color1.blue();
                 double rWarmScore = (float)color2.red() / color2.blue();
@@ -223,33 +217,60 @@ public class MarvXCommonV2 {
 
             }
         }
-        else if (automationState == AutomationState.FREE) {
+        else if (automationState == AutomationState.CLEARING) {
+            if (expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_BOXFREE || expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_BOXFREE) {
+                automationState = AutomationState.RELEASE_READY;
+                minusGTimer = System.currentTimeMillis();
+            }
+        }
+        else if (automationState == AutomationState.RELEASE_READY) {
+            if (System.currentTimeMillis() < minusGTimer + MarvConstantsV2.VERT_LIFT_TOMINUSG_MILLIS) {
+                vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_MINUSG);
+                vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_MINUSG);
+            }
+            else {
+                if (drop) {
+                    automationState = AutomationState.RELEASING;
+                    dropTimer = System.currentTimeMillis();
+                }
+                else {
+                    vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_UP);
+                    vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_UP);
+                }
+            }
+        }
+        else if (automationState == AutomationState.RELEASING){
+            if (System.currentTimeMillis() > dropTimer + MarvConstantsV2.VERT_SPIN_TODROP_MILLIS) {
+                automationState = AutomationState.CLEAR_READY;
+            }
+        }
+
+
+
+        if (automationState == AutomationState.CLEAR_READY && lastAutomationState != AutomationState.CLEAR_READY) {
+            expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+            expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+            expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
+            expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
+            vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
+            vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
+            vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_NEUTRAL);
+        }
+        else if (automationState == AutomationState.CLEARING && lastAutomationState != AutomationState.CLEARING) {
             expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_UP);
             expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_UP);
             expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TOUP_SPEED);
             expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TOUP_SPEED);
-            if (expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_BOXFREE || expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_BOXFREE) {
-                automationState = AutomationState.UP;
-            }
         }
-        else if (automationState == AutomationState.UP) {
-            vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_UP);
-            vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_UP);
-
+        else if (automationState == AutomationState.RELEASE_READY && lastAutomationState != AutomationState.RELEASE_READY) {
             if (backTarget == BackTarget.LEFT) {
                 vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_L2BACK);
             }
             else if (backTarget == BackTarget.RIGHT) {
                 vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_R2BACK);
             }
-
-            if (drop) {
-                automationState = AutomationState.DROP;
-                dropTimer = System.currentTimeMillis();
-            }
         }
-        else if (automationState == AutomationState.DROP){
-
+        else if (automationState == AutomationState.RELEASING && lastAutomationState != AutomationState.RELEASING) {
             if (backTarget == BackTarget.LEFT) {
                 if (dropTarget == DropTarget.FARTHER) {vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_L2BACK_FARTHER);}
                 else if (dropTarget == DropTarget.LESSER) {vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_L2BACK_LESSER);}
@@ -262,17 +283,15 @@ public class MarvXCommonV2 {
             if (dropTarget == DropTarget.NEUTRAL) {
                 vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_NEUTRAL);
             }
-
-            if (System.currentTimeMillis() > dropTimer + MarvConstantsV2.VERT_SPIN_TODROP_MILLIS) {
-                automationState = AutomationState.DOWN;
-            }
         }
 
 
         lastHorizLiftLPosition = horizLiftLPosition;
+        lastAutomationState = automationState;
     }
 
     long dropTimer;
+    long minusGTimer;
 
 
 }
