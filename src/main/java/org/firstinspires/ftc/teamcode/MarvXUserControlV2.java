@@ -17,6 +17,9 @@ public class MarvXUserControlV2 extends OpMode {
 
     MarvXCommonV2 marv;
 
+    boolean liftmode = false;
+    boolean horizLiftIsDisable = false;
+
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
         marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
@@ -44,15 +47,44 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-        marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);
 
-        if (gamepad2.left_trigger > 0.5 && marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) {
+        if (gamepad2.back && (gamepad2.x || gamepad2.y)) {
+            liftmode = true;
+        }
+
+
+        if (!liftmode) {
+            marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);
+        }
+        else {
+            if (gamepad2.y) {
+                marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_SAFE);
+                marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_SAFE);
+                marv.expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TOSAFE_SPEED);
+                marv.expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TOSAFE_SPEED);
+            }
+            else if (gamepad2.x) {
+                marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+                marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+                marv.expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
+                marv.expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
+            }
+        }
+
+
+
+
+        if ((gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) && marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) {
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
+            marv.horizLiftL.getController().pwmDisable();
+            horizLiftIsDisable = true;
         }
-        if (gamepad2.left_bumper && marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_DOWN) {
+        if (gamepad2.left_bumper && horizLiftIsDisable) {
+            marv.horizLiftL.getController().pwmEnable();
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+            horizLiftIsDisable = false;
         }
 
 
@@ -65,8 +97,14 @@ public class MarvXUserControlV2 extends OpMode {
             marv.horizSpinR.setPower(0);
         }
         else {
-            marv.horizSpinL.setPower(1);
-            marv.horizSpinR.setPower(1);
+            if (!liftmode) {
+                marv.horizSpinL.setPower(1);
+                marv.horizSpinR.setPower(1);
+            }
+            else {
+                marv.horizSpinL.setPower(0);
+                marv.horizSpinR.setPower(0);
+            }
         }
 
 
