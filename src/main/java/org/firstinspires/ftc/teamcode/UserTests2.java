@@ -38,19 +38,19 @@ public class UserTests2 extends OpMode {
     public void init(){
         expandoHoriz = hardwareMap.dcMotor.get("expandoHoriz");
         expandoHoriz.setDirection(DcMotorSimple.Direction.REVERSE);
-        expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
+        /*expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
 
         horizSpin = hardwareMap.dcMotor.get("horizSpin");
-
+*/
         // ONE REVERSE
-        horizBoxL = hardwareMap.servo.get("horizBoxL");
+        horizBoxL = hardwareMap.servo.get("horizLiftL");
         setServoExtendedRange(horizBoxL, 500, 2500);
-        horizBoxR = hardwareMap.servo.get("horizBoxR");
+        horizBoxR = hardwareMap.servo.get("horizLiftR");
         horizBoxR.setDirection(Servo.Direction.REVERSE);
         setServoExtendedRange(horizBoxR, 500, 2500);
-
+/*
         // ONE REVERSE
         vertBoxL = hardwareMap.servo.get("vertBoxL");
         setServoExtendedRange(vertBoxL, 500, 2500);
@@ -59,7 +59,7 @@ public class UserTests2 extends OpMode {
         setServoExtendedRange(vertBoxR, 500, 2500);
 
         vertSpin = hardwareMap.servo.get("vertSpin");
-        setServoExtendedRange(vertSpin, 500, 2500);
+        setServoExtendedRange(vertSpin, 500, 2500);*/
     }
 
     public void setServoExtendedRange(Servo servo, int min, int max) {
@@ -88,35 +88,18 @@ public class UserTests2 extends OpMode {
             marv.drive(-gamepad1.left_stick_y / LP_DIFF_DIV, -gamepad1.right_stick_y / LP_DIFF_DIV, horiz);
         }*/
 
-        telemetry.addData("expandoHoriz", expandoHoriz.getCurrentPosition());
-        telemetry.addData("expandoVertL", expandoVertL.getCurrentPosition());
-        telemetry.addData("expandoVertR", expandoVertR.getCurrentPosition());
-
-        telemetry.addData("horizSpin", horizSpin.getCurrentPosition());
-
         telemetry.addData("servo", gamepad2.right_trigger);
+        telemetry.addData("expandoHoriz", expandoHoriz.getCurrentPosition());
 
         telemetry.update();
 
 
-        vertSpin.setPosition(gamepad2.right_trigger);/*
+        /*vertSpin.setPosition(gamepad2.right_trigger);
         vertBoxL.setPosition(gamepad2.right_trigger);
-        vertBoxR.setPosition(gamepad2.right_trigger);
+        vertBoxR.setPosition(gamepad2.right_trigger);*/
         horizBoxL.setPosition(gamepad2.right_trigger);
         horizBoxR.setPosition(gamepad2.right_trigger);
-*/
-        if (gamepad2.a) {
-            expandoVertL.setPower(0.2);
-            expandoVertR.setPower(0.2);
-        }
-        else if (gamepad2.b) {
-            expandoVertL.setPower(-0.2);
-            expandoVertR.setPower(-0.2);
-        }
-        else {
-            expandoVertL.setPower(0);
-            expandoVertR.setPower(0);
-        }
+
 
 
     }

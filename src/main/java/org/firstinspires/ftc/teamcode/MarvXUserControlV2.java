@@ -10,8 +10,8 @@ import org.firstinspires.ftc.teamcode.MarvXCommonV2;
 @TeleOp(name="UserControlV2")
 public class MarvXUserControlV2 extends OpMode {
 
-    static double LP_HORIZ_M = .40;
-    static double LP_DIFF_M = .40;
+    static double LP_HORIZ_M = .30;
+    static double LP_DIFF_M = .30;
     static double HP_HORIZ_M = .60;
     static double HP_DIFF_M = .60;
 
@@ -19,6 +19,8 @@ public class MarvXUserControlV2 extends OpMode {
 
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
+        marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+        marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
     }
 
     public void loop() {
@@ -36,13 +38,38 @@ public class MarvXUserControlV2 extends OpMode {
         }
         else {
             double horiz;
-            horiz = (gamepad1.right_trigger / LP_HORIZ_M) - (gamepad1.left_trigger * LP_HORIZ_M);
-            marv.drive(gamepad1.right_stick_y / LP_DIFF_M, gamepad1.left_stick_y * LP_DIFF_M, -horiz);
+            horiz = (gamepad1.right_trigger * LP_HORIZ_M) - (gamepad1.left_trigger * LP_HORIZ_M);
+            marv.drive(gamepad1.right_stick_y * LP_DIFF_M, gamepad1.left_stick_y * LP_DIFF_M, -horiz);
         }
 
 
 
         marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);
+
+        if (gamepad2.left_trigger > 0.5 && marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) {
+            marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
+            marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
+        }
+        if (gamepad2.left_bumper && marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_DOWN) {
+            marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+            marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+        }
+
+
+        if (gamepad2.dpad_down || gamepad2.dpad_up) {
+            marv.horizSpinL.setPower(-1);
+            marv.horizSpinR.setPower(-1);
+        }
+        else if (gamepad2.dpad_right || gamepad2.dpad_left) {
+            marv.horizSpinL.setPower(0);
+            marv.horizSpinR.setPower(0);
+        }
+        else {
+            marv.horizSpinL.setPower(1);
+            marv.horizSpinR.setPower(1);
+        }
+
+
 
 
         if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {

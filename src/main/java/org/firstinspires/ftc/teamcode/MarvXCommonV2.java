@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -27,8 +28,8 @@ public class MarvXCommonV2 {
     public DcMotor expandoVertL;
     public DcMotor expandoVertR;
 
-    Servo horizSpinL;
-    Servo horizSpinR;
+    CRServo horizSpinL;
+    CRServo horizSpinR;
     Servo horizLiftL;
     Servo horizLiftR;
 
@@ -117,6 +118,10 @@ public class MarvXCommonV2 {
 
         vertSpin = hardwareMap.servo.get("vertSpin");
         setServoExtendedRange(vertSpin, 500, 2500);
+
+        horizSpinL = hardwareMap.crservo.get("horizSpinL");
+        horizSpinR = hardwareMap.crservo.get("horizSpinR");
+        horizSpinR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
