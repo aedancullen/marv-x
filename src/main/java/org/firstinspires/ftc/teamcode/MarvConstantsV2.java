@@ -5,7 +5,7 @@ public class MarvConstantsV2 {
     public static int QUADPACER_TPU = 110;
 
     public static int EXPANDO_HORIZ_UP = 1900;
-    public static int EXPANDO_HORIZ_SAFE = 315;
+    public static int EXPANDO_HORIZ_SAFE = 305;
 
     public static double HORIZ_LIFT_UP_NEUTRAL = 0.63;
     public static double HORIZ_LIFT_UP_DUMPING = 0.25;
@@ -21,7 +21,7 @@ public class MarvConstantsV2 {
 
     public static int EXPANDO_VERT_UP = 3200;
     public static int EXPANDO_VERT_DOWN = 0;
-    public static int EXPANDO_VERT_SAFE = 1782;
+    public static int EXPANDO_VERT_SAFE = 1780 - 140;
 
     public static int EXPANDO_VERT_BOXFREE = 1000;
 

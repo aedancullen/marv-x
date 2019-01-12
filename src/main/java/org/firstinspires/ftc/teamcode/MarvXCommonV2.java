@@ -90,17 +90,17 @@ public class MarvXCommonV2 {
         expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
-        expandoVertL.setPower(1);
+        if (!maintainExpandoHoriz) {expandoVertL.setPower(1);}
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
-        expandoVertR.setPower(1);
+        if (!maintainExpandoHoriz) {expandoVertR.setPower(1);}
 
         // ONE REVERSE
         horizLiftL = hardwareMap.servo.get("horizLiftL");
@@ -194,7 +194,7 @@ public class MarvXCommonV2 {
         if (automationState == AutomationState.CLEAR_READY) {
             if ((horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL && lastHorizLiftLPosition == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) || fstart) {
 
-                if (distance1.getDistance(DistanceUnit.MM) < 55 || distance2.getDistance(DistanceUnit.MM) < 55) {
+                if (distance1.getDistance(DistanceUnit.MM) < 55 || distance2.getDistance(DistanceUnit.MM) < 55 || fstart) {
                     automationState = AutomationState.CLEARING;
                 }
 

@@ -54,7 +54,7 @@ public class MarvXUserControlV2 extends OpMode {
 
 
         if (!liftmode) {
-            marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);
+            if (!gamepad1.back) {marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);}
         }
         else {
             if (gamepad2.y) {

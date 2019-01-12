@@ -27,6 +27,8 @@ public class UserTests2 extends OpMode {
     DcMotor expandoVertL;
     DcMotor expandoVertR;
 
+    DcMotor fl;
+
     DcMotor horizSpin;
     Servo horizBoxL;
     Servo horizBoxR;
@@ -41,6 +43,8 @@ public class UserTests2 extends OpMode {
         expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
+
+        fl = hardwareMap.dcMotor.get("fl");
 
         horizSpin = hardwareMap.dcMotor.get("horizSpin");
 
@@ -92,6 +96,7 @@ public class UserTests2 extends OpMode {
         telemetry.addData("expandoHoriz", expandoHoriz.getCurrentPosition());
 
         telemetry.addData("expandoVert", (expandoVertR.getCurrentPosition() + expandoVertL.getCurrentPosition()) / 2.0);
+        telemetry.addData("fl", fl.getCurrentPosition());
 
         telemetry.update();
 
@@ -99,8 +104,8 @@ public class UserTests2 extends OpMode {
         /*vertSpin.setPosition(gamepad2.right_trigger);
         vertBoxL.setPosition(gamepad2.right_trigger);
         vertBoxR.setPosition(gamepad2.right_trigger);*/
-        horizBoxL.setPosition(gamepad2.right_trigger);
-        horizBoxR.setPosition(gamepad2.right_trigger);
+        //horizBoxL.setPosition(gamepad2.right_trigger);
+        //horizBoxR.setPosition(gamepad2.right_trigger);
 
         if (gamepad2.a) {
             expandoVertL.setPower(0.2);
