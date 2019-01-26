@@ -13,21 +13,9 @@ public class IntakeTest extends OpMode {
     }
 
     public void loop() {
-        if (gamepad1.a) {
-            marv.setIntakeSpeed(0.1);
-        }
-        else if (gamepad1.b) {
-            marv.setIntakeSpeed(-0.1);
-        }
-        else if (gamepad1.x) {
-            marv.setIntakeSpeed(0.5);
-        }
-        else if (gamepad1.y) {
-            marv.setIntakeSpeed(-0.5);
-        }
-        else {
-            marv.setIntakeSpeed(0);
-        }
+        marv.setIntakeSpeed(gamepad1.right_trigger);
+        telemetry.addData("intakeSpeed", gamepad1.right_trigger);
+        telemetry.update();
     }
 
 }

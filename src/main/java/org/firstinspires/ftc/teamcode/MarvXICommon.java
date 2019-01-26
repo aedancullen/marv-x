@@ -16,8 +16,8 @@ public class MarvXICommon {
     DcMotor hingeL;
     DcMotor hingeR;
 
-    DcMotor expando;
-    DcMotor lifto;
+    DcMotor expand;
+    DcMotor lift;
 
     CRServo intakeF;
     CRServo intakeR;
@@ -26,7 +26,7 @@ public class MarvXICommon {
 
     public MarvXICommon(HardwareMap hardwareMap) {
 
-        /*fl = hardwareMap.dcMotor.get("fl");
+        fl = hardwareMap.dcMotor.get("fl");
         fr = hardwareMap.dcMotor.get("fr");
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
         bl = hardwareMap.dcMotor.get("bl");
@@ -35,7 +35,7 @@ public class MarvXICommon {
 
         this.setEncoderBehavior(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.setEncoderBehavior(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);*/
+        this.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         hingeL = hardwareMap.dcMotor.get("hingeL");
         hingeL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -51,6 +51,14 @@ public class MarvXICommon {
         intakeR = hardwareMap.crservo.get("intakeR");
         intakeR.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        lift = hardwareMap.dcMotor.get("lift");
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        expand = hardwareMap.dcMotor.get("expand");
+        expand.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        expand.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 
     public void setHingeSpeed(double speed) {
@@ -61,6 +69,18 @@ public class MarvXICommon {
     public void setIntakeSpeed(double speed) {
         intakeF.setPower(speed);
         intakeR.setPower(speed);
+    }
+
+    public void setLiftSpeed(double speed) {
+        lift.setPower(speed);
+    }
+
+    public void setExpandSpeed(double speed) {
+        expand.setPower(speed);
+    }
+
+    public double pos2vel(double P, double posTarg, double posCur) {
+        return Math.max(-1, Math.min(1, P * (posTarg - posCur)));
     }
 
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {
@@ -81,17 +101,17 @@ public class MarvXICommon {
     }
 
     public double getQuadPacerX() {
-        return fl.getCurrentPosition();
+        return fr.getCurrentPosition();
     }
     public double getQuadPacerY() {
-        return bl.getCurrentPosition();
+        return br.getCurrentPosition();
     }
 
     public DcMotor getQuadPacerMotorX() {
-        return fl;
+        return fr;
     }
     public DcMotor getQuadPacerMotorY() {
-        return bl;
+        return br;
     }
 
     public void drive(
