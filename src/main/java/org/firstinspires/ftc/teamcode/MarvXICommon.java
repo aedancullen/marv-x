@@ -92,7 +92,7 @@ public class MarvXICommon {
     public void setExpandHoldMode() {
         expand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expand.setTargetPosition(expand.getCurrentPosition());
-        expand.setPower(1);
+        expand.setPower(0.25);
     }
 
     public void setHingeDefaultMode() {
@@ -116,7 +116,7 @@ public class MarvXICommon {
     public void setLiftHoldMode() {
         lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         lift.setTargetPosition(lift.getCurrentPosition());
-        lift.setPower(1);
+        lift.setPower(0.25);
     }
 
     public void setRotateStraight() {

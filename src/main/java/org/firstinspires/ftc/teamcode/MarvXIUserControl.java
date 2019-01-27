@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+@TeleOp(name="XIUC")
 public class MarvXIUserControl extends OpMode {
 
     MarvXICommon marv;
@@ -22,6 +24,10 @@ public class MarvXIUserControl extends OpMode {
 
     public void init() {
         marv = new MarvXICommon(hardwareMap);
+    }
+
+    public void stop() {
+        marv.rotate.getController().pwmDisable();
     }
 
     public void loop() {
@@ -57,13 +63,14 @@ public class MarvXIUserControl extends OpMode {
                 marv.setExpandDefaultMode();
                 expandInHoldMode = false;
             }
-            marv.setExpandSpeed(g2ExpandInput);
+            if (g2ExpandInput < 0 && marv.expand.getCurrentPosition() <= 0) {marv.setExpandSpeed(0);} else {marv.setExpandSpeed(g2ExpandInput);}
         }
         else {
-            if (!expandInHoldMode) {
+            /*if (!expandInHoldMode) {
                 marv.setExpandHoldMode();
                 expandInHoldMode = true;
-            }
+            }*/
+            marv.setExpandSpeed(0);
         }
 
 
@@ -79,7 +86,7 @@ public class MarvXIUserControl extends OpMode {
                 marv.setHingeDefaultMode();
                 hingeInHoldMode = false;
             }
-            marv.setHingeSpeed(g2HingeInput);
+            if (g2HingeInput < 0 && (marv.hingeL.getCurrentPosition() + marv.hingeR.getCurrentPosition()) / 2.0 <= 0) {marv.setHingeSpeed(0);} else {marv.setHingeSpeed(g2HingeInput);}
         }
         else {
             if (!hingeInHoldMode) {
@@ -98,6 +105,9 @@ public class MarvXIUserControl extends OpMode {
                 marv.setIntakeSpeed(1);
             }
         }
+        else {
+            marv.setIntakeSpeed(0);
+        }
 
 
         double g1LiftInput;
@@ -115,13 +125,14 @@ public class MarvXIUserControl extends OpMode {
                 marv.setLiftDefaultMode();
                 liftInHoldMode = false;
             }
-            marv.setLiftSpeed(g1LiftInput);
+            if (g1LiftInput < 0 && marv.lift.getCurrentPosition() <= 0) {marv.setLiftSpeed(0);} else {marv.setLiftSpeed(g1LiftInput);}
         }
         else {
-            if (!liftInHoldMode) {
+            /*if (!liftInHoldMode) {
                 marv.setLiftHoldMode();
                 liftInHoldMode = true;
-            }
+            }*/
+            marv.setLiftSpeed(0);
         }
 
 
