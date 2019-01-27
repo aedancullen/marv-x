@@ -4,7 +4,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PwmControl;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.ServoControllerEx;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MarvXICommon {
 
@@ -21,6 +26,8 @@ public class MarvXICommon {
 
     CRServo intakeF;
     CRServo intakeR;
+
+    Servo rotate;
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
@@ -39,12 +46,12 @@ public class MarvXICommon {
 
         hingeL = hardwareMap.dcMotor.get("hingeL");
         hingeL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        hingeL.setDirection(DcMotorSimple.Direction.REVERSE);
+        //
         hingeL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         hingeR = hardwareMap.dcMotor.get("hingeR");
         hingeR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //
+        hingeR.setDirection(DcMotorSimple.Direction.REVERSE);
         hingeR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeF = hardwareMap.crservo.get("intakeF");
@@ -55,10 +62,79 @@ public class MarvXICommon {
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        rotate = hardwareMap.servo.get("rotate");
+        rotate.setDirection(Servo.Direction.REVERSE);
+        setServoExtendedRange(rotate, 500, 2500);
+        rotate.setPosition(0);
+
         expand = hardwareMap.dcMotor.get("expand");
         expand.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         expand.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+    }
+
+    public void setExpandDefaultMode() {
+        expand.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void setExpandHoldMode() {
+        expand.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        expand.setTargetPosition(expand.getCurrentPosition());
+        expand.setPower(1);
+    }
+
+    public void setHingeDefaultMode() {
+        hingeR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        hingeL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void setHingeHoldMode() {
+        hingeR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hingeR.setTargetPosition(hingeR.getCurrentPosition());
+        hingeR.setPower(1);
+        hingeL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        hingeL.setTargetPosition(hingeL.getCurrentPosition());
+        hingeL.setPower(1);
+    }
+
+    public void setLiftDefaultMode() {
+        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void setLiftHoldMode() {
+        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lift.setTargetPosition(lift.getCurrentPosition());
+        lift.setPower(1);
+    }
+
+    public void setRotateStraight() {
+        rotate.setPosition(4.0/5.0);
+    }
+
+    public void setRotateIn() {
+        rotate.setPosition(0);
+    }
+
+    public void setRotateL() {
+        rotate.setPosition(3.0/5.0);
+    }
+
+    public void setRotateR() {
+        rotate.setPosition(1);
+    }
+
+    public void telemPoses(Telemetry telemetry) {
+        telemetry.addData("hingeL", hingeL.getCurrentPosition());
+        telemetry.addData("hingeR", hingeR.getCurrentPosition());
+        telemetry.addData("lift", lift.getCurrentPosition());
+        telemetry.addData("expand", expand.getCurrentPosition());
+    }
+
+    public void setServoExtendedRange(Servo servo, int min, int max) {
+        ServoControllerEx controller = (ServoControllerEx) servo.getController();
+        int servoPort = servo.getPortNumber();
+        PwmControl.PwmRange range = new PwmControl.PwmRange(min, max);
+        controller.setServoPwmRange(servoPort, range);
     }
 
     public void setHingeSpeed(double speed) {
@@ -79,8 +155,15 @@ public class MarvXICommon {
         expand.setPower(speed);
     }
 
-    public double pos2vel(double P, double posTarg, double posCur) {
-        return Math.max(-1, Math.min(1, P * (posTarg - posCur)));
+    public double pos2vel(double P, double posTarg, double posCur, double Vmax) {
+        double vel = P * (posTarg - posCur);
+        if (vel > 0) {
+            vel = Math.min(Vmax, vel);
+        }
+        else {
+            vel = Math.max(-Vmax, vel);
+        }
+        return vel;
     }
 
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {
@@ -117,9 +200,9 @@ public class MarvXICommon {
     public void drive(
             double vertL,
             double vertR,
-            double horiz
+            double horiz,
+            double rot
     ) {
-        double rot = 0;
 
         double flp = vertL + rot + horiz;
         fl.setPower(Math.max(Math.min(flp, 1), -1));
