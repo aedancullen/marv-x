@@ -9,8 +9,9 @@ public class MarvXIUserControl extends OpMode {
 
     boolean rotateInStow = true;
 
-    boolean liftInHoldMode = false;
+    boolean hingeInHoldMode = false;
     boolean expandInHoldMode = false;
+    boolean liftInHoldMode = false;
 
     static double LP_HORIZ_M = .30;
     static double LP_DIFF_M = .30;
@@ -24,6 +25,12 @@ public class MarvXIUserControl extends OpMode {
     }
 
     public void loop() {
+
+        marv.telemPoses(telemetry);
+        telemetry.update();
+
+
+
         if (rotateInStow) {
             marv.setRotateIn();
         }
@@ -44,7 +51,7 @@ public class MarvXIUserControl extends OpMode {
         }
 
 
-        double g2ExpandInput = gamepad2.right_trigger - gamepad2.left_trigger;
+        double g2ExpandInput = -gamepad2.right_stick_y;
         if (g2ExpandInput != 0) {
             if (expandInHoldMode) {
                 marv.setExpandDefaultMode();
@@ -60,8 +67,62 @@ public class MarvXIUserControl extends OpMode {
         }
 
 
-        double g2HingeInput;
+        double g2HingeInput = gamepad2.left_stick_y * 0.2;
+        if (gamepad2.dpad_up) {
+            g2HingeInput -= 0.5;
+        }
+        else if (gamepad2.dpad_down) {
+            g2HingeInput += 0.5;
+        }
+        if (g2HingeInput != 0) {
+            if (hingeInHoldMode) {
+                marv.setHingeDefaultMode();
+                hingeInHoldMode = false;
+            }
+            marv.setHingeSpeed(g2HingeInput);
+        }
+        else {
+            if (!hingeInHoldMode) {
+                marv.setHingeHoldMode();
+                hingeInHoldMode = true;
+            }
+        }
 
+
+        if (!rotateInStow) {
+            if (gamepad2.right_trigger + gamepad2.left_trigger > 0) {
+                marv.setIntakeSpeed(-(gamepad2.right_trigger + gamepad2.left_trigger));
+            } else if (marv.hingeIsInDrop()) {
+                marv.setIntakeSpeed(0);
+            } else {
+                marv.setIntakeSpeed(1);
+            }
+        }
+
+
+        double g1LiftInput;
+        if (gamepad1.y) {
+            g1LiftInput = 1;
+        }
+        else if (gamepad1.a) {
+            g1LiftInput = -1;
+        }
+        else {
+            g1LiftInput = 0;
+        }
+        if (g1LiftInput != 0) {
+            if (liftInHoldMode) {
+                marv.setLiftDefaultMode();
+                liftInHoldMode = false;
+            }
+            marv.setLiftSpeed(g1LiftInput);
+        }
+        else {
+            if (!liftInHoldMode) {
+                marv.setLiftHoldMode();
+                liftInHoldMode = true;
+            }
+        }
 
 
         double rot = gamepad2.left_stick_x * D2_YAW_M;

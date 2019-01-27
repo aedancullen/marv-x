@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,8 +11,11 @@ import com.qualcomm.robotcore.hardware.ServoControllerEx;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class MarvXICommon {
+
+    public static int HINGE_THRESH = 2000;
 
     DcMotor fl;
     DcMotor fr;
@@ -31,7 +35,11 @@ public class MarvXICommon {
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
+    Rev2mDistanceSensor liftDist;
+
     public MarvXICommon(HardwareMap hardwareMap) {
+
+        liftDist = hardwareMap.get(Rev2mDistanceSensor.class, "dist");
 
         fl = hardwareMap.dcMotor.get("fl");
         fr = hardwareMap.dcMotor.get("fr");
@@ -71,6 +79,10 @@ public class MarvXICommon {
         expand.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         expand.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+    }
+
+    public boolean hingeIsInDrop() {
+        return (hingeL.getCurrentPosition() + hingeR.getCurrentPosition()) / 2.0 < HINGE_THRESH;
     }
 
     public void setExpandDefaultMode() {
@@ -128,6 +140,7 @@ public class MarvXICommon {
         telemetry.addData("hingeR", hingeR.getCurrentPosition());
         telemetry.addData("lift", lift.getCurrentPosition());
         telemetry.addData("expand", expand.getCurrentPosition());
+        telemetry.addData("dist", liftDist.getDistance(DistanceUnit.INCH));
     }
 
     public void setServoExtendedRange(Servo servo, int min, int max) {
