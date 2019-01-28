@@ -27,7 +27,7 @@ public class MarvXIUserControl extends OpMode {
     }
 
     public void stop() {
-        marv.rotate.getController().pwmDisable();
+        marv.stop();
     }
 
     public void loop() {
@@ -89,10 +89,11 @@ public class MarvXIUserControl extends OpMode {
             if (g2HingeInput < 0 && (marv.hingeL.getCurrentPosition() + marv.hingeR.getCurrentPosition()) / 2.0 <= 0) {marv.setHingeSpeed(0);} else {marv.setHingeSpeed(g2HingeInput);}
         }
         else {
-            if (!hingeInHoldMode) {
+            /*if (!hingeInHoldMode) {
                 marv.setHingeHoldMode();
                 hingeInHoldMode = true;
-            }
+            }*/
+            marv.setHingeSpeed(0);
         }
 
 

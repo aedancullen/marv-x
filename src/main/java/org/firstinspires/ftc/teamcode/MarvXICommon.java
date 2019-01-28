@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class MarvXICommon {
 
-    public static int HINGE_THRESH = 2000;
+    public static int HINGE_THRESH = 999000;
 
     DcMotor fl;
     DcMotor fr;
@@ -37,8 +38,17 @@ public class MarvXICommon {
 
     Rev2mDistanceSensor liftDist;
 
+    BNO055IMU imu;
+
+
+    public static int AP_TICKS_PER_INCH = 0;
+    public static int AP_COUNTS_TO_STABLE = 0;
+    public static double NAV_GAIN_PER_INCH = 0;
+    public static double ORIENT_GAIN_PER_INCH = 0;
+
     public MarvXICommon(HardwareMap hardwareMap) {
 
+        imu = hardwareMap.get(BNO055IMU.class, "imu 1");
         liftDist = hardwareMap.get(Rev2mDistanceSensor.class, "dist");
 
         fl = hardwareMap.dcMotor.get("fl");
@@ -79,6 +89,10 @@ public class MarvXICommon {
         expand.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         expand.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+    }
+
+    public void stop() {
+        rotate.getController().pwmDisable();
     }
 
     public boolean hingeIsInDrop() {
