@@ -83,7 +83,7 @@ public class MarvXICommon {
         rotate = hardwareMap.servo.get("rotate");
         rotate.setDirection(Servo.Direction.REVERSE);
         setServoExtendedRange(rotate, 500, 2500);
-        rotate.setPosition(0);
+        setRotateIn();
 
         expand = hardwareMap.dcMotor.get("expand");
         expand.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -143,7 +143,7 @@ public class MarvXICommon {
     }
 
     public void setRotateIn() {
-        rotate.setPosition(0);
+        rotate.setPosition(0.05);
     }
 
     public void setRotateL() {

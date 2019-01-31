@@ -108,12 +108,12 @@ public class MarvXIUserControl extends OpMode {
 
 
         if (!rotateInStow) {
-            if (gamepad2.right_trigger + gamepad2.left_trigger > 0) {
+            if (gamepad2.right_trigger != 0 || gamepad2.left_trigger != 0) {
                 marv.setIntakeSpeed(-Math.max((gamepad2.right_trigger + gamepad2.left_trigger) * 0.8, 0.8));
             } else if (marv.hingeIsInDrop() || gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y) {
                 marv.setIntakeSpeed(0);
             } else {
-                marv.setIntakeSpeed(1);
+                marv.setIntakeSpeed(0.8);
             }
         }
         else {
@@ -151,7 +151,7 @@ public class MarvXIUserControl extends OpMode {
         if (gamepad2.dpad_right) {
             rot += D2_YAW_PAD_M;
         }
-        else if (gamepad2.dpad_down) {
+        else if (gamepad2.dpad_left) {
             rot -= D2_YAW_PAD_M;
         }
 
