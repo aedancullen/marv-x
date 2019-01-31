@@ -20,7 +20,11 @@ public class MarvXIUserControl extends OpMode {
     static double HP_HORIZ_M = .60;
     static double HP_DIFF_M = .60;
 
-    static double D2_YAW_M = .40;
+    static double D2_YAW_STICK_M = .20;
+    static double D2_YAW_PAD_M = .20;
+
+    static double D2_HINGE_STICK_M = .20;
+    static double D2_HINGE_PAD_M = .50;
 
     public void init() {
         marv = new MarvXICommon(hardwareMap);
@@ -73,17 +77,18 @@ public class MarvXIUserControl extends OpMode {
             /*if (!expandInHoldMode) {
                 marv.setExpandHoldMode();
                 expandInHoldMode = true;
-            }*/
+            }
+            if (marv.expand.getCurrentPosition() <= 0) { marv.setExpandSpeed(0);}*/
             marv.setExpandSpeed(0);
         }
 
 
-        double g2HingeInput = gamepad2.left_stick_y * 0.4;
+        double g2HingeInput = -gamepad2.left_stick_y * D2_HINGE_STICK_M;
         if (gamepad2.dpad_up) {
-            g2HingeInput -= 0.6;
+            g2HingeInput += D2_HINGE_PAD_M;
         }
         else if (gamepad2.dpad_down) {
-            g2HingeInput += 0.6;
+            g2HingeInput -= D2_HINGE_PAD_M;
         }
         if (g2HingeInput != 0) {
             if (hingeInHoldMode) {
@@ -104,7 +109,7 @@ public class MarvXIUserControl extends OpMode {
 
         if (!rotateInStow) {
             if (gamepad2.right_trigger + gamepad2.left_trigger > 0) {
-                marv.setIntakeSpeed(-(gamepad2.right_trigger + gamepad2.left_trigger));
+                marv.setIntakeSpeed(-Math.max((gamepad2.right_trigger + gamepad2.left_trigger) * 0.8, 0.8));
             } else if (marv.hingeIsInDrop() || gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y) {
                 marv.setIntakeSpeed(0);
             } else {
@@ -142,7 +147,14 @@ public class MarvXIUserControl extends OpMode {
         }
 
 
-        double rot = gamepad2.left_stick_x * D2_YAW_M;
+        double rot = gamepad2.left_stick_x * D2_YAW_STICK_M;
+        if (gamepad2.dpad_right) {
+            rot += D2_YAW_PAD_M;
+        }
+        else if (gamepad2.dpad_down) {
+            rot -= D2_YAW_PAD_M;
+        }
+
 
         if (gamepad1.right_bumper) {
             marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

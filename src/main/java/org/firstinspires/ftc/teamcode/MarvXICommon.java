@@ -101,6 +101,7 @@ public class MarvXICommon {
     }
 
     public void setExpandDefaultMode() {
+        expand.setPower(0);
         expand.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
@@ -111,6 +112,8 @@ public class MarvXICommon {
     }
 
     public void setHingeDefaultMode() {
+        hingeR.setPower(0);
+        hingeL.setPower(0);
         hingeR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         hingeL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
@@ -125,6 +128,7 @@ public class MarvXICommon {
     }
 
     public void setLiftDefaultMode() {
+        lift.setPower(0);
         lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
@@ -135,7 +139,7 @@ public class MarvXICommon {
     }
 
     public void setRotateStraight() {
-        rotate.setPosition(4.0/5.0);
+        rotate.setPosition(4.0/6.0 - 0.025);
     }
 
     public void setRotateIn() {
@@ -143,11 +147,11 @@ public class MarvXICommon {
     }
 
     public void setRotateL() {
-        rotate.setPosition(3.0/5.0);
+        rotate.setPosition(3.0/6.0 - 0.025);
     }
 
     public void setRotateR() {
-        rotate.setPosition(1);
+        rotate.setPosition(5.0/6.0 - 0.025);
     }
 
     public void telemPoses(Telemetry telemetry) {
