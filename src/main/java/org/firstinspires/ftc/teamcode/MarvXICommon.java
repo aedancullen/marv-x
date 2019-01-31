@@ -16,7 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class MarvXICommon {
 
-    public static int HINGE_THRESH = 999000;
+    public static int HINGE_THRESH = 6000;
 
     DcMotor fl;
     DcMotor fr;
@@ -92,6 +92,7 @@ public class MarvXICommon {
     }
 
     public void stop() {
+        setRotateIn();
         rotate.getController().pwmDisable();
     }
 

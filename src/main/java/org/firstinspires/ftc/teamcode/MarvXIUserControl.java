@@ -20,7 +20,7 @@ public class MarvXIUserControl extends OpMode {
     static double HP_HORIZ_M = .60;
     static double HP_DIFF_M = .60;
 
-    static double D2_YAW_M = .20;
+    static double D2_YAW_M = .40;
 
     public void init() {
         marv = new MarvXICommon(hardwareMap);
@@ -52,6 +52,10 @@ public class MarvXIUserControl extends OpMode {
             }
         }
 
+        if (gamepad2.right_bumper || gamepad2.left_bumper) {
+            rotateInStow = false;
+        }
+
         if (gamepad2.back) {
             rotateInStow = true;
         }
@@ -74,12 +78,12 @@ public class MarvXIUserControl extends OpMode {
         }
 
 
-        double g2HingeInput = gamepad2.left_stick_y * 0.2;
+        double g2HingeInput = gamepad2.left_stick_y * 0.4;
         if (gamepad2.dpad_up) {
-            g2HingeInput -= 0.5;
+            g2HingeInput -= 0.6;
         }
         else if (gamepad2.dpad_down) {
-            g2HingeInput += 0.5;
+            g2HingeInput += 0.6;
         }
         if (g2HingeInput != 0) {
             if (hingeInHoldMode) {
@@ -89,18 +93,19 @@ public class MarvXIUserControl extends OpMode {
             if (g2HingeInput < 0 && (marv.hingeL.getCurrentPosition() + marv.hingeR.getCurrentPosition()) / 2.0 <= 0) {marv.setHingeSpeed(0);} else {marv.setHingeSpeed(g2HingeInput);}
         }
         else {
-            /*if (!hingeInHoldMode) {
+            if (!hingeInHoldMode) {
                 marv.setHingeHoldMode();
                 hingeInHoldMode = true;
-            }*/
-            marv.setHingeSpeed(0);
+            }
+            if ((marv.hingeL.getCurrentPosition() + marv.hingeR.getCurrentPosition()) / 2.0 <= 0) { marv.setHingeSpeed(0);}
+            //marv.setHingeSpeed(0);
         }
 
 
         if (!rotateInStow) {
             if (gamepad2.right_trigger + gamepad2.left_trigger > 0) {
                 marv.setIntakeSpeed(-(gamepad2.right_trigger + gamepad2.left_trigger));
-            } else if (marv.hingeIsInDrop()) {
+            } else if (marv.hingeIsInDrop() || gamepad2.a || gamepad2.b || gamepad2.x || gamepad2.y) {
                 marv.setIntakeSpeed(0);
             } else {
                 marv.setIntakeSpeed(1);
