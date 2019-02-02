@@ -23,8 +23,8 @@ public class MarvXIUserControl extends OpMode {
     static double D2_YAW_STICK_M = .20;
     static double D2_YAW_PAD_M = .20;
 
-    static double D2_HINGE_STICK_M = .20;
-    static double D2_HINGE_PAD_M = .50;
+    static double D2_HINGE_STICK_M = 0.50;
+    static double D2_HINGE_PAD_M = 1.00;
 
     public void init() {
         marv = new MarvXICommon(hardwareMap);
@@ -83,12 +83,12 @@ public class MarvXIUserControl extends OpMode {
         }
 
 
-        double g2HingeInput = -gamepad2.left_stick_y * D2_HINGE_STICK_M;
+        double g2HingeInput = gamepad2.left_stick_y * D2_HINGE_STICK_M;
         if (gamepad2.dpad_up) {
-            g2HingeInput += D2_HINGE_PAD_M;
+            g2HingeInput -= D2_HINGE_PAD_M;
         }
         else if (gamepad2.dpad_down) {
-            g2HingeInput -= D2_HINGE_PAD_M;
+            g2HingeInput += D2_HINGE_PAD_M;
         }
         if (g2HingeInput != 0) {
             if (hingeInHoldMode) {
@@ -139,11 +139,11 @@ public class MarvXIUserControl extends OpMode {
             if (g1LiftInput < 0 && marv.lift.getCurrentPosition() <= 0) {marv.setLiftSpeed(0);} else {marv.setLiftSpeed(g1LiftInput);}
         }
         else {
-            /*if (!liftInHoldMode) {
+            if (!liftInHoldMode) {
                 marv.setLiftHoldMode();
                 liftInHoldMode = true;
-            }*/
-            marv.setLiftSpeed(0);
+            }
+            //marv.setLiftSpeed(0);
         }
 
 

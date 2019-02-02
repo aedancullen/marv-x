@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -34,15 +34,15 @@ public class MarvXUserControlV2 extends OpMode {
         else {
             marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
-        if (!gamepad1.left_bumper) {
-            double horiz;
-            horiz = (gamepad1.right_trigger * HP_HORIZ_M) - (gamepad1.left_trigger * HP_HORIZ_M);
-            marv.drive(gamepad1.right_stick_y * HP_DIFF_M, gamepad1.left_stick_y * HP_DIFF_M, -horiz);
-        }
-        else {
+        if (gamepad1.left_bumper) {
             double horiz;
             horiz = (gamepad1.right_trigger * LP_HORIZ_M) - (gamepad1.left_trigger * LP_HORIZ_M);
             marv.drive(gamepad1.right_stick_y * LP_DIFF_M, gamepad1.left_stick_y * LP_DIFF_M, -horiz);
+        }
+        else {
+            double horiz;
+            horiz = (gamepad1.right_trigger * HP_HORIZ_M) - (gamepad1.left_trigger * HP_HORIZ_M);
+            marv.drive(gamepad1.right_stick_y * HP_DIFF_M, gamepad1.left_stick_y * HP_DIFF_M, -horiz);
         }
 
 
