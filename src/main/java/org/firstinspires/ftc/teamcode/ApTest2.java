@@ -7,7 +7,6 @@ import com.evolutionftc.autopilot.AutopilotTracker;
 import com.evolutionftc.autopilot.AutopilotTrackerQP37i;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -31,9 +30,9 @@ public class ApTest2 extends LinearOpMode {
     }
 
     public DcMotor getQuadPacerMotorY() {
-        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        return br;
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        return fl;
     }
 
     public void runOpMode() {
@@ -45,12 +44,13 @@ public class ApTest2 extends LinearOpMode {
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
-        //parameters.calibrationDataFile = "BNO055IMUCalibration.json";
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
 
         imu.initialize(parameters);
 
         ap = new AutopilotHost(telemetry);
-        qpTracker = new AutopilotTrackerQP37i(getQuadPacerMotorX(), getQuadPacerMotorY(), new double[3], 1, imu, 1);
+        qpTracker = new AutopilotTrackerQP37i(getQuadPacerMotorX(), getQuadPacerMotorY(), new double[3], 158, imu, 1);
+        ((AutopilotTrackerQP37i)qpTracker).setInverts(true, false);
         ap.setCountsToStable(5);
 
         waitForStart();
@@ -62,6 +62,8 @@ public class ApTest2 extends LinearOpMode {
             telemetry.update();
             AutopilotSystem.visualizerBroadcastRoutine(ap);
         }
+
+        //apGoTo(new double[] {0, 12, 0}, 0, false);
 
 
     }
