@@ -75,8 +75,8 @@ public class ApTest2 extends LinearOpMode {
         seg.fail = "n/a";
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
-        seg.navigationGain = MarvXICommon.NAV_GAIN_PER_INCH;
-        seg.orientationGain = MarvXICommon.ORIENT_GAIN_PER_INCH;
+        seg.navigationGain = 0.5; // something
+        seg.orientationGain = 0.5; // something
         seg.navigationMax = 0.5;
         seg.navigationMin = 0;
         seg.orientationMax = 0.5;

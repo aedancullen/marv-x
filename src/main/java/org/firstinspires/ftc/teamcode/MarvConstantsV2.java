@@ -19,7 +19,7 @@ public class MarvConstantsV2 {
     public static int VERT_LIFT_TOMINUSG_MILLIS = 1000;
     public static double VERT_LIFT_MINUSG = VERT_LIFT_DOWN + (0.9 * (VERT_LIFT_UP - VERT_LIFT_DOWN));
 
-    public static int EXPANDO_VERT_UP = 3200;
+    public static int EXPANDO_VERT_UP = 3100; //3200
     public static int EXPANDO_VERT_DOWN = 0;
     public static int EXPANDO_VERT_SAFE = 1780 - 140;
 

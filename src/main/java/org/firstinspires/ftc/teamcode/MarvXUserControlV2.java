@@ -89,8 +89,8 @@ public class MarvXUserControlV2 extends OpMode {
 
 
         if (gamepad2.dpad_down || gamepad2.dpad_up) {
-            marv.horizSpinL.setPower(-1);
-            marv.horizSpinR.setPower(-1);
+            marv.horizSpinL.setPower(-0.75);
+            marv.horizSpinR.setPower(-0.75);
         }
         else if (gamepad2.dpad_right || gamepad2.dpad_left) {
             marv.horizSpinL.setPower(0);
@@ -98,8 +98,8 @@ public class MarvXUserControlV2 extends OpMode {
         }
         else {
             if (!liftmode) {
-                marv.horizSpinL.setPower(1);
-                marv.horizSpinR.setPower(1);
+                marv.horizSpinL.setPower(0.75);
+                marv.horizSpinR.setPower(0.75);
             }
             else {
                 marv.horizSpinL.setPower(0);
