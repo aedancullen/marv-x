@@ -18,8 +18,12 @@ public class ApTest2 extends LinearOpMode {
 
     MarvXCommonV2 marv;
 
+    MineralFind mineralFind;
+
 
     public void runOpMode() {
+
+        mineralFind = new MineralFind(hardwareMap);
 
         marv = new MarvXCommonV2(hardwareMap, false);
 
@@ -37,15 +41,20 @@ public class ApTest2 extends LinearOpMode {
         ap.setNavigationUnitsToStable(1);
         ap.setOrientationUnitsToStable(0.05);
 
+        mineralFind.detectInit();
         waitForStart();
 
         while (opModeIsActive()) {
+            telemetry.addData("MF", mineralFind.detectLoop());
+
             ap.communicate(qpTracker);
 
             ap.telemetryUpdate();
             telemetry.update();
             AutopilotSystem.visualizerBroadcastRoutine(ap);
         }
+
+        mineralFind.detectStop();
 
         //apGoTo(new double[] {0, 12, 0}, 0, false);
 
