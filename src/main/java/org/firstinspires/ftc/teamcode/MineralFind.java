@@ -137,6 +137,7 @@ public class MineralFind {
 
     public void detectStop() {
         tfod.shutdown();
+        //vuforia.getCamera().close();
     }
 
     private void initVuforia() {
