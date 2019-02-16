@@ -77,13 +77,25 @@ public class MineralFind {
     }
 
     private List<Recognition> filterMineralLine(List<Recognition> recs) {
-        for (Recognition rec : getAllGolds(recs)) {
+        List<Recognition> golds = getAllGolds(recs);
+        for (Recognition rec : golds) {
+            recs.remove(rec);
             List<Recognition> aligned = getMineralsIn(rec.getTop(), rec.getBottom(), 0, rec.getImageWidth(), recs);
-            if (aligned.size() == 3) {
+            if (allBe(aligned, LABEL_SILVER_MINERAL)) {
+                aligned.add(rec);
                 return aligned;
             }
         }
         return new ArrayList<Recognition>();
+    }
+
+    public boolean allBe(List<Recognition> items, String label) {
+        for (Recognition item : items) {
+            if (!item.getLabel().equals(label)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void detectInit() {
@@ -96,7 +108,7 @@ public class MineralFind {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             updatedRecognitions = filterMineralLine(updatedRecognitions);
-            if (updatedRecognitions.size() == 3) {
+            if (updatedRecognitions.size() >= 3) {
                 int goldMineralX = -1;
                 int silverMineral1X = -1;
                 int silverMineral2X = -1;
@@ -124,7 +136,7 @@ public class MineralFind {
     }
 
     public void detectStop() {
-        tfod.deactivate();
+        tfod.shutdown();
     }
 
     private void initVuforia() {

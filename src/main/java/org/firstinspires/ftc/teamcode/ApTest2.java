@@ -41,11 +41,22 @@ public class ApTest2 extends LinearOpMode {
         ap.setNavigationUnitsToStable(1);
         ap.setOrientationUnitsToStable(0.05);
 
+        int res = -1;
+
         mineralFind.detectInit();
-        waitForStart();
+        while (!opModeIsActive()) {
+            int detect = mineralFind.detectLoop();
+            if (detect != -1) {
+                res = detect;
+            }
+        }
+        //waitForStart();
+
+        mineralFind.detectStop();
+
 
         while (opModeIsActive()) {
-            telemetry.addData("MF", mineralFind.detectLoop());
+            telemetry.addData("MF", res);
 
             ap.communicate(qpTracker);
 
@@ -54,7 +65,7 @@ public class ApTest2 extends LinearOpMode {
             AutopilotSystem.visualizerBroadcastRoutine(ap);
         }
 
-        mineralFind.detectStop();
+        //mineralFind.detectStop();
 
         //apGoTo(new double[] {0, 12, 0}, 0, false);
 
