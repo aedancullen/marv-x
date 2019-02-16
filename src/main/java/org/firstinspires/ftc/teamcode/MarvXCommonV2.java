@@ -92,14 +92,14 @@ public class MarvXCommonV2 {
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        expandoVertL.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
+        expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         if (!maintainExpandoHoriz) {expandoVertL.setPower(1);}
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        expandoVertR.setTargetPosition(MarvNavConstants.EXPANDO_VERT_DOWN);
+        expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         if (!maintainExpandoHoriz) {expandoVertR.setPower(1);}
 
         // ONE REVERSE
@@ -156,17 +156,17 @@ public class MarvXCommonV2 {
     }
 
     public double getQuadPacerX() {
-        return fl.getCurrentPosition();
+        return br.getCurrentPosition();
     }
     public double getQuadPacerY() {
-        return bl.getCurrentPosition();
+        return fr.getCurrentPosition();
     }
 
     public DcMotor getQuadPacerMotorX() {
-        return fl;
+        return br;
     }
     public DcMotor getQuadPacerMotorY() {
-        return bl;
+        return fr;
     }
 
     public void drive(
@@ -174,7 +174,15 @@ public class MarvXCommonV2 {
             double vertR,
             double horiz
     ) {
-        double rot = 0;
+        drive(vertL, vertR, horiz, 0);
+    }
+
+    public void drive(
+            double vertL,
+            double vertR,
+            double horiz,
+            double rot
+    ) {
 
         double flp = vertL + rot + horiz;
         fl.setPower(Math.max(Math.min(flp, 1), -1));

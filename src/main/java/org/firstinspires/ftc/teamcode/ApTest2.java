@@ -16,42 +16,26 @@ public class ApTest2 extends LinearOpMode {
     AutopilotHost ap;
     AutopilotTracker qpTracker;
 
-    DcMotor fl;
-    DcMotor fr;
-    DcMotor bl;
-    DcMotor br;
+    MarvXCommonV2 marv;
 
-    BNO055IMU imu;
-
-    public DcMotor getQuadPacerMotorX() {
-        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        return fr;
-    }
-
-    public DcMotor getQuadPacerMotorY() {
-        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        return fl;
-    }
 
     public void runOpMode() {
-        fl = hardwareMap.dcMotor.get("fl");
-        fr = hardwareMap.dcMotor.get("fr");
-        bl = hardwareMap.dcMotor.get("bl");
-        br = hardwareMap.dcMotor.get("br");
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        marv = new MarvXCommonV2(hardwareMap, false);
+
+        marv.imu = hardwareMap.get(BNO055IMU.class, "realImu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json";
 
-        imu.initialize(parameters);
+        marv.imu.initialize(parameters);
 
         ap = new AutopilotHost(telemetry);
-        qpTracker = new AutopilotTrackerQP37i(getQuadPacerMotorX(), getQuadPacerMotorY(), new double[3], 158, imu, 1);
-        ((AutopilotTrackerQP37i)qpTracker).setInverts(true, false);
+        qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 158, marv.imu, 1);
+        ((AutopilotTrackerQP37i)qpTracker).setInverts(false, true);
         ap.setCountsToStable(5);
+        ap.setNavigationUnitsToStable(1);
+        ap.setOrientationUnitsToStable(0.05);
 
         waitForStart();
 
@@ -93,26 +77,9 @@ public class ApTest2 extends LinearOpMode {
             AutopilotSystem.visualizerBroadcastRoutine(ap);
 
             double[] yxh = ap.navigationTick();
-            drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
+            marv.drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
         }
-        drive(0, 0, 0, 0);
-    }
-
-    public void drive(
-            double vertL,
-            double vertR,
-            double horiz,
-            double rot
-    ) {
-
-        double flp = vertL + rot + horiz;
-        fl.setPower(Math.max(Math.min(flp, 1), -1));
-        double frp = vertR - rot - horiz;
-        fr.setPower(Math.max(Math.min(frp, 1), -1));
-        double blp = vertL + rot - horiz;
-        bl.setPower(Math.max(Math.min(blp, 1), -1));
-        double brp = vertR - rot + horiz;
-        br.setPower(Math.max(Math.min(brp, 1), -1));
+        marv.drive(0, 0, 0, 0);
     }
 
 }
