@@ -49,6 +49,12 @@ public class ApTest2 extends LinearOpMode {
             if (detect != -1) {
                 res = detect;
             }
+            telemetry.addData("res", res);
+            telemetry.update();
+            if (isStopRequested()) {
+                mineralFind.detectStop();
+                return;
+            }
         }
         //waitForStart();
 
