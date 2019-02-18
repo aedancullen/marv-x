@@ -40,6 +40,7 @@ public class MarvXCommonV2 {
     Servo vertSpin;
 
     Servo vertSwing;
+    Servo vertLatch;
 
     ColorSensor color1;
     DistanceSensor distance1;
@@ -122,7 +123,10 @@ public class MarvXCommonV2 {
         setServoExtendedRange(vertSpin, 500, 2500);
 
         vertSwing = hardwareMap.servo.get("vertSwing");
-        vertSwing.setPosition(0.52);
+        vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
+
+        vertLatch = hardwareMap.servo.get("vertLatch");
+        vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_LOCKED);
 
         horizSpinL = hardwareMap.crservo.get("horizSpinL");
         horizSpinR = hardwareMap.crservo.get("horizSpinR");
