@@ -79,7 +79,7 @@ public class MarvXUserControlV2 extends OpMode {
             //marv.horizLiftL.getController().pwmDisable();
             horizLiftIsDisable = true;
         }
-        if (gamepad2.left_bumper/* && horizLiftIsDisable*/) {
+        else if (gamepad2.left_bumper/* && horizLiftIsDisable*/) {
             //marv.horizLiftL.getController().pwmEnable();
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
@@ -101,7 +101,7 @@ public class MarvXUserControlV2 extends OpMode {
                     marv.horizSpinL.setPower(0.75);
                     marv.horizSpinR.setPower(0.75);
                 }
-                else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
+                else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01 && marv.expandoHorizL.getCurrentPosition() <= MarvConstantsV2.EXPANDO_HORIZ_SAFE) {
                     marv.horizSpinL.setPower(-0.75);
                     marv.horizSpinR.setPower(-0.75);
                 }
@@ -127,7 +127,7 @@ public class MarvXUserControlV2 extends OpMode {
                 marv.expandoHorizL.setPower(0);
             }
 
-            if (marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) {
+            if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
                 marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
                 marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             }
@@ -135,22 +135,24 @@ public class MarvXUserControlV2 extends OpMode {
         else if (gamepad2.right_trigger == 0 && gamepad2.right_bumper) {
             if (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV2.EXPANDO_HORIZ_SAFE) {
                 marv.expandoHorizL.setPower(-0.5);
-
-                if (marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) {
-                    marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
-                    marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+                if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01) {
+                    marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_WAITING);
+                    marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_WAITING);
                 }
             }
             else {
                 marv.expandoHorizL.setPower(0);
-                marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
-                marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
+                if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
+                    marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
+                    marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
+                }
             }
+
         }
         else {
             marv.expandoHorizL.setPower(0);
 
-            if (marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) {
+            if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01 || Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
                 marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
                 marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             }

@@ -39,6 +39,8 @@ public class MarvXCommonV2 {
     Servo vertLiftR;
     Servo vertSpin;
 
+    Servo vertSwing;
+
     ColorSensor color1;
     DistanceSensor distance1;
     ColorSensor color2;
@@ -93,14 +95,14 @@ public class MarvXCommonV2 {
         if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
-        if (!maintainExpandoHoriz) {expandoVertL.setPower(1);}
+        //if (!maintainExpandoHoriz) {expandoVertL.setPower(1);}
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
-        if (!maintainExpandoHoriz) {expandoVertR.setPower(1);}
+        //if (!maintainExpandoHoriz) {expandoVertR.setPower(1);}
 
         // ONE REVERSE
         horizLiftL = hardwareMap.servo.get("horizLiftL");
@@ -118,6 +120,9 @@ public class MarvXCommonV2 {
 
         vertSpin = hardwareMap.servo.get("vertSpin");
         setServoExtendedRange(vertSpin, 500, 2500);
+
+        vertSwing = hardwareMap.servo.get("vertSwing");
+        vertSwing.setPosition(0.52);
 
         horizSpinL = hardwareMap.crservo.get("horizSpinL");
         horizSpinR = hardwareMap.crservo.get("horizSpinR");

@@ -16,6 +16,7 @@ public class DistTest extends OpMode {
     public void init() {
         dist = hardwareMap.get(Rev2mDistanceSensor.class, "dist");
         marv = new MarvXCommonV2(hardwareMap, false);
+        marv.vertSwing.setPosition(0.5);
     }
 
     public void loop() {
