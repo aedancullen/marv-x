@@ -7,10 +7,9 @@ public class MarvConstantsV2 {
     public static int EXPANDO_HORIZ_UP = 1900;
     public static int EXPANDO_HORIZ_SAFE = 305;
 
-    public static double HORIZ_LIFT_UP_NEUTRAL = 0.63;
-    public static double HORIZ_LIFT_UP_DUMPING = 0.25;
-    public static double HORIZ_LIFT_DOWN = 0.78;
-    public static double HORIZ_LIFT_SAFE = 0.32;
+    public static double HORIZ_LIFT_UP_NEUTRAL = .5;
+    public static double HORIZ_LIFT_UP_DUMPING = .88;
+    public static double HORIZ_LIFT_DOWN = 0;
 
     public static double VERT_LIFT_UP = 0.89;
     public static double VERT_LIFT_DOWN = 0.13;

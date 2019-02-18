@@ -73,15 +73,14 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-
-        if ((gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) && marv.horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) {
+        if (gamepad2.left_trigger > 0.5/* && !horizLiftIsDisable) && Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01*/) {
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
-            marv.horizLiftL.getController().pwmDisable();
+            //marv.horizLiftL.getController().pwmDisable();
             horizLiftIsDisable = true;
         }
-        if (gamepad2.left_bumper && horizLiftIsDisable) {
-            marv.horizLiftL.getController().pwmEnable();
+        if (gamepad2.left_bumper/* && horizLiftIsDisable*/) {
+            //marv.horizLiftL.getController().pwmEnable();
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             horizLiftIsDisable = false;
@@ -98,8 +97,18 @@ public class MarvXUserControlV2 extends OpMode {
         }
         else {
             if (!liftmode) {
-                marv.horizSpinL.setPower(0.75);
-                marv.horizSpinR.setPower(0.75);
+                if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_DOWN) < 0.01) {
+                    marv.horizSpinL.setPower(0.75);
+                    marv.horizSpinR.setPower(0.75);
+                }
+                else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
+                    marv.horizSpinL.setPower(-0.75);
+                    marv.horizSpinR.setPower(-0.75);
+                }
+                else {
+                    marv.horizSpinL.setPower(0);
+                    marv.horizSpinR.setPower(0);
+                }
             }
             else {
                 marv.horizSpinL.setPower(0);
