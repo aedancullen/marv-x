@@ -12,27 +12,29 @@ public class MarvConstantsV2 {
     public static int EXPANDO_HORIZ_SAFE = 0;
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .5;
-    public static double HORIZ_LIFT_UP_WAITING = .8;
-    public static double HORIZ_LIFT_UP_DUMPING = .92;
-    public static double HORIZ_LIFT_DOWN = 0;
+    public static double HORIZ_LIFT_UP_WAITING = .90;
+    public static double HORIZ_LIFT_UP_DUMPING = .98;
+    public static double HORIZ_LIFT_DOWN = 0.14;
 
-    public static double VERT_SWING_CENTER = 0.5;
-    public static double VERT_SWING_LEFT = 0;
-    public static double VERT_SWING_RIGHT = 0;
+    public static double VERT_SWING_CENTER = 0.49;
+    public static double VERT_SWING_LEFT = 0; // SETME
+    public static double VERT_SWING_RIGHT = 0; // SETME
 
     public static double VERT_LATCH_LOCKED = 0.02;
     public static double VERT_LATCH_OPEN = 0.5;
 
-    public static double VERT_LIFT_UP = 0.75; // 89
+    public static double VERT_LIFT_UP = 0.88;
     public static double VERT_LIFT_DOWN = 0.12;
     public static double VERT_LIFT_SAFE = 0.3;
+
+    public static int VERT_LIFT_TOSWING_MILLIS = 500;
 
     public static int VERT_LIFT_TOMINUSG_MILLIS = 1000;
     public static double VERT_LIFT_MINUSG = VERT_LIFT_DOWN + (0.9 * (VERT_LIFT_UP - VERT_LIFT_DOWN));
 
     public static int EXPANDO_VERT_UP = 3100; //3200
     public static int EXPANDO_VERT_DOWN = 0;
-    public static int EXPANDO_VERT_SAFE = 1780 /*- 140*/;
+    public static int EXPANDO_VERT_SAFE = 2800 /*- 140*/;
 
     public static int EXPANDO_VERT_2IN = 275;
 

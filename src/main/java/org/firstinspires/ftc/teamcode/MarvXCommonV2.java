@@ -52,10 +52,14 @@ public class MarvXCommonV2 {
 
     public enum BackTarget {RIGHT, LEFT}
     public enum DropTarget {FARTHER, LESSER, NEUTRAL}
+    public enum SwingTarget {CENTER, LEFT, RIGHT}
+    public enum LiftTarget {FARTHER, LESSER}
     public enum AutomationState {CLEAR_READY, CLEARING, RELEASE_READY, RELEASING};
 
     BackTarget backTarget = null;
     DropTarget dropTarget = null;
+    SwingTarget swingTarget = null;
+    LiftTarget liftTarget = null;
     public AutomationState automationState = AutomationState.CLEAR_READY;
     public AutomationState lastAutomationState = null;
 
@@ -225,20 +229,29 @@ public class MarvXCommonV2 {
                 if (lWarmScore < 1.5 && rWarmScore < 1.5) {
                     backTarget = BackTarget.LEFT;
                     dropTarget = DropTarget.NEUTRAL;
+                    swingTarget = SwingTarget.CENTER;
+                    liftTarget = LiftTarget.LESSER;
                 }
                 else if (lWarmScore > 1.5 && rWarmScore > 1.5) {
                     backTarget = BackTarget.LEFT;
-                    dropTarget = DropTarget.LESSER;
+                    //dropTarget = DropTarget.LESSER; // CHANGED FOR SWING
+                    dropTarget = DropTarget.NEUTRAL;
+                    swingTarget = SwingTarget.LEFT;
+                    liftTarget = LiftTarget.FARTHER;
                 }
                 else if (lWarmScore > 1.5 && rWarmScore < 1.5){
                     // Cube on left
                     backTarget = BackTarget.RIGHT;
                     dropTarget = DropTarget.LESSER;
+                    swingTarget = SwingTarget.LEFT;
+                    liftTarget = LiftTarget.FARTHER;
                 }
                 else if (lWarmScore < 1.5 && rWarmScore > 1.5) {
                     // Cube on right
                     backTarget = BackTarget.LEFT;
                     dropTarget = DropTarget.FARTHER;
+                    swingTarget = SwingTarget.LEFT;
+                    liftTarget = liftTarget.FARTHER;
                 }
 
             }
@@ -247,6 +260,7 @@ public class MarvXCommonV2 {
             if (expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_BOXFREE || expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_BOXFREE) {
                 automationState = AutomationState.RELEASE_READY;
                 minusGTimer = System.currentTimeMillis();
+                swingTimer = System.currentTimeMillis();
             }
         }
         else if (automationState == AutomationState.RELEASE_READY) {
@@ -255,14 +269,27 @@ public class MarvXCommonV2 {
                 vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_MINUSG);
             }
             else {
-                if (drop) {
-                    automationState = AutomationState.RELEASING;
-                    dropTimer = System.currentTimeMillis();
-                }
-                else {
+                if (liftTarget != LiftTarget.LESSER) {
                     vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_UP);
                     vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_UP);
                 }
+            }
+
+            if (System.currentTimeMillis() > swingTimer + MarvConstantsV2.VERT_LIFT_TOSWING_MILLIS) {
+                if (swingTarget == SwingTarget.CENTER) {
+                    vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
+                }
+                else if (swingTarget == SwingTarget.LEFT) {
+                    vertSwing.setPosition(MarvConstantsV2.VERT_SWING_LEFT);
+                }
+                else if (swingTarget == SwingTarget.RIGHT) {
+                    vertSwing.setPosition(MarvConstantsV2.VERT_SWING_RIGHT);
+                }
+            }
+
+            if (drop) {
+                automationState = AutomationState.RELEASING;
+                dropTimer = System.currentTimeMillis();
             }
         }
         else if (automationState == AutomationState.RELEASING){
@@ -281,10 +308,17 @@ public class MarvXCommonV2 {
             vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
             vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
             vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_NEUTRAL);
+            vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
         }
         else if (automationState == AutomationState.CLEARING && lastAutomationState != AutomationState.CLEARING) {
-            expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_UP);
-            expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_UP);
+            if (liftTarget == LiftTarget.FARTHER) {
+                expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_UP);
+                expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_UP);
+            }
+            else {
+                expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_SAFE);
+                expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_SAFE);
+            }
             expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TOUP_SPEED);
             expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TOUP_SPEED);
         }
@@ -318,6 +352,7 @@ public class MarvXCommonV2 {
 
     long dropTimer;
     long minusGTimer;
+    long swingTimer;
 
 
 }

@@ -22,11 +22,13 @@ public class MarvXUserControlV2 extends OpMode {
 
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
-        marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
-        marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+        //marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+        //marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
 
         marv.vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_OPEN);
     }
+
+    long dumpTimer;
 
     public void loop() {
 
@@ -102,14 +104,18 @@ public class MarvXUserControlV2 extends OpMode {
                 if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_DOWN) < 0.01) {
                     marv.horizSpinL.setPower(0.75);
                     marv.horizSpinR.setPower(0.75);
+                    dumpTimer = System.currentTimeMillis();
                 }
                 else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01 && marv.expandoHorizL.getCurrentPosition() <= MarvConstantsV2.EXPANDO_HORIZ_SAFE) {
-                    marv.horizSpinL.setPower(-0.75);
-                    marv.horizSpinR.setPower(-0.75);
+                    if (System.currentTimeMillis() - dumpTimer > 250) {
+                        marv.horizSpinL.setPower(-0.5);
+                        marv.horizSpinR.setPower(-0.5);
+                    }
                 }
                 else {
                     marv.horizSpinL.setPower(0);
                     marv.horizSpinR.setPower(0);
+                    dumpTimer = System.currentTimeMillis();
                 }
             }
             else {
