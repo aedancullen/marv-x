@@ -2,7 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 public class MarvConstantsV2 {
 
-    public static int QUADPACER_TPU = 110;
+    public static int QUADPACER_TPU = 500; //158
+
+    public static int AP_COUNTS_TO_STABLE = 5;
+    public static double AP_NAV_UNITS_TO_STABLE = 1;
+    public static double AP_ORIENT_UNITS_TO_STABLE = 0.05;
 
     public static int EXPANDO_HORIZ_UP = 1900;
     public static int EXPANDO_HORIZ_SAFE = 0;
@@ -16,7 +20,7 @@ public class MarvConstantsV2 {
     public static double VERT_SWING_LEFT = 0;
     public static double VERT_SWING_RIGHT = 0;
 
-    public static double VERT_LATCH_LOCKED = 0;
+    public static double VERT_LATCH_LOCKED = 0.02;
     public static double VERT_LATCH_OPEN = 0.5;
 
     public static double VERT_LIFT_UP = 0.75; // 89
@@ -28,7 +32,9 @@ public class MarvConstantsV2 {
 
     public static int EXPANDO_VERT_UP = 3100; //3200
     public static int EXPANDO_VERT_DOWN = 0;
-    public static int EXPANDO_VERT_SAFE = 1780 - 140;
+    public static int EXPANDO_VERT_SAFE = 1780 /*- 140*/;
+
+    public static int EXPANDO_VERT_2IN = 275;
 
     public static int EXPANDO_VERT_BOXFREE = 1000;
 

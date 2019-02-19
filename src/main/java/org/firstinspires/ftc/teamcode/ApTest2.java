@@ -4,6 +4,8 @@ import com.evolutionftc.autopilot.AutopilotHost;
 import com.evolutionftc.autopilot.AutopilotSegment;
 import com.evolutionftc.autopilot.AutopilotSystem;
 import com.evolutionftc.autopilot.AutopilotTracker;
+import com.evolutionftc.autopilot.AutopilotTrackerEnc;
+import com.evolutionftc.autopilot.AutopilotTrackerEncMec;
 import com.evolutionftc.autopilot.AutopilotTrackerQP37i;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -30,13 +32,18 @@ public class ApTest2 extends LinearOpMode {
         marv.imu = hardwareMap.get(BNO055IMU.class, "realImu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
-        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
+        /*parameters.mode = BNO055IMU.SensorMode.NDOF;*/
+        parameters.mode = BNO055IMU.SensorMode.COMPASS;
+        /*parameters.calibrationDataFile = "BNO055IMUCalibration.json";*/
 
         marv.imu.initialize(parameters);
 
+        marv.vertSwing.setPosition(0.5);
+
         ap = new AutopilotHost(telemetry);
-        qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 158, marv.imu, 1);
+        qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 300, marv.imu, 1);
         ((AutopilotTrackerQP37i)qpTracker).setInverts(false, true);
+        //qpTracker = new AutopilotTrackerEncMec(marv.fl, marv.fr, marv.bl, marv.br, 500, marv.imu, 1);
         ap.setCountsToStable(5);
         ap.setNavigationUnitsToStable(1);
         ap.setOrientationUnitsToStable(0.05);

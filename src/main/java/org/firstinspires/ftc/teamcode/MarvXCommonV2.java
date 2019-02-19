@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -47,6 +48,8 @@ public class MarvXCommonV2 {
     ColorSensor color2;
     DistanceSensor distance2;
 
+    Rev2mDistanceSensor altitude;
+
     public enum BackTarget {RIGHT, LEFT}
     public enum DropTarget {FARTHER, LESSER, NEUTRAL}
     public enum AutomationState {CLEAR_READY, CLEARING, RELEASE_READY, RELEASING};
@@ -65,6 +68,8 @@ public class MarvXCommonV2 {
         color2 = hardwareMap.get(ColorSensor.class, "cd2");
         distance2 = hardwareMap.get(DistanceSensor.class, "cd2");
 
+        altitude = hardwareMap.get(Rev2mDistanceSensor.class, "dist");
+
         fl = hardwareMap.dcMotor.get("fl");
 
         fr = hardwareMap.dcMotor.get("fr");
@@ -82,7 +87,7 @@ public class MarvXCommonV2 {
         expandoHorizL = hardwareMap.dcMotor.get("expandoHoriz");
         expandoHorizL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoHorizL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        if (!maintainExpandoHoriz) {expandoHorizL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+        //if (!maintainExpandoHoriz) {expandoHorizL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         /*expandoHorizR = hardwareMap.dcMotor.get("expandoHorizR");
@@ -93,14 +98,14 @@ public class MarvXCommonV2 {
         expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+        //if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         //if (!maintainExpandoHoriz) {expandoVertL.setPower(1);}
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+        //if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         //if (!maintainExpandoHoriz) {expandoVertR.setPower(1);}
@@ -126,7 +131,6 @@ public class MarvXCommonV2 {
         vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
 
         vertLatch = hardwareMap.servo.get("vertLatch");
-        vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_LOCKED);
 
         horizSpinL = hardwareMap.crservo.get("horizSpinL");
         horizSpinR = hardwareMap.crservo.get("horizSpinR");

@@ -24,6 +24,8 @@ public class MarvXUserControlV2 extends OpMode {
         marv = new MarvXCommonV2(hardwareMap, true);
         marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
         marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+
+        marv.vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_OPEN);
     }
 
     public void loop() {
