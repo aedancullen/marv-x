@@ -44,9 +44,9 @@ public class ApTest2 extends LinearOpMode {
         qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 150, marv.imu, 1);
         ((AutopilotTrackerQP37i)qpTracker).setInverts(false, true);
         //qpTracker = new AutopilotTrackerEncMec(marv.fl, marv.fr, marv.bl, marv.br, 500, marv.imu, 1);
-        ap.setCountsToStable(5);
-        ap.setNavigationUnitsToStable(1);
-        ap.setOrientationUnitsToStable(0.05);
+        ap.setCountsToStable(8);
+        ap.setNavigationUnitsToStable(0.7);
+        ap.setOrientationUnitsToStable(0.02);
 
         int res = -1;
 
@@ -80,13 +80,16 @@ public class ApTest2 extends LinearOpMode {
 
         //mineralFind.detectStop();
 
-        apGoTo(new double[] {0, 6, 0}, 0, true);
-        apGoTo(new double[] {0, 23, 0}, Math.PI / 4, true); // C
-        //apGoTo(new double[] {16, 23, 0}, Math.PI / 4, true); // R
-        //apGoTo(new double[] {-16, 23, 0}, Math.PI / 4, true); // L
 
-        apGoTo(new double[] {7.5, 15, 0}, Math.PI / 2, true); // clear not on L
-        apGoTo(new double[] {-43, 15, 0}, Math.PI / 2, true); // across not on L
+
+
+        apGoTo(new double[] {0, 6, 0}, 0, true);
+        //apGoTo(new double[] {0, 23.5, 0}, Math.PI / 4, true); // C
+        //apGoTo(new double[] {16, 23.5, 0}, Math.PI / 4, true); // R
+        apGoTo(new double[] {-16, 23.5, 0}, Math.PI / 4, true); // L
+
+        //apGoTo(new double[] {7.5, 15, 0}, Math.PI / 2, true); // clear not on L
+        //apGoTo(new double[] {-43, 15, 0}, Math.PI / 2, true); // across not on L
         apGoTo(new double[] {-43, 15, 0}, Math.PI / 4, true); // across
 
         apGoTo(new double[] {-68, -9, 0}, Math.PI / 4, true); // depot
