@@ -140,12 +140,12 @@ public class MarvXCommonV2 {
         horizSpinR = hardwareMap.crservo.get("horizSpinR");
         horizSpinR.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        /*imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json";
 
-        imu.initialize(parameters);
+        imu.initialize(parameters);*/
     }
 
     public void setServoExtendedRange(Servo servo, int min, int max) {

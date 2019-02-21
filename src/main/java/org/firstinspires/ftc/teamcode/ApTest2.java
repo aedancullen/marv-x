@@ -29,28 +29,28 @@ public class ApTest2 extends LinearOpMode {
 
         marv = new MarvXCommonV2(hardwareMap, false);
 
+        marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         marv.imu = hardwareMap.get(BNO055IMU.class, "realImu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
-        /*parameters.mode = BNO055IMU.SensorMode.NDOF;*/
-        parameters.mode = BNO055IMU.SensorMode.COMPASS;
-        /*parameters.calibrationDataFile = "BNO055IMUCalibration.json";*/
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json";
 
         marv.imu.initialize(parameters);
 
         marv.vertSwing.setPosition(0.5);
 
         ap = new AutopilotHost(telemetry);
-        qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 300, marv.imu, 1);
+        qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 150, marv.imu, 1);
         ((AutopilotTrackerQP37i)qpTracker).setInverts(false, true);
         //qpTracker = new AutopilotTrackerEncMec(marv.fl, marv.fr, marv.bl, marv.br, 500, marv.imu, 1);
-        ap.setCountsToStable(5);
-        ap.setNavigationUnitsToStable(1);
-        ap.setOrientationUnitsToStable(0.05);
+        ap.setCountsToStable(10);
+        ap.setNavigationUnitsToStable(0.5);
+        ap.setOrientationUnitsToStable(0.025);
 
         int res = -1;
 
-        mineralFind.detectInit();
+        /*mineralFind.detectInit();
         while (!opModeIsActive()) {
             int detect = mineralFind.detectLoop();
             if (detect != -1) {
@@ -63,12 +63,12 @@ public class ApTest2 extends LinearOpMode {
                 return;
             }
         }
-        //waitForStart();
 
-        mineralFind.detectStop();
+        mineralFind.detectStop();*/
+        waitForStart();
 
 
-        while (opModeIsActive()) {
+        /*while (opModeIsActive()) {
             telemetry.addData("MF", res);
 
             ap.communicate(qpTracker);
@@ -76,11 +76,14 @@ public class ApTest2 extends LinearOpMode {
             ap.telemetryUpdate();
             telemetry.update();
             AutopilotSystem.visualizerBroadcastRoutine(ap);
-        }
+        }*/
 
         //mineralFind.detectStop();
 
-        //apGoTo(new double[] {0, 12, 0}, 0, false);
+        apGoTo(new double[] {0, 12, 0}, 0.785, true);
+        //apGoTo(new double[] {0, , 0}, 1, true);
+
+        while(opModeIsActive()) {sleep(1);}
 
 
     }
@@ -92,10 +95,10 @@ public class ApTest2 extends LinearOpMode {
         seg.fail = "n/a";
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
-        seg.navigationGain = 0.5; // something
-        seg.orientationGain = 0.5; // something
+        seg.navigationGain = 0.02; // something
+        seg.orientationGain = 2; // something
         seg.navigationMax = 0.5;
-        seg.navigationMin = 0;
+        seg.navigationMin = 0.2;
         seg.orientationMax = 0.5;
         seg.useOrientation = useOrientation;
 

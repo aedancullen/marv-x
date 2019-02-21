@@ -2,29 +2,29 @@ package org.firstinspires.ftc.teamcode;
 
 public class MarvConstantsV2 {
 
-    public static int QUADPACER_TPU = 500; //158
+    public static int QUADPACER_TPU = 150;
 
     public static int AP_COUNTS_TO_STABLE = 5;
     public static double AP_NAV_UNITS_TO_STABLE = 1;
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.05;
 
     public static int EXPANDO_HORIZ_UP = 1900;
-    public static int EXPANDO_HORIZ_SAFE = 0;
+    public static int EXPANDO_HORIZ_SAFE = 360;
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .5;
     public static double HORIZ_LIFT_UP_WAITING = .90;
-    public static double HORIZ_LIFT_UP_DUMPING = .98;
+    public static double HORIZ_LIFT_UP_DUMPING = .965;
     public static double HORIZ_LIFT_DOWN = 0.14;
 
     public static double VERT_SWING_CENTER = 0.49;
-    public static double VERT_SWING_LEFT = 0; // SETME
-    public static double VERT_SWING_RIGHT = 0; // SETME
+    public static double VERT_SWING_LEFT = 0.49; /*VERT_SWING_CENTER + .42 / 4.0;*/
+    public static double VERT_SWING_RIGHT = 0.49; /*VERT_SWING_CENTER - .42 / 4.0;*/
 
     public static double VERT_LATCH_LOCKED = 0.02;
     public static double VERT_LATCH_OPEN = 0.5;
 
     public static double VERT_LIFT_UP = 0.88;
-    public static double VERT_LIFT_DOWN = 0.12;
+    public static double VERT_LIFT_DOWN = 0.115;
     public static double VERT_LIFT_SAFE = 0.3;
 
     public static int VERT_LIFT_TOSWING_MILLIS = 500;
