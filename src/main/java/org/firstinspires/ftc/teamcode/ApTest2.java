@@ -89,6 +89,8 @@ public class ApTest2 extends LinearOpMode {
         apGoTo(new double[] {-43, 15, 0}, Math.PI / 2, true); // across not on L
         apGoTo(new double[] {-43, 15, 0}, Math.PI / 4, true); // across
 
+        apGoTo(new double[] {-68, -9, 0}, Math.PI / 4, true); // depot
+
         /*apGoTo(new double[] {0, 15, 0}, 0, true);
         apGoTo(new double[] {0, 15, 0}, Math.PI / 2, true);
 
@@ -117,7 +119,7 @@ public class ApTest2 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.035; // something
-        seg.orientationGain = 1.6; // something
+        seg.orientationGain = 1.5; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
         seg.orientationMax = 0.35;
