@@ -26,7 +26,7 @@ public class MarvXUserControlV2 extends OpMode {
         //marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
 
         marv.vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_OPEN);
-        marv.vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
+        //marv.vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
     }
 
     long dumpTimer;
@@ -119,8 +119,8 @@ public class MarvXUserControlV2 extends OpMode {
                     }
                 }
                 else {
-                    marv.horizSpinL.setPower(0.15);
-                    marv.horizSpinR.setPower(0.15);
+                    marv.horizSpinL.setPower(/*0.15*/0);
+                    marv.horizSpinR.setPower(/*0.15*/0);
                     dumpTimer = System.currentTimeMillis();
                 }
             }

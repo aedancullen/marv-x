@@ -13,7 +13,7 @@ public class MarvConstantsV2 {
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .5;
     public static double HORIZ_LIFT_UP_WAITING = .90;
-    public static double HORIZ_LIFT_UP_DUMPING = .965;
+    public static double HORIZ_LIFT_UP_DUMPING = .98;
     public static double HORIZ_LIFT_DOWN = 0.14;
 
     public static double VERT_SWING_CENTER = 0.49;
