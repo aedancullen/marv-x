@@ -93,6 +93,7 @@ public class MarvXCommonV2 {
         expandoHorizL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //if (!maintainExpandoHoriz) {expandoHorizL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        expandoHorizL.setPower(0);
 
         /*expandoHorizR = hardwareMap.dcMotor.get("expandoHorizR");
         expandoHorizR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

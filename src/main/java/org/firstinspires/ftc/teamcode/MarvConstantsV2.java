@@ -16,9 +16,9 @@ public class MarvConstantsV2 {
     public static double HORIZ_LIFT_UP_DUMPING = .98;
     public static double HORIZ_LIFT_DOWN = 0.14;
 
-    public static double VERT_SWING_CENTER = 0.49;
-    public static double VERT_SWING_LEFT = 0.49; /*VERT_SWING_CENTER + .42 / 4.0;*/
-    public static double VERT_SWING_RIGHT = 0.49; /*VERT_SWING_CENTER - .42 / 4.0;*/
+    public static double VERT_SWING_CENTER = 0.497;
+    public static double VERT_SWING_LEFT = 0.497; /*VERT_SWING_CENTER + .42 / 4.0;*/
+    public static double VERT_SWING_RIGHT = 0.497; /*VERT_SWING_CENTER - .42 / 4.0;*/
 
     public static double VERT_LATCH_LOCKED = 0.02;
     public static double VERT_LATCH_OPEN = 0.5;
