@@ -80,15 +80,29 @@ public class ApTest2 extends LinearOpMode {
 
         //mineralFind.detectStop();
 
-        apGoTo(new double[] {0, 6, 0}, 0, true);
+        /*apGoTo(new double[] {0, 6, 0}, 0, true);
         //apGoTo(new double[] {0, 23, 0}, Math.PI / 4, true); // C
-        //apGoTo(new double[] {16, 23, 0}, Math.PI / 4, true); // R
-        apGoTo(new double[] {-16, 23, 0}, Math.PI / 4, true); // L
+        apGoTo(new double[] {16, 23, 0}, Math.PI / 4, true); // R
+        //apGoTo(new double[] {-16, 23, 0}, Math.PI / 4, true); // L
 
         apGoTo(new double[] {0, 14, 0}, Math.PI / 2, true); // clear
 
-        apGoTo(new double[] {43, 14, 0}, Math.PI / 2, true); // across
-        apGoTo(new double[] {43, 14, 0}, Math.PI / 4, true); // across
+        apGoTo(new double[] {-43, 14, 0}, Math.PI / 2, true); // across
+        apGoTo(new double[] {-43, 14, 0}, Math.PI / 4, true); // across*/
+
+        apGoTo(new double[] {0, 12, 0}, 0, true);
+        apGoTo(new double[] {0, 12, 0}, Math.PI / 2, true);
+
+
+        apGoTo(new double[] {17, 25, 0}, Math.PI / 2, true); // R
+        //apGoTo(new double[] {0, 25, 0}, Math.PI / 2, true); // C
+        //apGoTo(new double[] {-17, 25, 0}, Math.PI / 2, true); // L
+
+        apGoTo(new double[] {0, 12, 0}, Math.PI / 2, true);
+        apGoTo(new double[] {-43, 16, 0}, Math.PI / 2, true); // across
+        apGoTo(new double[] {-43, 16, 0}, Math.PI / 4, true); // across
+
+
 
         while(opModeIsActive()) {sleep(1);}
 
@@ -102,10 +116,10 @@ public class ApTest2 extends LinearOpMode {
         seg.fail = "n/a";
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
-        seg.navigationGain = 0.03; // something
+        seg.navigationGain = 0.035; // something
         seg.orientationGain = 1.5; // something
         seg.navigationMax = 0.35;
-        seg.navigationMin = 0.2;
+        seg.navigationMin = 0.25;
         seg.orientationMax = 0.35;
         seg.useOrientation = useOrientation;
 
