@@ -31,7 +31,7 @@ public class ApTest2 extends LinearOpMode {
 
         marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        marv.imu = hardwareMap.get(BNO055IMU.class, "realImu");
+        marv.imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit           = BNO055IMU.AngleUnit.RADIANS;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json";
@@ -119,7 +119,7 @@ public class ApTest2 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.035; // something
-        seg.orientationGain = 1.5; // something
+        seg.orientationGain = 1.75; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
         seg.orientationMax = 0.25;
