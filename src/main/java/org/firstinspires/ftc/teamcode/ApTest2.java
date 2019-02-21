@@ -44,9 +44,9 @@ public class ApTest2 extends LinearOpMode {
         qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 150, marv.imu, 1);
         ((AutopilotTrackerQP37i)qpTracker).setInverts(false, true);
         //qpTracker = new AutopilotTrackerEncMec(marv.fl, marv.fr, marv.bl, marv.br, 500, marv.imu, 1);
-        ap.setCountsToStable(10);
-        ap.setNavigationUnitsToStable(0.5);
-        ap.setOrientationUnitsToStable(0.025);
+        ap.setCountsToStable(5);
+        ap.setNavigationUnitsToStable(1);
+        ap.setOrientationUnitsToStable(0.05);
 
         int res = -1;
 
@@ -80,8 +80,15 @@ public class ApTest2 extends LinearOpMode {
 
         //mineralFind.detectStop();
 
-        apGoTo(new double[] {0, 12, 0}, 0.785, true);
-        //apGoTo(new double[] {0, , 0}, 1, true);
+        apGoTo(new double[] {0, 6, 0}, 0, true);
+        //apGoTo(new double[] {0, 23, 0}, Math.PI / 4, true); // C
+        //apGoTo(new double[] {16, 23, 0}, Math.PI / 4, true); // R
+        apGoTo(new double[] {-16, 23, 0}, Math.PI / 4, true); // L
+
+        apGoTo(new double[] {0, 14, 0}, Math.PI / 2, true); // clear
+
+        apGoTo(new double[] {43, 14, 0}, Math.PI / 2, true); // across
+        apGoTo(new double[] {43, 14, 0}, Math.PI / 4, true); // across
 
         while(opModeIsActive()) {sleep(1);}
 
@@ -95,11 +102,11 @@ public class ApTest2 extends LinearOpMode {
         seg.fail = "n/a";
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
-        seg.navigationGain = 0.02; // something
-        seg.orientationGain = 2; // something
-        seg.navigationMax = 0.5;
+        seg.navigationGain = 0.03; // something
+        seg.orientationGain = 1.5; // something
+        seg.navigationMax = 0.35;
         seg.navigationMin = 0.2;
-        seg.orientationMax = 0.5;
+        seg.orientationMax = 0.35;
         seg.useOrientation = useOrientation;
 
         ap.setNavigationTarget(seg);
