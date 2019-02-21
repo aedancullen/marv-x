@@ -122,7 +122,7 @@ public class ApTest2 extends LinearOpMode {
         seg.orientationGain = 1.5; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
-        seg.orientationMax = 0.35;
+        seg.orientationMax = 0.25;
         seg.useOrientation = useOrientation;
 
         ap.setNavigationTarget(seg);
