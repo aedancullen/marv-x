@@ -94,13 +94,13 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-        if (gamepad2.left_trigger > 0.5/* && !horizLiftIsDisable) && Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01*/) {
+        if ((gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) && Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01) {
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
             //marv.horizLiftL.getController().pwmDisable();
             horizLiftIsDisable = true;
         }
-        else if (gamepad2.left_bumper/* && horizLiftIsDisable*/) {
+        else if (gamepad2.left_bumper && horizLiftIsDisable) {
             //marv.horizLiftL.getController().pwmEnable();
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);

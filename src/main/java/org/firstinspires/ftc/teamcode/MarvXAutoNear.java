@@ -22,7 +22,7 @@ public class MarvXAutoNear extends LinearOpMode {
 
     public void runOpMode() {
         marv = new MarvXCommonV2(hardwareMap, false);
-        mineralFind = new MineralFind(hardwareMap);
+        //mineralFind = new MineralFind(hardwareMap);
 
         marv.imu = hardwareMap.get(BNO055IMU.class, "realImu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -44,7 +44,7 @@ public class MarvXAutoNear extends LinearOpMode {
 
         int res = -1;
 
-        mineralFind.detectInit();
+        /*mineralFind.detectInit();
         while (!opModeIsActive()) {
             int detect = mineralFind.detectLoop();
             if (detect != -1) {
@@ -56,9 +56,9 @@ public class MarvXAutoNear extends LinearOpMode {
                 mineralFind.detectStop();
                 return;
             }
-        }
-        //waitForStart();
-        mineralFind.detectStop();
+        }*/
+        waitForStart();
+        //mineralFind.detectStop();
         marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
         marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
 
@@ -88,8 +88,10 @@ public class MarvXAutoNear extends LinearOpMode {
         marv.expandoVertR.setTargetPosition(marv.expandoVertR.getCurrentPosition() + MarvConstantsV2.EXPANDO_VERT_2IN);
 
 
-        timeStart = System.currentTimeMillis();
-        while (System.currentTimeMillis() - timeStart < 1000 && opModeIsActive()) {sleep(1);}
+        while (marv.expandoVertL.isBusy() && marv.expandoVertR.isBusy()) {sleep(1);}
+
+        marv.expandoVertL.setPower(0);
+        marv.expandoVertR.setPower(0);
 
         quadPacer.setRobotPosition(new double[] {0, 0, 0});
 
@@ -99,17 +101,33 @@ public class MarvXAutoNear extends LinearOpMode {
 
         marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+        marv.expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
+        marv.expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
 
-        apGoTo(new double[] {0, 6, 0}, 0, true);
-        apGoTo(new double[] {0, 23.5, 0}, -Math.PI / 4, true); // C
-        //apGoTo(new double[] {16, 23.5, 0}, -Math.PI / 4, true); // R
-        //apGoTo(new double[] {-16, 23.5, 0}, -Math.PI / 4, true); // L
+        while (marv.expandoVertL.isBusy() && marv.expandoVertR.isBusy()) {sleep(1);}
 
         marv.expandoVertL.setPower(0);
         marv.expandoVertR.setPower(0);
 
-        apGoTo(new double[] {7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
-        apGoTo(new double[] {-43, 15, 0}, -Math.PI / 2, true); // across not on L
+        apGoTo(new double[] {0, 6, 0}, 0, true);
+
+        if (res == 1) {
+            apGoTo(new double[]{0, 23.5, 0}, -Math.PI / 4, true); // C
+        }
+        else if (res == 2) {
+            apGoTo(new double[]{16, 23.5, 0}, -Math.PI / 4, true); // R
+        }
+        else if (res == 0 || res == -1) {
+            apGoTo(new double[] {-16, 23.5, 0}, -Math.PI / 4, true); // L
+        }
+
+        marv.expandoVertL.setPower(0);
+        marv.expandoVertR.setPower(0);
+
+        if (res != 0 && res != -1) {
+            apGoTo(new double[]{7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
+            apGoTo(new double[]{-43, 15, 0}, -Math.PI / 2, true); // across not on L
+        }
         apGoTo(new double[] {-43, 15, 0}, -Math.PI / 4, true); // across
 
         //apGoTo(new double[] {-68, -9, 0}, -Math.PI / 4, true); // depot

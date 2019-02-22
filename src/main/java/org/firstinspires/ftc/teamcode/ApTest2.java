@@ -68,7 +68,7 @@ public class ApTest2 extends LinearOpMode {
         waitForStart();
 
 
-        /*while (opModeIsActive()) {
+        while (opModeIsActive()) {
             telemetry.addData("MF", res);
 
             ap.communicate(qpTracker);
@@ -76,12 +76,12 @@ public class ApTest2 extends LinearOpMode {
             ap.telemetryUpdate();
             telemetry.update();
             AutopilotSystem.visualizerBroadcastRoutine(ap);
-        }*/
+        }
 
         //mineralFind.detectStop();
 
 
-
+/*
 
         apGoTo(new double[] {0, 6, 0}, 0, true);
         //apGoTo(new double[] {0, 23.5, 0}, Math.PI / 4, true); // C
