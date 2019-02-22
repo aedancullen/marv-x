@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.evolutionftc.autopilot.AutopilotHost;
+import com.evolutionftc.autopilot.AutopilotSegment;
+import com.evolutionftc.autopilot.AutopilotSystem;
 import com.evolutionftc.autopilot.AutopilotTracker;
 import com.evolutionftc.autopilot.AutopilotTrackerQP37i;
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -86,11 +88,49 @@ public class MarvXAutoNear extends LinearOpMode {
         marv.expandoVertR.setTargetPosition(marv.expandoVertR.getCurrentPosition() + MarvConstantsV2.EXPANDO_VERT_2IN);
 
 
-        while (opModeIsActive()) {
-            telemetry.addData("l", marv.expandoVertL.getCurrentPosition());
-            telemetry.addData("r", marv.expandoVertR.getCurrentPosition());
+        timeStart = System.currentTimeMillis();
+        while (System.currentTimeMillis() - timeStart < 2000 && opModeIsActive()) {sleep(1);}
+
+        quadPacer.setRobotPosition(new double[] {0, 0, 0});
+
+        apGoTo(new double[] {-2.5, 0, 0}, 0, false);
+
+        while (opModeIsActive()) {sleep(1);}
+
+        //marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+        //marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+
+    }
+
+
+    public void apGoTo(double[] pos, double hdg, boolean useOrientation) {
+        AutopilotSegment seg = new AutopilotSegment();
+        seg.id = "goToSeg";
+        seg.success = "n/a";
+        seg.fail = "n/a";
+        seg.navigationTarget = pos;
+        seg.orientationTarget = hdg;
+        seg.navigationGain = 0.035; // something
+        seg.orientationGain = 1.75; // something
+        seg.navigationMax = 0.35;
+        seg.navigationMin = 0.25;
+        seg.orientationMax = 0.25;
+        seg.useOrientation = useOrientation;
+
+        autopilot.setNavigationTarget(seg);
+        autopilot.setNavigationStatus(AutopilotHost.NavigationStatus.RUNNING);
+
+        while (autopilot.getNavigationStatus() == AutopilotHost.NavigationStatus.RUNNING && opModeIsActive()) {
+            autopilot.communicate(quadPacer);
+
+            autopilot.telemetryUpdate();
             telemetry.update();
+            AutopilotSystem.visualizerBroadcastRoutine(autopilot);
+
+            double[] yxh = autopilot.navigationTick();
+            marv.drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
         }
+        marv.drive(0, 0, 0, 0);
     }
 
 }
