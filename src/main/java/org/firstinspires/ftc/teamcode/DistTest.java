@@ -27,7 +27,8 @@ public class DistTest extends OpMode {
         telemetry.addData("dist inches", dist.getDistance(DistanceUnit.INCH));
         //marv.horizLiftL.setPosition(gamepad2.right_trigger);
         //marv.horizLiftR.setPosition(gamepad2.right_trigger);
-        marv.vertSwing.setPosition(gamepad2.right_trigger / 4.0 + 0.497);
+        //marv.vertSwing.setPosition(gamepad2.right_trigger / 4.0 + 0.497);
+        marv.tmd.setPosition(gamepad2.right_trigger);
         telemetry.addData("trig", gamepad2.right_trigger);
         telemetry.addData("expando", marv.expandoHorizL.getCurrentPosition());
         telemetry.update();

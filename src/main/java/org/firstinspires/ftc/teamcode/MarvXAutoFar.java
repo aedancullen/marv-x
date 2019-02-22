@@ -13,8 +13,8 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="AutoNear")
-public class MarvXAutoNear extends LinearOpMode {
+@Autonomous(name="AutoFar")
+public class MarvXAutoFar extends LinearOpMode {
 
     MarvXCommonV2 marv;
     MineralFind mineralFind;
@@ -121,26 +121,29 @@ public class MarvXAutoNear extends LinearOpMode {
         //marv.expandoVertL.setPower(0);
         //marv.expandoVertR.setPower(0);
 
-        apGoTo(new double[] {0, 6, 0}, 0, true);
+        apGoTo(new double[] {0, 12, 0}, -Math.PI / 2, true);
 
         if (res == 1) {
-            apGoTo(new double[]{0, 23, 0}, -Math.PI / 4, true); // C
+            apGoTo(new double[]{0, 32, 0}, -Math.PI / 2, true); // C
         }
         else if (res == 2) {
-            apGoTo(new double[]{16, 23, 0}, -Math.PI / 4, true); // R
+            apGoTo(new double[]{16-3, 32, 0}, -Math.PI / 2, true); // R
         }
         else if (res == 0 || res == -1) {
-            apGoTo(new double[] {-16, 23, 0}, -Math.PI / 4, true); // L
+            apGoTo(new double[] {-16-3, 32, 0}, -Math.PI / 2, true); // L
         }
 
         marv.expandoVertL.setPower(0);
         marv.expandoVertR.setPower(0);
 
-        if (res != 0 && res != -1) {
-            apGoTo(new double[]{7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
-            apGoTo(new double[]{-46.5, 15, 0}, -Math.PI / 2, true); // across not on L
+        apGoTo(new double[] {0, 54, 0}, -Math.PI / 2, true); // depot
+
+        marv.tmd.setPosition(MarvConstantsV2.TMD_OUT);
+
+        /*if (res == 1) {
+            apGoTo(new double[]{0, 6, 0}, -Math.PI / 2, true); // clear not on L
         }
-        apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
+        /*apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
 
         apGoTo(new double[] {-70.5, -9, 0}, -Math.PI / 4, true); // depot
 
@@ -155,7 +158,7 @@ public class MarvXAutoNear extends LinearOpMode {
         apGoTo(new double[] {-69, -9, 0}, -Math.PI / 4, true); // back
         apGoTo(new double[] {-35, 33, 0}, -Math.PI / 4, true); // crater
 
-        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
+        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);*/
     }
 
 

@@ -48,7 +48,7 @@ public class MineralFind {
     private static final String VUFORIA_KEY = "Ac0A5xL/////AAABmbaZRuKrykmMhgpBAfm4wxkWMeMkHp/ij0Bv8cnqyigZaQN4qUU9wK+CmT4WDTRnZef/AEyluCOS1Z8a5pwiHeJpjLNqVcQoQsXBJT06NyKXZ2v2BDMqURXAnLCl82w+vIY3u4W/XdtFBt2m0/5OQNLFZRaIz3LJZaXGYz4hSRFAyMj0yVonukAXvjQljMxjd1YNUhpXk8V3qJaXS49Ep69t0AypLu+hE2AdHg1e15q29AifPAANhWM0PpWEACCVn7RWe19wyNi6N8Ab0c77kudZoGWmQF4hZVGRKK3ZrVz7kz1wyk3tfzHUsteJm7hbw8kagADt2ZKBDkO4+0i0HtB2hXcrKUp/w23nNTtY4SJ0";
 
     private VuforiaLocalizer vuforia;
-    private TFObjectDetector tfod;
+    public TFObjectDetector tfod;
 
     HardwareMap hardwareMap;
 
@@ -101,7 +101,7 @@ public class MineralFind {
     public void detectInit() {
         initVuforia();
         initTfod();
-        tfod.activate();
+        //tfod.activate();
     }
 
     public int detectLoop() {
