@@ -89,16 +89,30 @@ public class MarvXAutoNear extends LinearOpMode {
 
 
         timeStart = System.currentTimeMillis();
-        while (System.currentTimeMillis() - timeStart < 2000 && opModeIsActive()) {sleep(1);}
+        while (System.currentTimeMillis() - timeStart < 1000 && opModeIsActive()) {sleep(1);}
 
         quadPacer.setRobotPosition(new double[] {0, 0, 0});
 
         apGoTo(new double[] {-2.5, 0, 0}, 0, false);
 
-        while (opModeIsActive()) {sleep(1);}
+        //while (opModeIsActive()) {sleep(1);}
 
-        //marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
-        //marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+        marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+        marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
+
+        apGoTo(new double[] {0, 6, 0}, 0, true);
+        apGoTo(new double[] {0, 23.5, 0}, -Math.PI / 4, true); // C
+        //apGoTo(new double[] {16, 23.5, 0}, -Math.PI / 4, true); // R
+        //apGoTo(new double[] {-16, 23.5, 0}, -Math.PI / 4, true); // L
+
+        marv.expandoVertL.setPower(0);
+        marv.expandoVertR.setPower(0);
+
+        apGoTo(new double[] {7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
+        apGoTo(new double[] {-43, 15, 0}, -Math.PI / 2, true); // across not on L
+        apGoTo(new double[] {-43, 15, 0}, -Math.PI / 4, true); // across
+
+        //apGoTo(new double[] {-68, -9, 0}, -Math.PI / 4, true); // depot
 
     }
 
