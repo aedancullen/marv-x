@@ -217,6 +217,12 @@ public class MarvXCommonV2 {
         double horizLiftLPosition = horizLiftL.getPosition();
 
 
+        if (!(expandoVertL.isBusy() && expandoVertR.isBusy())) {
+            expandoVertL.setPower(0);
+            expandoVertR.setPower(0);
+        }
+
+
         if (automationState == AutomationState.CLEAR_READY) {
             if ((horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL && lastHorizLiftLPosition == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) || fstart) {
 
@@ -251,7 +257,7 @@ public class MarvXCommonV2 {
                     backTarget = BackTarget.LEFT;
                     dropTarget = DropTarget.FARTHER;
                     swingTarget = SwingTarget.LEFT;
-                    liftTarget = liftTarget.FARTHER;
+                    liftTarget = LiftTarget.FARTHER;
                 }
 
             }
