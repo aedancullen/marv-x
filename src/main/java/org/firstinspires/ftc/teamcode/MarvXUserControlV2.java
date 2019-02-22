@@ -56,7 +56,7 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-        if ((gamepad2.x || gamepad2.y) && !liftmode) {
+        if ((gamepad1.x || gamepad1.y) && !liftmode) {
             liftmode = true;
             marv.expandoVertL.setPower(0);
             marv.expandoVertR.setPower(0);
@@ -75,14 +75,14 @@ public class MarvXUserControlV2 extends OpMode {
 
 
         if (!liftmode) {
-            if (!gamepad1.back) {marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);}
+            if (true) {marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);}
         }
         else {
-            if (gamepad2.y && marv.expandoVertL.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE && marv.expandoVertR.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE) {
+            if (gamepad1.y && marv.expandoVertL.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE && marv.expandoVertR.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE) {
                 marv.expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TOSAFE_SPEED);
                 marv.expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TOSAFE_SPEED);
             }
-            else if (gamepad2.x && marv.expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN && marv.expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN) {
+            else if (gamepad1.a && marv.expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN && marv.expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN) {
                 marv.expandoVertL.setPower(-MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
                 marv.expandoVertR.setPower(-MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
             }
