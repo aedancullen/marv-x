@@ -52,7 +52,7 @@ public class MarvXCommonV2 {
 
     public enum BackTarget {RIGHT, LEFT}
     public enum DropTarget {FARTHER, LESSER, NEUTRAL}
-    public enum SwingTarget {CENTER, LEFT, RIGHT}
+    public enum SwingTarget {CENTER, LEFT, RIGHT, LEFTMORE, RIGHTMORE}
     public enum LiftTarget {FARTHER, LESSER}
     public enum AutomationState {CLEAR_READY, CLEARING, RELEASE_READY, RELEASING};
 
@@ -235,9 +235,8 @@ public class MarvXCommonV2 {
                 }
                 else if (lWarmScore > 1.5 && rWarmScore > 1.5) {
                     backTarget = BackTarget.LEFT;
-                    //dropTarget = DropTarget.LESSER; // CHANGED FOR SWING
-                    dropTarget = DropTarget.NEUTRAL;
-                    swingTarget = SwingTarget.LEFT;
+                    dropTarget = DropTarget.LESSER;
+                    swingTarget = SwingTarget.LEFTMORE;
                     liftTarget = LiftTarget.FARTHER;
                 }
                 else if (lWarmScore > 1.5 && rWarmScore < 1.5){
@@ -285,6 +284,12 @@ public class MarvXCommonV2 {
                 }
                 else if (swingTarget == SwingTarget.RIGHT) {
                     vertSwing.setPosition(MarvConstantsV2.VERT_SWING_RIGHT);
+                }
+                else if (swingTarget == SwingTarget.LEFTMORE) {
+                    vertSwing.setPosition(MarvConstantsV2.VERT_SWING_LEFTMORE);
+                }
+                else if (swingTarget == SwingTarget.RIGHTMORE) {
+                    vertSwing.setPosition(MarvConstantsV2.VERT_SWING_RIGHTMORE);
                 }
             }
 

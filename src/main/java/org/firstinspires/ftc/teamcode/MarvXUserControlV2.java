@@ -18,7 +18,7 @@ public class MarvXUserControlV2 extends OpMode {
     MarvXCommonV2 marv;
 
     boolean liftmode = false;
-    boolean horizLiftIsDisable = false;
+    boolean horizLiftIsDisable = true;
 
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
@@ -94,7 +94,7 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-        if ((gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) && Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01) {
+        if (gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) {
             marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
             marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
             //marv.horizLiftL.getController().pwmDisable();
@@ -126,7 +126,7 @@ public class MarvXUserControlV2 extends OpMode {
                     dumpTimer = System.currentTimeMillis();
                 }
                 else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
-                    if (System.currentTimeMillis() - dumpTimer > 250) {
+                    if (System.currentTimeMillis() - dumpTimer > 650) {
                         marv.horizSpinL.setPower(-0.45);
                         marv.horizSpinR.setPower(-0.45);
                     }
