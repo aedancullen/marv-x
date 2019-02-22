@@ -4,7 +4,7 @@ public class MarvConstantsV2 {
 
     public static int QUADPACER_TPU = 150;
 
-    public static int AP_COUNTS_TO_STABLE = 8;
+    public static int AP_COUNTS_TO_STABLE = 3;
     public static double AP_NAV_UNITS_TO_STABLE = 0.7;
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.02;
 
