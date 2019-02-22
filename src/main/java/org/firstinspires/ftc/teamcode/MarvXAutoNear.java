@@ -60,6 +60,11 @@ public class MarvXAutoNear extends LinearOpMode {
         marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
         marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
 
+        marv.vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
+        marv.vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
+        marv.vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
+        marv.vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_NEUTRAL);
+
         marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         marv.expandoVertL.setPower(1);
@@ -68,7 +73,7 @@ public class MarvXAutoNear extends LinearOpMode {
         marv.vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_OPEN);
 
         long timeStart = System.currentTimeMillis();
-        while (System.currentTimeMillis() - timeStart < 750 && opModeIsActive()) {sleep(1);}
+        while (System.currentTimeMillis() - timeStart < 1000 && opModeIsActive()) {sleep(1);}
 
         marv.expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_SAFE);
         marv.expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_SAFE);
