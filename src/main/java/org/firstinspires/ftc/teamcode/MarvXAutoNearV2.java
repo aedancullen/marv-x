@@ -53,6 +53,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
 
         waitForStart();
 
+
         //while (opModeIsActive()) {sleep(1);}
 
         marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
@@ -108,14 +109,12 @@ public class MarvXAutoNearV2 extends LinearOpMode {
 
         apGoTo(new double[] {0, 6, 0}, 0, true);
 
-        apGoTo(new double[] {0, 12, 0}, -Math.PI / 2, true); // Camera
-
-        mineralFind.tfod.activate();
+        apGoTo(new double[] {0, 6, 0}, -Math.PI / 2, true); // Camera
 
         long detectStartTime = System.currentTimeMillis();
 
         while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000) {
-            int detect = mineralFind.detectLoop();
+            int detect = mineralFind.detectLoopInternal();
             if (detect != -1) {
                 res = detect;
             }
@@ -126,6 +125,9 @@ public class MarvXAutoNearV2 extends LinearOpMode {
                 return;
             }
         }
+
+        marv.expandoVertL.setPower(0);
+        marv.expandoVertR.setPower(0);
 
         mineralFind.detectStopInternal();
 
@@ -138,9 +140,6 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         else if (res == 0 || res == -1) {
             apGoTo(new double[] {-16, 23, 0}, -Math.PI / 4, true); // L
         }
-
-        marv.expandoVertL.setPower(0);
-        marv.expandoVertR.setPower(0);
 
         if (res != 0 && res != -1) {
             apGoTo(new double[]{7.5, 15, 0}, -Math.PI / 2, true); // clear not on L

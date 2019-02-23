@@ -107,6 +107,7 @@ public class MineralFind {
     public void detectInitInternal() {
         initVuforiaInternal();
         initTfod();
+        tfod.activate();
     }
 
     public int detectLoop() {
@@ -138,6 +139,34 @@ public class MineralFind {
             }
         }
         return -1;
+    }
+
+    public int detectLoopInternal() {
+        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        if (updatedRecognitions == null) {
+            return -1;
+        }
+        List<Recognition> golds = getAllGolds(updatedRecognitions);
+        double highest = 999;
+        Recognition highestRec = null;
+        for (Recognition rec : golds) {
+            if (rec.getTop() < highest) {
+                highest = rec.getTop();
+                highestRec = rec;
+            }
+        }
+        if (highestRec == null) {
+            return -1;
+        }
+        else if (highestRec.getRight() + highestRec.getLeft() / 2.0 > 2 * highestRec.getImageWidth() / 3.0) {
+            return 0;
+        }
+        else if (highestRec.getRight() + highestRec.getLeft() / 2.0 < 1 * highestRec.getImageWidth() / 3.0) {
+            return 2;
+        }
+        else {
+            return 1;
+        }
     }
 
     public void detectStop() {
