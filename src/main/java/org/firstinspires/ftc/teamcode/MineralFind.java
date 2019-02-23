@@ -147,10 +147,10 @@ public class MineralFind {
             return -1;
         }
         List<Recognition> golds = getAllGolds(updatedRecognitions);
-        double highest = 999;
+        double highest = 0;
         Recognition highestRec = null;
         for (Recognition rec : golds) {
-            if (rec.getTop() < highest) {
+            if (rec.getTop() > highest) {
                 highest = rec.getTop();
                 highestRec = rec;
             }
@@ -158,10 +158,10 @@ public class MineralFind {
         if (highestRec == null) {
             return -1;
         }
-        else if (highestRec.getRight() + highestRec.getLeft() / 2.0 > 2 * highestRec.getImageWidth() / 3.0) {
+        else if (highestRec.getRight() + highestRec.getLeft() / 2.0 < 2000 / 3.0) {
             return 0;
         }
-        else if (highestRec.getRight() + highestRec.getLeft() / 2.0 < 1 * highestRec.getImageWidth() / 3.0) {
+        else if (highestRec.getRight() + highestRec.getLeft() / 2.0 > 2 * 2000 / 3.0) {
             return 2;
         }
         else {
