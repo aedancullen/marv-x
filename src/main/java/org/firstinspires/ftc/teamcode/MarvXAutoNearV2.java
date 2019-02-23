@@ -50,9 +50,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         int res = -1;
 
         mineralFind.detectInitInternal();
-
         waitForStart();
-
 
         //while (opModeIsActive()) {sleep(1);}
 
@@ -107,11 +105,12 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         //marv.expandoVertL.setPower(0);
         //marv.expandoVertR.setPower(0);
 
-        apGoTo(new double[] {0, 6, 0}, 0, true);
+        apGoTo(new double[] {0, 8, 0}, 0, true);
 
-        apGoTo(new double[] {0, 6, 0}, -Math.PI / 2, true); // Camera
+        apGoTo(new double[] {0, 8, 0}, -Math.PI / 2, true, false); // Camera
 
         long detectStartTime = System.currentTimeMillis();
+        mineralFind.tfod.activate();
 
         while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000) {
             int detect = mineralFind.detectLoopInternal();
@@ -132,18 +131,18 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         mineralFind.detectStopInternal();
 
         if (res == 1) {
-            apGoTo(new double[]{0, 23, 0}, -Math.PI / 4, true); // C
+            apGoTo(new double[]{0, 22, 0}, -Math.PI / 4, true); // C
         }
         else if (res == 2) {
-            apGoTo(new double[]{16, 23, 0}, -Math.PI / 4, true); // R
+            apGoTo(new double[]{16, 22, 0}, -Math.PI / 4, true); // R
         }
         else if (res == 0 || res == -1) {
-            apGoTo(new double[] {-16, 23, 0}, -Math.PI / 4, true); // L
+            apGoTo(new double[] {-16, 22, 0}, -Math.PI / 4, true); // L
         }
 
         if (res != 0 && res != -1) {
             apGoTo(new double[]{7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
-            apGoTo(new double[]{-46.5, 15, 0}, -Math.PI / 2, true); // across not on L
+            apGoTo(new double[]{-40.5, 15, 0}, -Math.PI / 2, true); // across not on L
         }
         apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
 
@@ -157,14 +156,17 @@ public class MarvXAutoNearV2 extends LinearOpMode {
 
         sleep(500);
 
-        apGoTo(new double[] {-69, -9, 0}, -Math.PI / 4, true); // back
+        apGoTo(new double[] {-70.5, -9, 0}, -Math.PI / 4, true); // back
         apGoTo(new double[] {-33, 33, 0}, -Math.PI / 4, true); // crater
 
         marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
     }
 
-
     public void apGoTo(double[] pos, double hdg, boolean useOrientation) {
+        apGoTo(pos, hdg, useOrientation, true);
+    }
+
+    public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation) {
         AutopilotSegment seg = new AutopilotSegment();
         seg.id = "goToSeg";
         seg.success = "n/a";
@@ -175,8 +177,9 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         seg.orientationGain = 2; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
-        seg.orientationMax = 0.25;
+        seg.orientationMax = 0.30;
         seg.useOrientation = useOrientation;
+        seg.useTranslation = useTranslation;
 
         autopilot.setNavigationTarget(seg);
         autopilot.setNavigationStatus(AutopilotHost.NavigationStatus.RUNNING);

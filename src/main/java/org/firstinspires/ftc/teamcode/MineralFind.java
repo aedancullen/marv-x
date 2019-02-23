@@ -101,13 +101,11 @@ public class MineralFind {
     public void detectInit() {
         initVuforia();
         initTfod();
-        //tfod.activate();
     }
 
     public void detectInitInternal() {
         initVuforiaInternal();
         initTfod();
-        tfod.activate();
     }
 
     public int detectLoop() {

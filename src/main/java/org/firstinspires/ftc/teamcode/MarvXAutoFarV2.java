@@ -50,9 +50,7 @@ public class MarvXAutoFarV2 extends LinearOpMode {
         int res = -1;
 
         mineralFind.detectInitInternal();
-
         waitForStart();
-
 
         //while (opModeIsActive()) {sleep(1);}
 
@@ -107,11 +105,12 @@ public class MarvXAutoFarV2 extends LinearOpMode {
         //marv.expandoVertL.setPower(0);
         //marv.expandoVertR.setPower(0);
 
-        apGoTo(new double[] {0, 6, 0}, 0, true);
+        apGoTo(new double[] {0, 8, 0}, 0, true);
 
-        apGoTo(new double[] {0, 6, 0}, -Math.PI / 2, true); // Camera
+        apGoTo(new double[] {0, 8, 0}, -Math.PI / 2, true, false); // Camera
 
         long detectStartTime = System.currentTimeMillis();
+        mineralFind.tfod.activate();
 
         while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000) {
             int detect = mineralFind.detectLoopInternal();
@@ -167,8 +166,11 @@ public class MarvXAutoFarV2 extends LinearOpMode {
         marv.tmd.setPosition(MarvConstantsV2.TMD_IN);*/
     }
 
-
     public void apGoTo(double[] pos, double hdg, boolean useOrientation) {
+        apGoTo(pos, hdg, useOrientation, true);
+    }
+
+    public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation) {
         AutopilotSegment seg = new AutopilotSegment();
         seg.id = "goToSeg";
         seg.success = "n/a";
@@ -179,8 +181,9 @@ public class MarvXAutoFarV2 extends LinearOpMode {
         seg.orientationGain = 2; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
-        seg.orientationMax = 0.25;
+        seg.orientationMax = 0.30;
         seg.useOrientation = useOrientation;
+        seg.useTranslation = useTranslation;
 
         autopilot.setNavigationTarget(seg);
         autopilot.setNavigationStatus(AutopilotHost.NavigationStatus.RUNNING);
