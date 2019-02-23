@@ -9,7 +9,7 @@ public class MarvConstantsV2 {
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
 
     public static int EXPANDO_HORIZ_UP = 1900;
-    public static int EXPANDO_HORIZ_SAFE = 270; // 340, 250
+    public static int EXPANDO_HORIZ_SAFE = 290; // 340, 250
 
     public static double TMD_IN = 0.05;
     public static double TMD_OUT = 0.6;

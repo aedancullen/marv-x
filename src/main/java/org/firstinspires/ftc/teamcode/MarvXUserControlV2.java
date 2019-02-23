@@ -22,14 +22,17 @@ public class MarvXUserControlV2 extends OpMode {
 
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
-        //marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
-        //marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+        marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+        marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
 
         marv.vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_OPEN);
+        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
         //marv.vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
     }
 
     long dumpTimer;
+    long waitTimer;
+    long upTimer;
 
     public void loop() {
 
@@ -56,7 +59,7 @@ public class MarvXUserControlV2 extends OpMode {
 
 
 
-        if ((gamepad1.x || gamepad1.y || gamepad2.x || gamepad2.y) && !liftmode) {
+        if ((gamepad1.x || gamepad1.y || gamepad2.left_stick_button|| gamepad2.right_stick_button) && !liftmode) {
             liftmode = true;
             marv.expandoVertL.setPower(0);
             marv.expandoVertR.setPower(0);
@@ -78,11 +81,11 @@ public class MarvXUserControlV2 extends OpMode {
             if (true) {marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);}
         }
         else {
-            if ((gamepad1.y || gamepad2.y) && marv.expandoVertL.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE && marv.expandoVertR.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE) {
+            if ((gamepad1.y || gamepad2.right_stick_button) && marv.expandoVertL.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE && marv.expandoVertR.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE) {
                 marv.expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TOSAFE_SPEED);
                 marv.expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TOSAFE_SPEED);
             }
-            else if ((gamepad1.x || gamepad2.x) && marv.expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN && marv.expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN) {
+            else if ((gamepad1.x || gamepad2.left_stick_button) && marv.expandoVertL.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN && marv.expandoVertR.getCurrentPosition() > MarvConstantsV2.EXPANDO_VERT_DOWN) {
                 marv.expandoVertL.setPower(-MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
                 marv.expandoVertR.setPower(-MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
             }
@@ -124,17 +127,31 @@ public class MarvXUserControlV2 extends OpMode {
                     marv.horizSpinL.setPower(0.75);
                     marv.horizSpinR.setPower(0.75);
                     dumpTimer = System.currentTimeMillis();
+                    waitTimer = dumpTimer;
+                    upTimer = dumpTimer;
                 }
                 else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
-                    if (System.currentTimeMillis() - dumpTimer > 650) {
+                    if (System.currentTimeMillis() - waitTimer < 500) {
+                        dumpTimer = System.currentTimeMillis();
+                    }
+                    if (System.currentTimeMillis() - dumpTimer > 100) { //650
                         marv.horizSpinL.setPower(-0.45);
                         marv.horizSpinR.setPower(-0.45);
                     }
                 }
-                else {
+                else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
                     marv.horizSpinL.setPower(0.15);
                     marv.horizSpinR.setPower(0.15);
                     dumpTimer = System.currentTimeMillis();
+                    if (System.currentTimeMillis() - upTimer < 250) {
+                        waitTimer = dumpTimer;
+                    }
+                }
+                else { // NEUTRAL
+                    marv.horizSpinL.setPower(0.15);
+                    marv.horizSpinR.setPower(0.15);
+                    dumpTimer = System.currentTimeMillis();
+                    waitTimer = dumpTimer;
                 }
             }
             else {
