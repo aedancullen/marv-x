@@ -18,7 +18,7 @@ public class MarvXUserControlV2 extends OpMode {
     MarvXCommonV2 marv;
 
     boolean liftmode = false;
-    boolean horizLiftIsDisable = true;
+    boolean horizLiftIsDisable = false;
 
     public void init() {
         marv = new MarvXCommonV2(hardwareMap, true);
@@ -78,7 +78,7 @@ public class MarvXUserControlV2 extends OpMode {
 
 
         if (!liftmode) {
-            if (true) {marv.runAutomation(gamepad2.a, gamepad2.left_stick_button && gamepad2.right_stick_button);}
+            if (true) {marv.runAutomation(gamepad2.a, gamepad2.y);}
         }
         else {
             if ((gamepad1.y || gamepad2.right_stick_button) && marv.expandoVertL.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE && marv.expandoVertR.getCurrentPosition() < MarvConstantsV2.EXPANDO_VERT_SAFE) {
@@ -134,7 +134,7 @@ public class MarvXUserControlV2 extends OpMode {
                     if (System.currentTimeMillis() - waitTimer < 500) {
                         dumpTimer = System.currentTimeMillis();
                     }
-                    if (System.currentTimeMillis() - dumpTimer > 100) { //650
+                    if (System.currentTimeMillis() - dumpTimer > 200) { //650
                         marv.horizSpinL.setPower(-0.45);
                         marv.horizSpinR.setPower(-0.45);
                     }
@@ -143,7 +143,7 @@ public class MarvXUserControlV2 extends OpMode {
                     marv.horizSpinL.setPower(0.15);
                     marv.horizSpinR.setPower(0.15);
                     dumpTimer = System.currentTimeMillis();
-                    if (System.currentTimeMillis() - upTimer < 250) {
+                    if (System.currentTimeMillis() - upTimer < 500) {
                         waitTimer = dumpTimer;
                     }
                 }

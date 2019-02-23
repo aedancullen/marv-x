@@ -220,8 +220,10 @@ public class MarvXCommonV2 {
         double horizLiftLPosition = horizLiftL.getPosition();
 
 
-        if (!(expandoVertL.isBusy() && expandoVertR.isBusy())) {
+        if (!expandoVertL.isBusy()) {
             expandoVertL.setPower(0);
+        }
+        if (!expandoVertR.isBusy()) {
             expandoVertR.setPower(0);
         }
 

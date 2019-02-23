@@ -104,6 +104,11 @@ public class MineralFind {
         //tfod.activate();
     }
 
+    public void detectInitInternal() {
+        initVuforiaInternal();
+        initTfod();
+    }
+
     public int detectLoop() {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
@@ -140,6 +145,10 @@ public class MineralFind {
         vuforia.getCamera().close();
     }
 
+    public void detectStopInternal() {
+        tfod.shutdown();
+    }
+
     private void initVuforia() {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
@@ -147,6 +156,21 @@ public class MineralFind {
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+    }
+
+    private void initVuforiaInternal() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Loading trackables is not necessary for the Tensor Flow Object Detection engine.
     }
 
     private void initTfod() {
