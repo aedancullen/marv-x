@@ -92,7 +92,7 @@ public class MarvXCommonV2 {
         expandoHorizL = hardwareMap.dcMotor.get("expandoHoriz");
         expandoHorizL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoHorizL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //if (!maintainExpandoHoriz) {expandoHorizL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+        if (!maintainExpandoHoriz) {expandoHorizL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         expandoHorizL.setPower(0);
 
@@ -104,14 +104,14 @@ public class MarvXCommonV2 {
         expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+        if (!maintainExpandoHoriz) {expandoVertL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         //if (!maintainExpandoHoriz) {expandoVertL.setPower(1);}
 
         expandoVertR = hardwareMap.dcMotor.get("expandoVertR");
         expandoVertR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
+        if (!maintainExpandoHoriz) {expandoVertR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoVertR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
         //if (!maintainExpandoHoriz) {expandoVertR.setPower(1);}

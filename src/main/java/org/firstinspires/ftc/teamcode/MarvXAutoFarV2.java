@@ -13,8 +13,8 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="AutoNear")
-public class MarvXAutoNear extends LinearOpMode {
+//@Autonomous(name="AutoFar V2")
+public class MarvXAutoFarV2 extends LinearOpMode {
 
     MarvXCommonV2 marv;
     MineralFind mineralFind;
@@ -34,7 +34,7 @@ public class MarvXAutoNear extends LinearOpMode {
         marv.imu.initialize(parameters);
 
         autopilot = new AutopilotHost(telemetry);
-        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], MarvConstantsV2.QUADPACER_TPU, marv.imu, 1);
+        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV2.QUADPACER_POS, MarvConstantsV2.QUADPACER_TPU, marv.imu, 1);
         ((AutopilotTrackerQP37i)quadPacer).setInverts(false, true);
         autopilot.setCountsToStable(MarvConstantsV2.AP_COUNTS_TO_STABLE);
         autopilot.setNavigationUnitsToStable(MarvConstantsV2.AP_NAV_UNITS_TO_STABLE);
@@ -49,24 +49,10 @@ public class MarvXAutoNear extends LinearOpMode {
 
         int res = -1;
 
-        mineralFind.detectInit();
-        sleep(1000);
-        mineralFind.tfod.activate();
-        sleep(1000);
-        while (!opModeIsActive()) {
-            int detect = mineralFind.detectLoop();
-            if (detect != -1) {
-                res = detect;
-            }
-            telemetry.addData("Mineral", res);
-            telemetry.update();
-            if (isStopRequested()) {
-                mineralFind.detectStop();
-                return;
-            }
-        }
+        mineralFind.detectInitInternal();
+
         waitForStart();
-        mineralFind.detectStop();
+
 
         //while (opModeIsActive()) {sleep(1);}
 
@@ -123,24 +109,47 @@ public class MarvXAutoNear extends LinearOpMode {
 
         apGoTo(new double[] {0, 6, 0}, 0, true);
 
-        if (res == 1) {
-            apGoTo(new double[]{0, 23, 0}, -Math.PI / 4, true); // C
-        }
-        else if (res == 2) {
-            apGoTo(new double[]{16, 23, 0}, -Math.PI / 4, true); // R
-        }
-        else if (res == 0 || res == -1) {
-            apGoTo(new double[] {-16, 23, 0}, -Math.PI / 4, true); // L
+        apGoTo(new double[] {0, 6, 0}, -Math.PI / 2, true); // Camera
+
+        long detectStartTime = System.currentTimeMillis();
+
+        while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000) {
+            int detect = mineralFind.detectLoopInternal();
+            if (detect != -1) {
+                res = detect;
+            }
+            telemetry.addData("Mineral", res);
+            telemetry.update();
+            if (isStopRequested()) {
+                mineralFind.detectStopInternal();
+                return;
+            }
         }
 
         marv.expandoVertL.setPower(0);
         marv.expandoVertR.setPower(0);
 
-        if (res != 0 && res != -1) {
-            apGoTo(new double[]{7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
-            apGoTo(new double[]{-46.5, 15, 0}, -Math.PI / 2, true); // across not on L
+        mineralFind.detectStopInternal();
+
+        if (res == 1) {
+            apGoTo(new double[]{0, 32, 0}, -Math.PI / 2, true); // C
         }
-        apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
+        else if (res == 2) {
+            apGoTo(new double[]{16, 32, 0}, -Math.PI / 2, true); // R
+        }
+        else if (res == 0 || res == -1) {
+            apGoTo(new double[] {-16, 32, 0}, -Math.PI / 2, true); // L
+        }
+
+
+        apGoTo(new double[] {0, 54, 0}, -Math.PI / 2, true); // depot
+
+        marv.tmd.setPosition(MarvConstantsV2.TMD_OUT);
+
+        /*if (res == 1) {
+            apGoTo(new double[]{0, 6, 0}, -Math.PI / 2, true); // clear not on L
+        }
+        /*apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
 
         apGoTo(new double[] {-70.5, -9, 0}, -Math.PI / 4, true); // depot
 
@@ -153,9 +162,9 @@ public class MarvXAutoNear extends LinearOpMode {
         sleep(500);
 
         apGoTo(new double[] {-69, -9, 0}, -Math.PI / 4, true); // back
-        apGoTo(new double[] {-33, 33, 0}, -Math.PI / 4, true); // crater
+        apGoTo(new double[] {-35, 33, 0}, -Math.PI / 4, true); // crater
 
-        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
+        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);*/
     }
 
 

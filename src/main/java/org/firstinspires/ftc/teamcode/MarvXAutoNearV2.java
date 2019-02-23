@@ -158,7 +158,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         sleep(500);
 
         apGoTo(new double[] {-69, -9, 0}, -Math.PI / 4, true); // back
-        apGoTo(new double[] {-35, 33, 0}, -Math.PI / 4, true); // crater
+        apGoTo(new double[] {-33, 33, 0}, -Math.PI / 4, true); // crater
 
         marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
     }
