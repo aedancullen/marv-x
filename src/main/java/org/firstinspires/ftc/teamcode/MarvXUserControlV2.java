@@ -26,13 +26,17 @@ public class MarvXUserControlV2 extends OpMode {
         marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
 
         marv.vertLatch.setPosition(MarvConstantsV2.VERT_LATCH_OPEN);
-        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
+        marv.tmd.setPosition(MarvConstantsV2.TMD_OUT);
         //marv.vertSwing.setPosition(MarvConstantsV2.VERT_SWING_CENTER);
     }
 
     long dumpTimer;
     long waitTimer;
     long upTimer;
+
+    public void start() {
+        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
+    }
 
     public void loop() {
 
