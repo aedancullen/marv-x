@@ -6,7 +6,7 @@ public class MarvConstantsV2 {
 
     public static double[] QUADPACER_POS = new double[] {0, -1.6, 0};
 
-    public static int AP_COUNTS_TO_STABLE = 3;
+    public static int AP_COUNTS_TO_STABLE = 5;
     public static double AP_NAV_UNITS_TO_STABLE = 0.7;
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
 

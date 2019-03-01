@@ -215,8 +215,11 @@ public class MarvXCommonV2 {
         br.setPower(Math.max(Math.min(brp, 1), -1));
     }
 
-
     public void runAutomation(boolean drop, boolean fstart) {
+        runAutomation(drop, fstart, false);
+    }
+
+    public void runAutomation(boolean drop, boolean fstart, boolean swapped) {
         double horizLiftLPosition = horizLiftL.getPosition();
 
 
@@ -238,31 +241,58 @@ public class MarvXCommonV2 {
                 double lWarmScore = (float)color1.red() / color1.blue();
                 double rWarmScore = (float)color2.red() / color2.blue();
 
-                if (lWarmScore < 1.5 && rWarmScore < 1.5) {
-                    backTarget = BackTarget.LEFT;
-                    dropTarget = DropTarget.NEUTRAL;
-                    swingTarget = SwingTarget.CENTER;
-                    liftTarget = LiftTarget.LESSER;
+                if (!swapped) {
+
+                    if (lWarmScore < 1.5 && rWarmScore < 1.5) {
+                        backTarget = BackTarget.LEFT;
+                        dropTarget = DropTarget.NEUTRAL;
+                        swingTarget = SwingTarget.CENTER;
+                        liftTarget = LiftTarget.LESSER;
+                    } else if (lWarmScore > 1.5 && rWarmScore > 1.5) {
+                        backTarget = BackTarget.LEFT;
+                        dropTarget = DropTarget.LESSER;
+                        swingTarget = SwingTarget.LEFTMORE;
+                        liftTarget = LiftTarget.FARTHER;
+                    } else if (lWarmScore > 1.5 && rWarmScore < 1.5) {
+                        // Cube on left
+                        backTarget = BackTarget.RIGHT;
+                        dropTarget = DropTarget.LESSER;
+                        swingTarget = SwingTarget.LEFT;
+                        liftTarget = LiftTarget.FARTHER;
+                    } else if (lWarmScore < 1.5 && rWarmScore > 1.5) {
+                        // Cube on right
+                        backTarget = BackTarget.LEFT;
+                        dropTarget = DropTarget.FARTHER;
+                        swingTarget = SwingTarget.LEFT;
+                        liftTarget = LiftTarget.FARTHER;
+                    }
+
                 }
-                else if (lWarmScore > 1.5 && rWarmScore > 1.5) {
-                    backTarget = BackTarget.LEFT;
-                    dropTarget = DropTarget.LESSER;
-                    swingTarget = SwingTarget.LEFTMORE;
-                    liftTarget = LiftTarget.FARTHER;
-                }
-                else if (lWarmScore > 1.5 && rWarmScore < 1.5){
-                    // Cube on left
-                    backTarget = BackTarget.RIGHT;
-                    dropTarget = DropTarget.LESSER;
-                    swingTarget = SwingTarget.LEFT;
-                    liftTarget = LiftTarget.FARTHER;
-                }
-                else if (lWarmScore < 1.5 && rWarmScore > 1.5) {
-                    // Cube on right
-                    backTarget = BackTarget.LEFT;
-                    dropTarget = DropTarget.FARTHER;
-                    swingTarget = SwingTarget.LEFT;
-                    liftTarget = LiftTarget.FARTHER;
+
+                else if (swapped) {
+                    if (lWarmScore < 1.5 && rWarmScore < 1.5) { // 2 balls
+                        backTarget = BackTarget.RIGHT;
+                        dropTarget = DropTarget.LESSER;
+                        swingTarget = SwingTarget.RIGHTMORE;
+                        liftTarget = LiftTarget.FARTHER;
+                    } else if (lWarmScore > 1.5 && rWarmScore > 1.5) { // 2 cubes
+                        backTarget = BackTarget.LEFT;
+                        dropTarget = DropTarget.NEUTRAL;
+                        swingTarget = SwingTarget.CENTER;
+                        liftTarget = LiftTarget.LESSER;
+                    } else if (lWarmScore > 1.5 && rWarmScore < 1.5) { // cube left
+                        // Cube on left
+                        backTarget = BackTarget.LEFT;
+                        dropTarget = DropTarget.LESSER;
+                        swingTarget = SwingTarget.RIGHT;
+                        liftTarget = LiftTarget.FARTHER;
+                    } else if (lWarmScore < 1.5 && rWarmScore > 1.5) { // cube right
+                        // Cube on right
+                        backTarget = BackTarget.RIGHT;
+                        dropTarget = DropTarget.FARTHER;
+                        swingTarget = SwingTarget.RIGHT;
+                        liftTarget = LiftTarget.FARTHER;
+                    }
                 }
 
             }

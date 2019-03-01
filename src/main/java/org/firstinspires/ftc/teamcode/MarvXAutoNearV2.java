@@ -174,7 +174,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.035; // something
-        seg.orientationGain = 2; // something
+        seg.orientationGain = 2.35; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
         seg.orientationMax = 0.30;
