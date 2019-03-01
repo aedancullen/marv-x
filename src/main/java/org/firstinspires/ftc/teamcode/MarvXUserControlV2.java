@@ -41,6 +41,7 @@ public class MarvXUserControlV2 extends OpMode {
     public void loop() {
 
         telemetry.addData("expando", marv.expandoHorizL.getCurrentPosition());
+        telemetry.addData("expandoR", marv.expandoHorizR.getCurrentPosition());
         telemetry.update();
 
         if (gamepad1.right_bumper) {

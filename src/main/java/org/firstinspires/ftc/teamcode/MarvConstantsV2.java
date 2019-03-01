@@ -11,7 +11,7 @@ public class MarvConstantsV2 {
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
 
     public static int EXPANDO_HORIZ_UP = 1900;
-    public static int EXPANDO_HORIZ_SAFE = 270; // 340, 250
+    public static int EXPANDO_HORIZ_SAFE = 315; // 340, 250
 
     public static double TMD_IN = 0.05;
     public static double TMD_OUT = 0.6;
@@ -21,7 +21,7 @@ public class MarvConstantsV2 {
     public static double HORIZ_LIFT_UP_DUMPING = .98;
     public static double HORIZ_LIFT_DOWN = 0.14;
 
-    public static double VERT_SWING_CENTER = 0.499;
+    public static double VERT_SWING_CENTER = 0.495;
     public static double VERT_SWING_LEFT = VERT_SWING_CENTER + .24 / 4.0;
     public static double VERT_SWING_RIGHT = VERT_SWING_CENTER - .24 / 4.0;
     public static double VERT_SWING_LEFTMORE = VERT_SWING_CENTER + .38 / 4.0;
@@ -32,7 +32,7 @@ public class MarvConstantsV2 {
 
     public static double VERT_LIFT_UP = 0.865;
     public static double VERT_LIFT_DOWN = 0.115;
-    public static double VERT_LIFT_SAFE = 0.3;
+    public static double VERT_LIFT_SAFE = 0.2;
 
     public static int VERT_LIFT_TOSWING_MILLIS = 500;
 

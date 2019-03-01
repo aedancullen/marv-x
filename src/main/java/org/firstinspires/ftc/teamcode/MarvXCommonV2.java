@@ -233,6 +233,16 @@ public class MarvXCommonV2 {
 
 
         if (automationState == AutomationState.CLEAR_READY) {
+
+            if (expandoVertL.getPower() == 0.0 || expandoVertR.getPower() == 0.0) {
+                vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
+                vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
+            }
+            else {
+                vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_SAFE);
+                vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_SAFE);
+            }
+
             if ((horizLiftL.getPosition() == MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL && lastHorizLiftLPosition == MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) || fstart) {
 
                 if (distance1.getDistance(DistanceUnit.MM) < 55 || distance2.getDistance(DistanceUnit.MM) < 55 || fstart) {
