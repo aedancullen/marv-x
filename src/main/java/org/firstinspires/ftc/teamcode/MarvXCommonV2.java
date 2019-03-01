@@ -96,11 +96,12 @@ public class MarvXCommonV2 {
         expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         expandoHorizL.setPower(0);
 
-        /*expandoHorizR = hardwareMap.dcMotor.get("expandoHorizR");
+        expandoHorizR = hardwareMap.dcMotor.get("expandoHorizR");
         expandoHorizR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         if (!maintainExpandoHoriz) {expandoHorizR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoHorizR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-*/
+        expandoHorizR.setPower(0);
+
         expandoVertL = hardwareMap.dcMotor.get("expandoVertL");
         expandoVertL.setDirection(DcMotorSimple.Direction.REVERSE);
         expandoVertL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
