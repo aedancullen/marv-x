@@ -146,7 +146,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
         }
         apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
 
-        apGoTo(new double[] {-70.5, -9, 0}, -Math.PI / 4, true); // depot
+        apGoTo(new double[] {-71.5, -9, 0}, -Math.PI / 4, true); // depot WAS 70.5
 
         apGoTo(new double[] {-70.5, -19, 0}, 0, true); // position
 
@@ -156,7 +156,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
 
         sleep(500);
 
-        apGoTo(new double[] {-70.5, -9, 0}, -Math.PI / 4, true); // back
+        apGoTo(new double[] {-71.5, -9, 0}, -Math.PI / 4, true); // back WAS 70.5
         apGoTo(new double[] {-33, 33, 0}, -Math.PI / 4, true); // crater
 
         marv.tmd.setPosition(MarvConstantsV2.TMD_IN);

@@ -13,8 +13,8 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-//@Autonomous(name="AutoFar")
-public class MarvXAutoFar extends LinearOpMode {
+@Autonomous(name="Auto Double")
+public class MarvXDoubleSample extends LinearOpMode {
 
     MarvXCommonV2 marv;
     MineralFind mineralFind;
@@ -34,8 +34,8 @@ public class MarvXAutoFar extends LinearOpMode {
         marv.imu.initialize(parameters);
 
         autopilot = new AutopilotHost(telemetry);
-        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], MarvConstantsV2.QUADPACER_TPU, marv.imu, 1);
-        ((AutopilotTrackerQP37i)quadPacer).setInverts(false, true);
+        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV2.QUADPACER_POS, MarvConstantsV2.QUADPACER_TPU, marv.imu, 1);
+        ((AutopilotTrackerQP37i)quadPacer).setInverts(false, false);
         autopilot.setCountsToStable(MarvConstantsV2.AP_COUNTS_TO_STABLE);
         autopilot.setNavigationUnitsToStable(MarvConstantsV2.AP_NAV_UNITS_TO_STABLE);
         autopilot.setOrientationUnitsToStable(MarvConstantsV2.AP_ORIENT_UNITS_TO_STABLE);
@@ -49,24 +49,8 @@ public class MarvXAutoFar extends LinearOpMode {
 
         int res = -1;
 
-        mineralFind.detectInit();
-        sleep(1000);
-        mineralFind.tfod.activate();
-        sleep(1000);
-        while (!opModeIsActive()) {
-            int detect = mineralFind.detectLoop();
-            if (detect != -1) {
-                res = detect;
-            }
-            telemetry.addData("Mineral", res);
-            telemetry.update();
-            if (isStopRequested()) {
-                mineralFind.detectStop();
-                return;
-            }
-        }
+        mineralFind.detectInitInternal();
         waitForStart();
-        mineralFind.detectStop();
 
         //while (opModeIsActive()) {sleep(1);}
 
@@ -121,31 +105,48 @@ public class MarvXAutoFar extends LinearOpMode {
         //marv.expandoVertL.setPower(0);
         //marv.expandoVertR.setPower(0);
 
-        apGoTo(new double[] {0, 12, 0}, -Math.PI / 2, true);
+        apGoTo(new double[] {0, 8, 0}, 0, true);
 
-        if (res == 1) {
-            apGoTo(new double[]{0, 32, 0}, -Math.PI / 2, true); // C
-        }
-        else if (res == 2) {
-            apGoTo(new double[]{16-3, 32, 0}, -Math.PI / 2, true); // R
-        }
-        else if (res == 0 || res == -1) {
-            apGoTo(new double[] {-16-3, 32, 0}, -Math.PI / 2, true); // L
+        apGoTo(new double[] {0, 8, 0}, -Math.PI / 2, true, false); // Camera
+
+        long detectStartTime = System.currentTimeMillis();
+        mineralFind.tfod.activate();
+
+        while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000) {
+            int detect = mineralFind.detectLoopInternal();
+            if (detect != -1) {
+                res = detect;
+            }
+            telemetry.addData("Mineral", res);
+            telemetry.update();
+            if (isStopRequested()) {
+                mineralFind.detectStopInternal();
+                return;
+            }
         }
 
         marv.expandoVertL.setPower(0);
         marv.expandoVertR.setPower(0);
 
-        apGoTo(new double[] {0, 54, 0}, -Math.PI / 2, true); // depot
+        mineralFind.detectStopInternal();
 
-        marv.tmd.setPosition(MarvConstantsV2.TMD_OUT);
-
-        /*if (res == 1) {
-            apGoTo(new double[]{0, 6, 0}, -Math.PI / 2, true); // clear not on L
+        if (res == 1) {
+            apGoTo(new double[]{0, 22, 0}, -Math.PI / 4, true); // C
         }
-        /*apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
+        else if (res == 2) {
+            apGoTo(new double[]{16, 22, 0}, -Math.PI / 4, true); // R
+        }
+        else if (res == 0 || res == -1) {
+            apGoTo(new double[] {-16, 22, 0}, -Math.PI / 4, true); // L
+        }
 
-        apGoTo(new double[] {-70.5, -9, 0}, -Math.PI / 4, true); // depot
+        if (res != 0 && res != -1) {
+            apGoTo(new double[]{7.5, 15, 0}, -Math.PI / 2, true); // clear not on L
+            apGoTo(new double[]{-40.5, 15, 0}, -Math.PI / 2, true); // across not on L
+        }
+        apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
+
+        apGoTo(new double[] {-71.5, -9, 0}, -Math.PI / 4, true); // depot WAS 70.5
 
         apGoTo(new double[] {-70.5, -19, 0}, 0, true); // position
 
@@ -153,16 +154,37 @@ public class MarvXAutoFar extends LinearOpMode {
 
         //while (opModeIsActive()) {sleep(1);}
 
-        sleep(500);
+        //sleep(500);
 
-        apGoTo(new double[] {-69, -9, 0}, -Math.PI / 4, true); // back
-        apGoTo(new double[] {-35, 33, 0}, -Math.PI / 4, true); // crater
+        // BEGIN DOUBLE SAMPLE
 
-        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);*/
+        if (res == 1) {
+            apGoTo(new double[]{-53, -18, 0}, -Math.PI / 4, true); // C
+        }
+        else if (res == 2) {
+            apGoTo(new double[]{-53, -18+16, 0}, -Math.PI / 4, true); // R
+        }
+        else if (res == 0 || res == -1) {
+            apGoTo(new double[] {-53, -18-16, 0}, -Math.PI / 4, true); // L
+        }
+
+        if (res != 2) {
+            apGoTo(new double[] {-70.5, -19, 0}, 0, true); // clear not on R
+        }
+
+        // END DOUBLE SAMPLE
+
+        apGoTo(new double[] {-71.5, -9, 0}, -Math.PI / 4, true); // back WAS 70.5
+        apGoTo(new double[] {-33, 33, 0}, -Math.PI / 4, true); // crater
+
+        marv.tmd.setPosition(MarvConstantsV2.TMD_IN);
     }
 
-
     public void apGoTo(double[] pos, double hdg, boolean useOrientation) {
+        apGoTo(pos, hdg, useOrientation, true);
+    }
+
+    public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation) {
         AutopilotSegment seg = new AutopilotSegment();
         seg.id = "goToSeg";
         seg.success = "n/a";
@@ -170,11 +192,12 @@ public class MarvXAutoFar extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.035; // something
-        seg.orientationGain = 2; // something
+        seg.orientationGain = 2.35; // something
         seg.navigationMax = 0.35;
         seg.navigationMin = 0.25;
-        seg.orientationMax = 0.25;
+        seg.orientationMax = 0.30;
         seg.useOrientation = useOrientation;
+        seg.useTranslation = useTranslation;
 
         autopilot.setNavigationTarget(seg);
         autopilot.setNavigationStatus(AutopilotHost.NavigationStatus.RUNNING);

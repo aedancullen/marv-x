@@ -13,7 +13,7 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="AutoNear")
+//@Autonomous(name="AutoNear")
 public class MarvXAutoNear extends LinearOpMode {
 
     MarvXCommonV2 marv;
