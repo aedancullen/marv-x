@@ -181,14 +181,14 @@ public class MarvXCommonV2 {
         return br.getCurrentPosition();
     }
     public double getQuadPacerY() {
-        return fr.getCurrentPosition();
+        return bl.getCurrentPosition();
     }
 
     public DcMotor getQuadPacerMotorX() {
         return br;
     }
     public DcMotor getQuadPacerMotorY() {
-        return fr;
+        return bl;
     }
 
     public void drive(

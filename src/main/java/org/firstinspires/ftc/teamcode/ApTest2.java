@@ -42,7 +42,7 @@ public class ApTest2 extends LinearOpMode {
 
         ap = new AutopilotHost(telemetry);
         qpTracker = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), new double[3], 150, marv.imu, 1);
-        ((AutopilotTrackerQP37i)qpTracker).setInverts(false, true);
+        ((AutopilotTrackerQP37i)qpTracker).setInverts(false, false);
         //qpTracker = new AutopilotTrackerEncMec(marv.fl, marv.fr, marv.bl, marv.br, 500, marv.imu, 1);
         ap.setCountsToStable(8);
         ap.setNavigationUnitsToStable(0.7);

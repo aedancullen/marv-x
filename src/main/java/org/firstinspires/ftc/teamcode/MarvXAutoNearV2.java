@@ -35,7 +35,7 @@ public class MarvXAutoNearV2 extends LinearOpMode {
 
         autopilot = new AutopilotHost(telemetry);
         quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV2.QUADPACER_POS, MarvConstantsV2.QUADPACER_TPU, marv.imu, 1);
-        ((AutopilotTrackerQP37i)quadPacer).setInverts(false, true);
+        ((AutopilotTrackerQP37i)quadPacer).setInverts(false, false);
         autopilot.setCountsToStable(MarvConstantsV2.AP_COUNTS_TO_STABLE);
         autopilot.setNavigationUnitsToStable(MarvConstantsV2.AP_NAV_UNITS_TO_STABLE);
         autopilot.setOrientationUnitsToStable(MarvConstantsV2.AP_ORIENT_UNITS_TO_STABLE);
