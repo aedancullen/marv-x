@@ -361,8 +361,8 @@ public class MarvXCommonV2 {
         if (automationState == AutomationState.CLEAR_READY && lastAutomationState != AutomationState.CLEAR_READY) {
             expandoVertL.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
             expandoVertR.setTargetPosition(MarvConstantsV2.EXPANDO_VERT_DOWN);
-            expandoVertL.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
-            expandoVertR.setPower(MarvConstantsV2.EXPANDO_VERT_TODOWN_SPEED);
+            expandoVertL.setPower(0.75); // used to be TODOWN
+            expandoVertR.setPower(0.75); // used to be TODOWN
             vertLiftL.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
             vertLiftR.setPosition(MarvConstantsV2.VERT_LIFT_DOWN);
             vertSpin.setPosition(MarvConstantsV2.VERT_SPIN_NEUTRAL);

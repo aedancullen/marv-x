@@ -40,10 +40,6 @@ public class MarvXUserControlV2 extends OpMode {
 
     public void loop() {
 
-        telemetry.addData("expando", marv.expandoHorizL.getCurrentPosition());
-        telemetry.addData("expandoR", marv.expandoHorizR.getCurrentPosition());
-        telemetry.update();
-
         if (gamepad1.right_bumper) {
             marv.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         }
@@ -136,10 +132,13 @@ public class MarvXUserControlV2 extends OpMode {
                     upTimer = dumpTimer;
                 }
                 else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
+                    if (System.currentTimeMillis() - upTimer < 600) {
+                        waitTimer = System.currentTimeMillis();
+                    }
                     if (System.currentTimeMillis() - waitTimer < 500) {
                         dumpTimer = System.currentTimeMillis();
                     }
-                    if (System.currentTimeMillis() - dumpTimer > 200) { //650
+                    if (System.currentTimeMillis() - dumpTimer > 250) { //650
                         marv.horizSpinL.setPower(-0.45);
                         marv.horizSpinR.setPower(-0.45);
                     }
@@ -148,7 +147,7 @@ public class MarvXUserControlV2 extends OpMode {
                     marv.horizSpinL.setPower(0.15);
                     marv.horizSpinR.setPower(0.15);
                     dumpTimer = System.currentTimeMillis();
-                    if (System.currentTimeMillis() - upTimer < 500) {
+                    if (System.currentTimeMillis() - upTimer < 600) {
                         waitTimer = dumpTimer;
                     }
                 }
@@ -193,8 +192,14 @@ public class MarvXUserControlV2 extends OpMode {
                 }
             }
             else {
-                marv.expandoHorizL.setPower(0);
-                marv.expandoHorizR.setPower(0);
+                if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV2.EXPANDO_HORIZ_SAFE - 50) {
+                    marv.expandoHorizL.setPower(0.25);
+                    marv.expandoHorizR.setPower(0.25);
+                }
+                else {
+                    marv.expandoHorizL.setPower(0);
+                    marv.expandoHorizR.setPower(0);
+                }
                 if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
                     marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
                     marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
