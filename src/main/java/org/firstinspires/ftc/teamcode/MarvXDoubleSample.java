@@ -146,7 +146,7 @@ public class MarvXDoubleSample extends LinearOpMode {
         }
         apGoTo(new double[] {-46.5, 15, 0}, -Math.PI / 4, true); // across
 
-        apGoTo(new double[] {-71.5, -9, 0}, -Math.PI / 4, true); // depot WAS 70.5
+        apGoTo(new double[] {-71.0, -9, 0}, -Math.PI / 4, true); // depot WAS 70.5
 
         apGoTo(new double[] {-70.5, -19, 0}, 0, true); // position
 
@@ -159,13 +159,13 @@ public class MarvXDoubleSample extends LinearOpMode {
         // BEGIN DOUBLE SAMPLE
 
         if (res == 1) {
-            apGoTo(new double[]{-53, -18, 0}, -Math.PI / 4, true); // C
+            apGoTo(new double[]{-55, -18.5, 0}, -Math.PI / 4, true); // C
         }
         else if (res == 2) {
-            apGoTo(new double[]{-53, -18+16, 0}, -Math.PI / 4, true); // R
+            apGoTo(new double[]{-55, -18.5+16, 0}, -Math.PI / 4, true); // R
         }
         else if (res == 0 || res == -1) {
-            apGoTo(new double[] {-53, -18-16, 0}, -Math.PI / 4, true); // L
+            apGoTo(new double[] {-55, -18.5-16, 0}, -Math.PI / 4, true); // L
         }
 
         if (res != 2) {
@@ -174,7 +174,7 @@ public class MarvXDoubleSample extends LinearOpMode {
 
         // END DOUBLE SAMPLE
 
-        apGoTo(new double[] {-71.5, -9, 0}, -Math.PI / 4, true); // back WAS 70.5
+        apGoTo(new double[] {-71.0, -9, 0}, -Math.PI / 4, true); // back WAS 70.5
         apGoTo(new double[] {-33, 33, 0}, -Math.PI / 4, true); // crater
 
         marv.tmd.setPosition(MarvConstantsV2.TMD_IN);

@@ -144,6 +144,12 @@ public class MarvXAutoFarV2 extends LinearOpMode {
         apGoTo(new double[] {0, 54, 0}, -Math.PI / 2, true); // depot
 
         marv.tmd.setPosition(MarvConstantsV2.TMD_OUT);
+        sleep(500);
+
+        //-48-18, -36
+        apGoTo(new double[] {-22, 45, 0}, -Math.PI / 4, true); // away
+        apGoTo(new double[] {-36, 32, 0}, -Math.PI / 4, true); // away2
+
 
         /*if (res == 1) {
             apGoTo(new double[]{0, 6, 0}, -Math.PI / 2, true); // clear not on L
