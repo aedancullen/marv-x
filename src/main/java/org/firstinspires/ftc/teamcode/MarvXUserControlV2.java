@@ -183,7 +183,7 @@ public class MarvXUserControlV2 extends OpMode {
             }
         }
         else if (gamepad2.right_trigger == 0 && gamepad2.right_bumper) {
-            if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 > MarvConstantsV2.EXPANDO_HORIZ_SAFE) {
+            if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 > MarvConstantsV2.EXPANDO_HORIZ_SAFE) { // TODO when copy add +50
                 marv.expandoHorizL.setPower(-1);
                 marv.expandoHorizR.setPower(-1);
                 if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01) {
