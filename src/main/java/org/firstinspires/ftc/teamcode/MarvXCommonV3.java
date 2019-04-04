@@ -31,6 +31,7 @@ public class MarvXCommonV3 {
     CRServo horizSpinR;
 
     Servo drop;
+    Servo swop;
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
@@ -48,6 +49,31 @@ public class MarvXCommonV3 {
     public DcMotor getQuadPacerMotorY() {
         return bl;
     }
+
+    public void drive(
+            double vertL,
+            double vertR,
+            double horiz
+    ) {
+        drive(vertL, vertR, horiz, 0);
+    }
+
+    public void drive(
+            double vertL,
+            double vertR,
+            double horiz,
+            double rot
+    ) {
+        double flp = vertL + rot + horiz;
+        fl.setPower(Math.max(Math.min(flp, 1), -1));
+        double frp = vertR - rot - horiz;
+        fr.setPower(Math.max(Math.min(frp, 1), -1));
+        double blp = vertL + rot - horiz;
+        bl.setPower(Math.max(Math.min(blp, 1), -1));
+        double brp = vertR - rot + horiz;
+        br.setPower(Math.max(Math.min(brp, 1), -1));
+    }
+
 
     public void setZeroPowerBehavior(DcMotor.ZeroPowerBehavior behavior) {
         if (behavior != lastZeroPowerBehavior) {
@@ -120,6 +146,10 @@ public class MarvXCommonV3 {
 
         drop = hardwareMap.servo.get("drop");
         setServoExtendedRange(drop, 500, 2500);
+
+        swop = hardwareMap.servo.get("swop");
+        setServoExtendedRange(swop, 500, 2500);
+
     }
 
     public void setServoExtendedRange(Servo servo, int min, int max) {
@@ -138,6 +168,8 @@ public class MarvXCommonV3 {
         }
         else if (automationState == AutomationState.READY && lastAutomationState != AutomationState.READY) {
             expandoDiag.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
+            swop.setPosition(MarvConstantsV3.SWOP_ANGLE_NORMAL);
         }
         else if (automationState == AutomationState.UP && lastAutomationState != AutomationState.UP) {
             expandoDiag.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -162,12 +194,14 @@ public class MarvXCommonV3 {
             }
             else if (dropTarget == DropTarget.FAR) {
                 drop.setPosition(MarvConstantsV3.DROP_ANGLE_FAR);
+                swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
             }
             dropTimer = System.currentTimeMillis();
         }
         else if (automationState == AutomationState.UNDROP && lastAutomationState != AutomationState.UNDROP) {
             expandoDiag.setPower(0);
             drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
+            swop.setPosition(MarvConstantsV3.SWOP_ANGLE_NORMAL);
             undropTimer = System.currentTimeMillis();
         }
         else if (automationState == AutomationState.DOWN && lastAutomationState != AutomationState.DOWN) {

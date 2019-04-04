@@ -31,6 +31,8 @@ public class MarvConstantsV3 {
     public static double DROP_ANGLE_FAR;
     public static double DROP_ANGLE_MID;
 
+    public static double SWOP_ANGLE_NORMAL;
+    public static double SWOP_ANGLE_SWOPPED;
 
     public static int EXPANDO_HORIZ_UP = 1900;
     public static int EXPANDO_HORIZ_SAFE = 235; // 340, 250

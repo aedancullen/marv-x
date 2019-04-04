@@ -14,6 +14,7 @@ public class ZeroPosSet extends OpMode {
     Servo horizLiftR;
 
     Servo diagDrop;
+    Servo diagSwop;
 
     public void init() {
         horizLiftL = hardwareMap.servo.get("horizLiftL");
@@ -21,11 +22,13 @@ public class ZeroPosSet extends OpMode {
 
         horizLiftR = hardwareMap.servo.get("horizLiftR");
 
-        diagDrop = hardwareMap.servo.get("diagDrop");
+        diagDrop = hardwareMap.servo.get("drop");
+        diagSwop = hardwareMap.servo.get("swop");
 
         setServoExtendedRange(horizLiftL, 500, 2500);
         setServoExtendedRange(horizLiftR, 500, 2500);
         setServoExtendedRange(diagDrop, 500, 2500);
+        setServoExtendedRange(diagSwop, 500, 2500);
 
         horizLiftL.setPosition(0.14);
         horizLiftR.setPosition(0.14);
