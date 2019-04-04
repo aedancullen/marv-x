@@ -42,4 +42,19 @@ public class MarvConstantsV3 {
     public static double HORIZ_LIFT_UP_DUMPING = 1.0;
     public static double HORIZ_LIFT_DOWN = 0.14;
 
+
+
+    // UC stuff
+
+    public static long UC_HORIZLIFT_TOUP_MS = 600;
+    public static long UC_HORIZLIFT_TOWAIT_MS = 500;
+    public static long UC_HORIZLIFT_TODUMP_MS = 250;
+
+    public static double UC_HORIZSPIN_EJECT = 0.75;
+    public static double UC_HORIZSPIN_INTAKE = 0.75;
+    public static double UC_HORIZSPIN_TRANSFER = 0.75;
+    public static double UC_HORIZSPIN_HOLD = 0.15;
+
+    public static int UC_EXPANDOHORIZ_BUF = 50;
+
 }

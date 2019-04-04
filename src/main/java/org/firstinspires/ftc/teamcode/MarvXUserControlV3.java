@@ -1,0 +1,180 @@
+package org.firstinspires.ftc.teamcode;
+
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+@TeleOp(name="UserControl 3")
+public class MarvXUserControlV3 extends OpMode {
+
+    static double LP_HORIZ_M = .33;
+    static double LP_DIFF_M = .33;
+    static double HP_HORIZ_M = .75;
+    static double HP_DIFF_M = .75;
+
+    long dumpTimer;
+    long waitTimer;
+    long upTimer;
+
+    boolean liftmode = false;
+    boolean horizLiftIsDisable = false;
+
+    boolean expandoTransferReady = false;
+    boolean dumpTransferReady = false;
+    boolean transferGo = false;
+
+    MarvXCommonV3 marv;
+
+    public void init() {
+        marv = new MarvXCommonV3(hardwareMap, false);
+    }
+
+    public void loop() {
+        double horiz;
+        horiz = (gamepad1.right_trigger * HP_HORIZ_M) - (gamepad1.left_trigger * HP_HORIZ_M);
+        marv.drive(-gamepad1.left_stick_y * HP_DIFF_M, -gamepad1.right_stick_y * HP_DIFF_M, horiz);
+
+
+
+        if (!liftmode) {
+            marv.runAutomation(transferGo, gamepad1.right_bumper || gamepad2.a);
+            if (transferGo) {
+                transferGo = false;
+            }
+        }
+
+
+        if (gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) {
+            marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
+            marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_DOWN);
+            //marv.horizLiftL.getController().pwmDisable();
+            horizLiftIsDisable = true;
+        }
+        else if (gamepad2.left_bumper && horizLiftIsDisable) {
+            //marv.horizLiftL.getController().pwmEnable();
+            marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+            marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+            horizLiftIsDisable = false;
+        }
+
+
+        if (gamepad2.dpad_down || gamepad2.dpad_up) {
+            marv.horizSpinL.setPower(0);
+            marv.horizSpinR.setPower(0);
+        }
+        else if (gamepad2.dpad_right) {
+            marv.horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+            marv.horizSpinR.setPower(0);
+        }
+        else if (gamepad2.dpad_left) {
+            marv.horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+            marv.horizSpinL.setPower(0);
+        }
+        else {
+            if (!liftmode) {
+                if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_DOWN) < 0.01) {
+                    marv.horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+                    marv.horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+                    dumpTimer = System.currentTimeMillis();
+                    waitTimer = dumpTimer;
+                    upTimer = dumpTimer;
+                }
+                else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
+                    if (System.currentTimeMillis() - upTimer < MarvConstantsV3.UC_HORIZLIFT_TOUP_MS) {
+                        waitTimer = System.currentTimeMillis();
+                    }
+                    if (System.currentTimeMillis() - waitTimer < MarvConstantsV3.UC_HORIZLIFT_TOWAIT_MS) {
+                        dumpTimer = System.currentTimeMillis();
+                    }
+                    if (System.currentTimeMillis() - dumpTimer > MarvConstantsV3.UC_HORIZLIFT_TODUMP_MS) {
+                        marv.horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_TRANSFER);
+                        marv.horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_TRANSFER);
+                    }
+                }
+                else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
+                    marv.horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+                    marv.horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+                    dumpTimer = System.currentTimeMillis();
+                    if (System.currentTimeMillis() - upTimer < MarvConstantsV3.UC_HORIZLIFT_TOUP_MS) {
+                        waitTimer = dumpTimer;
+                    }
+                }
+                else { // NEUTRAL
+                    marv.horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+                    marv.horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+                    dumpTimer = System.currentTimeMillis();
+                    waitTimer = dumpTimer;
+                }
+            }
+            else {
+                marv.horizSpinL.setPower(0);
+                marv.horizSpinR.setPower(0);
+            }
+        }
+
+
+
+
+        if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
+            if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV2.EXPANDO_HORIZ_UP) {
+                marv.expandoHorizL.setPower(gamepad2.right_trigger * 1);
+                marv.expandoHorizR.setPower(gamepad2.right_trigger * 1);
+            }
+            else {
+                marv.expandoHorizL.setPower(0);
+                marv.expandoHorizR.setPower(0);
+            }
+
+            if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01) {
+                marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+                marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+            }
+        }
+        else if (gamepad2.right_trigger == 0 && gamepad2.right_bumper) {
+            if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 > MarvConstantsV2.EXPANDO_HORIZ_SAFE + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
+                marv.expandoHorizL.setPower(-1);
+                marv.expandoHorizR.setPower(-1);
+                if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL) < 0.01) {
+                    marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_WAITING);
+                    marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_WAITING);
+                }
+            }
+            else {
+                if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV2.EXPANDO_HORIZ_SAFE - MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
+                    marv.expandoHorizL.setPower(0.25);
+                    marv.expandoHorizR.setPower(0.25);
+                    expandoTransferReady = false;
+                }
+                else {
+                    marv.expandoHorizL.setPower(0);
+                    marv.expandoHorizR.setPower(0);
+                    expandoTransferReady = true;
+                }
+                if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
+                    marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
+                    marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
+                    dumpTransferReady = true;
+                }
+                else {
+                    dumpTransferReady = false;
+                }
+            }
+
+        }
+        else {
+            marv.expandoHorizL.setPower(0);
+            marv.expandoHorizR.setPower(0);
+            if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_DUMPING) < 0.01 || Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
+                marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+                marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
+            }
+            if (dumpTransferReady && expandoTransferReady) {
+                expandoTransferReady = false;
+                dumpTransferReady = false;
+                transferGo = true;
+            }
+        }
+    }
+
+
+}
