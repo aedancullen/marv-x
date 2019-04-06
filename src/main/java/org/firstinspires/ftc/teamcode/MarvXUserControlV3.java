@@ -115,7 +115,10 @@ public class MarvXUserControlV3 extends OpMode {
 
 
 
-        if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
+        if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper
+                && marv.automationState != MarvXCommonV3.AutomationState.UP
+                && marv.automationState != MarvXCommonV3.AutomationState.DROP) {
+
             if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV2.EXPANDO_HORIZ_UP) {
                 marv.expandoHorizL.setPower(gamepad2.right_trigger * 1);
                 marv.expandoHorizR.setPower(gamepad2.right_trigger * 1);
