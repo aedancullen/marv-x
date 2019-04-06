@@ -19,8 +19,7 @@ public class MarvXUserControlV3 extends OpMode {
     boolean liftmode = false;
     boolean horizLiftIsDisable = false;
 
-    boolean expandoTransferReady = false;
-    boolean dumpTransferReady = false;
+    boolean transferPrimed;
     boolean transferGo = false;
 
     MarvXCommonV3 marv;
@@ -89,6 +88,7 @@ public class MarvXUserControlV3 extends OpMode {
                     if (System.currentTimeMillis() - dumpTimer > MarvConstantsV3.UC_HORIZLIFT_TODUMP_MS) {
                         marv.horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_TRANSFER);
                         marv.horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_TRANSFER);
+                        transferPrimed = true;
                     }
                 }
                 else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
@@ -146,20 +146,14 @@ public class MarvXUserControlV3 extends OpMode {
                 if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV2.EXPANDO_HORIZ_SAFE - MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
                     marv.expandoHorizL.setPower(0.25);
                     marv.expandoHorizR.setPower(0.25);
-                    expandoTransferReady = false;
                 }
                 else {
                     marv.expandoHorizL.setPower(0);
                     marv.expandoHorizR.setPower(0);
-                    expandoTransferReady = true;
                 }
                 if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV2.HORIZ_LIFT_UP_WAITING) < 0.01) {
                     marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
                     marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_DUMPING);
-                    dumpTransferReady = true;
-                }
-                else {
-                    dumpTransferReady = false;
                 }
             }
 
@@ -171,9 +165,8 @@ public class MarvXUserControlV3 extends OpMode {
                 marv.horizLiftL.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
                 marv.horizLiftR.setPosition(MarvConstantsV2.HORIZ_LIFT_UP_NEUTRAL);
             }
-            if (dumpTransferReady && expandoTransferReady) {
-                expandoTransferReady = false;
-                dumpTransferReady = false;
+            if (transferPrimed) {
+                transferPrimed = false;
                 transferGo = true;
             }
         }
