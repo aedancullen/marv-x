@@ -35,12 +35,12 @@ public class MarvXCommonV3 {
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
-    enum AutomationState{STALIN, READY, UP, DROP, UNDROP, DOWN}
+    enum AutomationState{STALIN, READY, UP, DROP, UNDROP, DOWN, PAUSE}
     public enum DropTarget{FAR, NEAR, MID}
 
     public DropTarget dropTarget = DropTarget.NEAR;
 
-    AutomationState automationState;
+    AutomationState automationState = AutomationState.STALIN;
     AutomationState lastAutomationState;
 
     public DcMotor getQuadPacerMotorX() {
@@ -128,7 +128,7 @@ public class MarvXCommonV3 {
 
         expandoDiag = hardwareMap.dcMotor.get("expandoDiag");
         expandoDiag.setDirection(DcMotorSimple.Direction.REVERSE);
-        expandoDiag.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        expandoDiag.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         if (isAuto) {expandoDiag.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}
         expandoDiag.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         expandoDiag.setPower(0);
@@ -162,30 +162,34 @@ public class MarvXCommonV3 {
     public void runAutomation(boolean goStart, boolean goDrop) {
 
         if (automationState == AutomationState.STALIN && lastAutomationState != AutomationState.STALIN) {
-            expandoDiag.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            expandoDiag.setPower(MarvConstantsV3.EXPANDO_DIAG_STALIN_POWER);
+            expandoDiag.setPower(-MarvConstantsV3.EXPANDO_DIAG_STALIN_POWER);
             stalinTimer = System.currentTimeMillis();
+            dCount = 0;
         }
         else if (automationState == AutomationState.READY && lastAutomationState != AutomationState.READY) {
+            expandoDiag.setPower(0);
             expandoDiag.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
             swop.setPosition(MarvConstantsV3.SWOP_ANGLE_NORMAL);
         }
         else if (automationState == AutomationState.UP && lastAutomationState != AutomationState.UP) {
-            expandoDiag.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            expandoDiag.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             if (dropTarget == DropTarget.NEAR) {
                 expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_UP_NEAR_POSITION);
+                expandoDiagUpChosenPosition = MarvConstantsV3.EXPANDO_DIAG_UP_NEAR_POSITION;
             }
             else if (dropTarget == DropTarget.FAR) {
                 expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_UP_FAR_POSITION);
+                expandoDiagUpChosenPosition = MarvConstantsV3.EXPANDO_DIAG_UP_FAR_POSITION;
             }
             else if (dropTarget == DropTarget.MID) {
                 expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_UP_MID_POSITION);
+                expandoDiagUpChosenPosition = MarvConstantsV3.EXPANDO_DIAG_UP_MID_POSITION;
             }
-            expandoDiag.setPower(MarvConstantsV3.EXPANDO_DIAG_UP_POWER);
+
+            // NOTE: power set below
         }
         else if (automationState == AutomationState.DROP && lastAutomationState != AutomationState.DROP) {
-            expandoDiag.setPower(0);
             if (dropTarget == DropTarget.NEAR) {
                 drop.setPosition(MarvConstantsV3.DROP_ANGLE_NEAR);
             }
@@ -199,22 +203,33 @@ public class MarvXCommonV3 {
             dropTimer = System.currentTimeMillis();
         }
         else if (automationState == AutomationState.UNDROP && lastAutomationState != AutomationState.UNDROP) {
-            expandoDiag.setPower(0);
             drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
             swop.setPosition(MarvConstantsV3.SWOP_ANGLE_NORMAL);
             undropTimer = System.currentTimeMillis();
         }
         else if (automationState == AutomationState.DOWN && lastAutomationState != AutomationState.DOWN) {
-            expandoDiag.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_SAFE_POSITION);
-            expandoDiag.setPower(MarvConstantsV3.EXPANDO_DIAG_SAFE_POWER);
+            expandoDiag.setPower(-MarvConstantsV3.EXPANDO_DIAG_SAFE_POWER);
         }
+        else if (automationState == AutomationState.PAUSE && lastAutomationState != AutomationState.PAUSE) {
+            expandoDiag.setPower(0);
+            pauseTimer = System.currentTimeMillis();
+        }
+
+        lastAutomationState = automationState;
 
 
         if (automationState == AutomationState.STALIN) {
-            if (System.currentTimeMillis() > stalinTimer + MarvConstantsV3.EXPANDO_DIAG_STALIN_TIME) {
+            int diagPosition = expandoDiag.getCurrentPosition();
+            if (lastDiagPosition == diagPosition) {
+                dCount += 1;
+            }
+            else {
+                dCount = 0;
+            }
+            if (dCount > 25 && System.currentTimeMillis() > stalinTimer + MarvConstantsV3.EXPANDO_DIAG_STALIN_TIME) {
                 automationState = AutomationState.READY;
             }
+            lastDiagPosition = diagPosition;
         }
         else if (automationState == AutomationState.READY) {
             if (goStart) {
@@ -222,8 +237,14 @@ public class MarvXCommonV3 {
             }
         }
         else if (automationState == AutomationState.UP) {
-            if (!expandoDiag.isBusy() && goDrop) {
-                automationState = AutomationState.DROP;
+            if (expandoDiag.getCurrentPosition() >= expandoDiagUpChosenPosition) {
+                expandoDiag.setPower(0);
+                if (goDrop) {
+                    automationState = AutomationState.DROP;
+                }
+            }
+            else {
+                expandoDiag.setPower(MarvConstantsV3.EXPANDO_DIAG_UP_POWER);
             }
         }
         else if (automationState == AutomationState.DROP) {
@@ -237,16 +258,27 @@ public class MarvXCommonV3 {
             }
         }
         else if (automationState == AutomationState.DOWN) {
-            if (!expandoDiag.isBusy()) {
+            if (expandoDiag.getCurrentPosition() <= MarvConstantsV3.EXPANDO_DIAG_SAFE_POSITION) {
+                automationState = AutomationState.PAUSE;
+            }
+        }
+        else if (automationState == AutomationState.PAUSE) {
+            if (System.currentTimeMillis() > pauseTimer + MarvConstantsV3.EXPANDO_DIAG_PAUSE_TIME) {
                 automationState = AutomationState.STALIN;
             }
         }
 
-        lastAutomationState = automationState;
     }
 
     long dropTimer;
     long undropTimer;
     long stalinTimer;
+
+    long pauseTimer;
+
+    int expandoDiagUpChosenPosition;
+    int lastDiagPosition;
+
+    int dCount;
 
 }
