@@ -10,7 +10,7 @@ public class HookTest extends OpMode {
     DcMotor hook;
 
     public void init() {
-        hook = hardwareMap.dcMotor.get("expandoHorizR");
+        hook = hardwareMap.dcMotor.get("expandoVert");
         hook.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
