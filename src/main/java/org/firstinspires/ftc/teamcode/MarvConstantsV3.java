@@ -55,7 +55,7 @@ public class MarvConstantsV3 {
     public static double UC_HORIZSPIN_EJECT = 0.75;
     public static double UC_HORIZSPIN_INTAKE = 0.75;
     public static double UC_HORIZSPIN_TRANSFER = 0.75;
-    public static double UC_HORIZSPIN_HOLD = 0.15;
+    public static double UC_HORIZSPIN_HOLD = 0.12;
 
     public static int UC_EXPANDOHORIZ_BUF = 50;
 

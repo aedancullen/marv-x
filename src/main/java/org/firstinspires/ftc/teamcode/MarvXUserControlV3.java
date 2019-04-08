@@ -40,10 +40,19 @@ public class MarvXUserControlV3 extends OpMode {
         horiz = (gamepad1.right_trigger * HP_HORIZ_M) - (gamepad1.left_trigger * HP_HORIZ_M);
         marv.drive(-gamepad1.left_stick_y * HP_DIFF_M, -gamepad1.right_stick_y * HP_DIFF_M, horiz);
 
+        if (gamepad2.a) {
+            marv.dropTarget = MarvXCommonV3.DropTarget.NEAR;
+        }
+        else if (gamepad2.b || gamepad2.x) {
+            marv.dropTarget = MarvXCommonV3.DropTarget.MID;
+        }
+        else if (gamepad2.y) {
+            marv.dropTarget = MarvXCommonV3.DropTarget.FAR;
+        }
 
 
         if (!liftmode) {
-            marv.runAutomation((transferGo && gamepad2.a) || gamepad2.back, gamepad1.right_bumper || gamepad2.back);
+            marv.runAutomation((transferGo) || gamepad2.back, gamepad1.right_bumper || gamepad2.back);
             if ((transferGo && gamepad2.a) || gamepad2.back) {
                 transferGo = false;
             }
@@ -53,11 +62,11 @@ public class MarvXUserControlV3 extends OpMode {
         if (gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) {
             marv.horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
             marv.horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
-            //marv.horizLiftL.getController().pwmDisable();
+            marv.horizLiftL.getController().pwmDisable();
             horizLiftIsDisable = true;
         }
         else if (gamepad2.left_bumper && horizLiftIsDisable) {
-            //marv.horizLiftL.getController().pwmEnable();
+            marv.horizLiftL.getController().pwmEnable();
             marv.horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
             marv.horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
             horizLiftIsDisable = false;
