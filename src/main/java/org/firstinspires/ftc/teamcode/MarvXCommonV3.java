@@ -136,8 +136,8 @@ public class MarvXCommonV3 {
 
         horizLiftL = hardwareMap.servo.get("horizLiftL");
         setServoExtendedRange(horizLiftL, 500, 2500);
+        horizLiftL.setDirection(Servo.Direction.REVERSE);
         horizLiftR = hardwareMap.servo.get("horizLiftR");
-        horizLiftR.setDirection(Servo.Direction.REVERSE);
         setServoExtendedRange(horizLiftR, 500, 2500);
 
         horizSpinL = hardwareMap.crservo.get("horizSpinL");

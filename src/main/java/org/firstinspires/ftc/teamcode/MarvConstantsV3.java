@@ -36,14 +36,14 @@ public class MarvConstantsV3 {
     public static double SWOP_ANGLE_NORMAL;
     public static double SWOP_ANGLE_SWOPPED;
 
-    public static int EXPANDO_HORIZ_UP = 1900;
-    public static int EXPANDO_HORIZ_SAFE = 235; // 340, 250
+    public static int EXPANDO_HORIZ_UP = 1800;
+    public static int EXPANDO_HORIZ_SAFE = 375;
+    public static int EXPANDO_HORIZ_FLYING_LIMIT = EXPANDO_HORIZ_UP / 2;
 
-    public static double HORIZ_LIFT_UP_NEUTRAL = .5;
+    public static double HORIZ_LIFT_UP_NEUTRAL = .42;
     public static double HORIZ_LIFT_UP_WAITING = .91;
     public static double HORIZ_LIFT_UP_DUMPING = .91;
-    public static double HORIZ_LIFT_DOWN = 0.14;
-
+    public static double HORIZ_LIFT_DOWN = 0.16;
 
 
     // UC stuff

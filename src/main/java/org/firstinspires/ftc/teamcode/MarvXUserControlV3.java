@@ -62,11 +62,11 @@ public class MarvXUserControlV3 extends OpMode {
         if (gamepad2.left_trigger > 0.5 && !horizLiftIsDisable) {
             marv.horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
             marv.horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
-            marv.horizLiftL.getController().pwmDisable();
+            //marv.horizLiftL.getController().pwmDisable();
             horizLiftIsDisable = true;
         }
-        else if (gamepad2.left_bumper && horizLiftIsDisable) {
-            marv.horizLiftL.getController().pwmEnable();
+        else if (gamepad2.left_bumper && horizLiftIsDisable && (marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
+            //marv.horizLiftL.getController().pwmEnable();
             marv.horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
             marv.horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
             horizLiftIsDisable = false;
@@ -135,7 +135,9 @@ public class MarvXUserControlV3 extends OpMode {
                 && marv.automationState != MarvXCommonV3.AutomationState.UP
                 && marv.automationState != MarvXCommonV3.AutomationState.DROP) {
 
-            if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV3.EXPANDO_HORIZ_UP) {
+            int activeLimit; if (marv.horizLiftL.getPosition() - MarvConstantsV3.HORIZ_LIFT_DOWN < 0.01) {activeLimit = MarvConstantsV3.EXPANDO_HORIZ_UP;} else {activeLimit = MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT;}
+
+            if ((marv.expandoHorizL.getCurrentPosition() + marv.expandoHorizR.getCurrentPosition()) / 2.0 < activeLimit) {
                 marv.expandoHorizL.setPower(gamepad2.right_trigger * 1);
                 marv.expandoHorizR.setPower(gamepad2.right_trigger * 1);
             }
