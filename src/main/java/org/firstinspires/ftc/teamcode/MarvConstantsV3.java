@@ -37,6 +37,7 @@ public class MarvConstantsV3 {
     public static double SWOP_ANGLE_SWOPPED;
 
     public static int EXPANDO_HORIZ_UP = 1800;
+    public static int EXPANDO_HORIZ_DOWN = 50;
     public static int EXPANDO_HORIZ_SAFE = 390;
     public static int EXPANDO_HORIZ_FLYING_LIMIT = EXPANDO_HORIZ_UP / 2;
 
@@ -58,5 +59,11 @@ public class MarvConstantsV3 {
     public static double UC_HORIZSPIN_HOLD = 0.0;
 
     public static int UC_EXPANDOHORIZ_BUF = 50;
+
+
+    // new expando-horiz state machine - timings in millis
+
+    public static long EHSM_UP = 500;
+    public static long EHSM_TRANSFER = 250;
 
 }
