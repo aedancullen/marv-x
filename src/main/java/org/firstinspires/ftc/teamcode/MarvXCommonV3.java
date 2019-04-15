@@ -49,6 +49,9 @@ public class MarvXCommonV3 {
     IntakeState intakeState = IntakeState.PREP;
     IntakeState lastIntakeState;
 
+    boolean transferDone; // automation link flag
+
+
     public DcMotor getQuadPacerMotorX() {
         return br;
     }
@@ -276,8 +279,9 @@ public class MarvXCommonV3 {
 
     }
 
-    public void runIntakeAutomation(double humanSlide, boolean humanUp, boolean humanDown, boolean humanDone) {
-        
+    public void runIntakeAutomation(double humanSlide, boolean humanUp, boolean humanDown, boolean go) {
+        transferDone = false;
+
         if (intakeState == IntakeState.PREP && lastIntakeState != IntakeState.PREP) {
             expandoHorizL.setMode(RUN_TO_POSITION);
             expandoHorizR.setMode(RUN_TO_POSITION);
@@ -288,6 +292,7 @@ public class MarvXCommonV3 {
             horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizSpinL.setPower(0);
             horizSpinR.setPower(0);
+            transferDone = true; // evil side effect
         }
         else if (intakeState == IntakeState.HUMAN && lastIntakeState != IntakeState.HUMAN) {
             expandoHorizL.setPower(0);
@@ -299,8 +304,8 @@ public class MarvXCommonV3 {
             expandoHorizL.setMode(RUN_TO_POSITION);
             expandoHorizR.setMode(RUN_TO_POSITION);
             setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_SAFE)
-            expandoHorizL.setPower(-1);
-            expandoHorizR.setPower(-1);
+            expandoHorizL.setPower(1);
+            expandoHorizR.setPower(1);
             horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
             horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
         }
@@ -327,6 +332,52 @@ public class MarvXCommonV3 {
                 intakeState == IntakeState.HUMAN;
         }
         else if (intakeState == IntakeState.HUMAN) {
+            if (go) {
+                intakeState == IntakeState.IN1;
+            }
+
+            int liftState;
+            double pos = (expandoHorizL.getCurrentPosition() + expandoHorizR.getCurrentPosition()) / 2.0;
+            if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV3.HORIZ_LIFT_DOWN) < 0.01) {
+                liftState = 0;
+            else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL) < 0.01) {
+                liftState = 1;
+            else if (Math.abs(marv.horizLiftL.getPosition() - MarvConstantsV3.HORIZ_LIFT_WAITING) < 0.01) {
+                liftState = 2;
+            }
+
+            if (humanSlide > 0 && pos < MarvConstantsV3.EXPANDO_HORIZ_UP) {
+                if (liftState == 2) {
+                    horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
+                    horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
+                }
+
+                if (pos > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT && liftState != 0) {
+                    expandoHorizL.setPower(0);
+                    expandoHorizR.setPower(0);
+                }
+                else {
+                    expandoHorizL.setPower(humanSlide);
+                    expandoHorizR.setPower(humanSlide);
+                }
+            }
+            else if (humanSlide < 0 && pos > MarvConstantsV3.EXPANDO_HORIZ_DOWN) {
+                expandoHorizL.setPower(humanSlide);
+                expandoHorizR.setPower(humanSlide);
+            }
+            else {
+                expandoHorizL.setPower(0);
+                expandoHorizR.setPower(0);
+            }
+
+            if (humanUp && pos < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
+                horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
+                horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
+            }
+            if (humanDown) {
+                horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
+                horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
+            }
         }
         else if (intakeState == IntakeState.IN1) {
             if ((expandoHorizL.getCurrentPosition() + expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
