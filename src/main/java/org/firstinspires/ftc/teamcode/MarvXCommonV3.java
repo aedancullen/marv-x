@@ -43,6 +43,12 @@ public class MarvXCommonV3 {
     AutomationState automationState = AutomationState.STALIN;
     AutomationState lastAutomationState;
 
+    // -----
+
+    enum IntakeState{PREP, HUMAN, IN1, IN2, TRANSFER}
+    IntakeState intakeState = IntakeState.PREP;
+    IntakeState lastIntakeState;
+
     public DcMotor getQuadPacerMotorX() {
         return br;
     }
@@ -270,6 +276,87 @@ public class MarvXCommonV3 {
 
     }
 
+    public void runIntakeAutomation(double humanSlide, boolean humanUp, boolean humanDown, boolean humanDone) {
+        
+        if (intakeState == IntakeState.PREP && lastIntakeState != IntakeState.PREP) {
+            expandoHorizL.setMode(RUN_TO_POSITION);
+            expandoHorizR.setMode(RUN_TO_POSITION);
+            setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_DOWN);
+            expandoHorizL.setPower(1);
+            expandoHorizR.setPower(1);
+            horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
+            horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
+            horizSpinL.setPower(0);
+            horizSpinR.setPower(0);
+        }
+        else if (intakeState == IntakeState.HUMAN && lastIntakeState != IntakeState.HUMAN) {
+            expandoHorizL.setPower(0);
+            expandoHorizL.setPower(0);
+            expandoHorizL.setMode(RUN_WITHOUT_ENCODER);
+            expandoHorizR.setMode(RUN_WITHOUT_ENCODER);
+        }
+        else if (intakeState == IntakeState.IN1 && lastIntakeState != IntakeState.IN1) {
+            expandoHorizL.setMode(RUN_TO_POSITION);
+            expandoHorizR.setMode(RUN_TO_POSITION);
+            setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_SAFE)
+            expandoHorizL.setPower(-1);
+            expandoHorizR.setPower(-1);
+            horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+            horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+        }
+        else if (intakeState == IntakeState.IN2 && lastIntakeState != IntakeState.IN2) {
+            in2Timer = System.currentTimeMillis();
+            horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_DUMPING);
+            horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_DUMPING);
+        }
+        else if (intakeState == IntakeState.TRANSFER && lastIntakeState != IntakeState.TRANSFER) {
+            transferTimer = System.currentTimeMillis();
+            horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+            horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+        }
+
+        lastIntakeState = intakeState;
+
+        if (intakeState == IntakeState.PREP) {
+            boolean done = (!expandoHorizL.isBusy() || !expandoHorizR.isBusy());
+            if (done) {
+                expandoHorizL.setPower(0);
+                expandoHorizR.setPower(0);
+            }
+            if (done && (automationState != AutomationState.UP && automationState != automationState.DROP)) {
+                intakeState == IntakeState.HUMAN;
+        }
+        else if (intakeState == IntakeState.HUMAN) {
+        }
+        else if (intakeState == IntakeState.IN1) {
+            if ((expandoHorizL.getCurrentPosition() + expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
+                intakeState == IntakeState.IN2;
+            }
+        }
+        else if (intakeState == IntakeState.IN2) {
+            boolean done = (!expandoHorizL.isBusy() || !expandoHorizR.isBusy());
+            if (done) {
+                expandoHorizL.setPower(0);
+                expandoHorizR.setPower(0);
+            }
+            if (done && System.currentTimeMillis() > in2Timer + MarvConstantsV3.EHSM_UP) {
+                intakeState == IntakeState.TRANSFER;
+            }
+        }
+        else if (intakeState == IntakeState.TRANSFER) {
+            if (System.currentTimeMillis() > transferTimer + MarvConstantsV3.EHSM_TRANSFER) {
+                intakeState = IntakeState.PREP;
+            }
+        }
+    }
+
+    private void setExpandoHorizRelative(int target) {
+        int avg = (int)((expandoHorizL.getCurrentPosition() + expandoHorizR.getCurrentPosition()) / 2.0);
+        int d = target - d;
+        expandoHorizL.setTargetPosition(expandoHorizL.getCurrentPosition() + d);
+        expandoHorizR.setTargetPosition(expandoHorizR.getCurrentPosition() + d);
+    }
+
     long dropTimer;
     long undropTimer;
     long stalinTimer;
@@ -281,4 +368,8 @@ public class MarvXCommonV3 {
 
     int dCount;
 
+    // -----
+
+    long in2Timer;
+    long transferTimer;
 }
