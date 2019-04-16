@@ -95,14 +95,15 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {2.5, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, false);
+        apGoTo(new double[] {-36, 11, 0}, 11*Math.PI / 16, true, false, true);
         halt();
 
-        while (opModeIsActive()){
+        /*while (opModeIsActive()){
             autopilot.communicate(quadPacer); 
             autopilot.telemetryUpdate();
             telemetry.addData("pos", marv.expandoVert.getCurrentPosition());
             telemetry.update();
-        }
+        }*/
 
     }
 
@@ -117,11 +118,11 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.fail = "n/a";
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
-        seg.navigationGain = 0.035;
+        seg.navigationGain = 0.025;
         seg.orientationGain = 2.35;
-        seg.navigationMax = 0.50; // 0.35
+        seg.navigationMax = 0.50;
         seg.navigationMin = 0.25;
-        seg.orientationMax = 0.30;
+        seg.orientationMax = 0.50;
         seg.useOrientation = useOrientation;
         seg.useTranslation = useTranslation;
         seg.fullStop = fullStop;
