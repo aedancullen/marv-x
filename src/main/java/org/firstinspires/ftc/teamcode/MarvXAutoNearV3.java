@@ -7,10 +7,12 @@ import com.evolutionftc.autopilot.AutopilotTracker;
 import com.evolutionftc.autopilot.AutopilotTrackerQP37i;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
+@Autonomous(name="Near")
 public class MarvXAutoNearV3 extends LinearOpMode {
 
-    public static double[] ROBOT_INIT_POSITION;
+    public static double[] ROBOT_INIT_POSITION = new double[3];
     public static double[] ROBOT_INIT_ATTITUDE = new double[]{-Math.PI/2, 0, 0};
 
     MarvXCommonV3 marv;
