@@ -38,7 +38,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         marv.imu.initialize(parameters);
 
         autopilot = new AutopilotHost(telemetry);
-        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV3.QUADPACER_POS, MarvConstantsV3.QUADPACER_TPU, marv.imu, 1);
+        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV3.QUADPACER_POS, MarvConstantsV3.QUADPACER_TPU, marv.imu, MarvConstantsV3.QUADPACER_SUBSTEPS);
         ((AutopilotTrackerQP37i)quadPacer).setInverts(false, false);
         autopilot.setCountsToStable(MarvConstantsV3.AP_COUNTS_TO_STABLE);
         autopilot.setNavigationUnitsToStable(MarvConstantsV3.AP_NAV_UNITS_TO_STABLE);
@@ -92,18 +92,21 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
-        apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
+        /*apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {2.5, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, false);
-        apGoTo(new double[] {-36, 11, 0}, 11*Math.PI / 16, true, false, true);
-        halt();
+        apGoTo(new double[] {-36, 15, 0}, 11.3*Math.PI / 16, true, false, true);
+        halt();*/
 
-        /*while (opModeIsActive()){
-            autopilot.communicate(quadPacer); 
+        long lastTime = System.currentTimeMillis();
+        while (opModeIsActive()){
+            autopilot.communicate(quadPacer);
+            long timeNow = System.currentTimeMillis();
+            telemetry.addData("FPS", 1000.0 / (timeNow - lastTime));
+            lastTime = timeNow; 
             autopilot.telemetryUpdate();
-            telemetry.addData("pos", marv.expandoVert.getCurrentPosition());
             telemetry.update();
-        }*/
+        }
 
     }
 
@@ -131,12 +134,17 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         autopilot.setNavigationStatus(AutopilotHost.NavigationStatus.RUNNING);
 
         double [] yxh = null;
+        long lastTime = System.currentTimeMillis();
 
         while (autopilot.getNavigationStatus() == AutopilotHost.NavigationStatus.RUNNING && opModeIsActive()) {
             if (yxh != null) {
                 marv.drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
             }
             autopilot.communicate(quadPacer);
+
+            long timeNow = System.currentTimeMillis();
+            telemetry.addData("FPS", 1000.0 / (timeNow - lastTime));
+            lastTime = timeNow;
 
             autopilot.telemetryUpdate();
             telemetry.update();
