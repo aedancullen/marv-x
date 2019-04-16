@@ -296,13 +296,13 @@ public class MarvXCommonV3 {
             horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizSpinL.setPower(0);
             horizSpinR.setPower(0);
-            transferDone = true;
         }
         else if (intakeState == IntakeState.HUMAN && lastIntakeState != IntakeState.HUMAN) {
             expandoHorizL.setPower(0);
             expandoHorizL.setPower(0);
             expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             expandoHorizR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            transferDone = true;
         }
         else if (intakeState == IntakeState.IN1 && lastIntakeState != IntakeState.IN1) {
             expandoHorizL.setMode(DcMotor.RunMode.RUN_TO_POSITION);

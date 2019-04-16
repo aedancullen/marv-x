@@ -18,7 +18,7 @@ public class MarvConstantsV3 {
     public static int EXPANDO_DIAG_SAFE_POSITION = 300;
 
     public static double EXPANDO_DIAG_UP_POWER = 1.0;
-    public static double EXPANDO_DIAG_SAFE_POWER = 1.0;
+    public static double EXPANDO_DIAG_SAFE_POWER = 0.75;
     public static double EXPANDO_DIAG_STALIN_POWER = 0.1;
 
     public static long EXPANDO_DIAG_STALIN_TIME = 500;
@@ -63,7 +63,7 @@ public class MarvConstantsV3 {
 
     // new expando-horiz state machine - timings in millis
 
-    public static long EHSM_UP = 300;
-    public static long EHSM_TRANSFER = 300;
+    public static long EHSM_UP = 500;
+    public static long EHSM_TRANSFER = 250;
 
 }
