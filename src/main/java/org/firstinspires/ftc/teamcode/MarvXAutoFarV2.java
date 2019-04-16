@@ -13,7 +13,7 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="AutoFar V2")
+//@Autonomous(name="AutoFar V2")
 public class MarvXAutoFarV2 extends LinearOpMode {
 
     MarvXCommonV2 marv;

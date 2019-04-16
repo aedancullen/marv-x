@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Autonomous(name="MarvXNothingAutoV2")
+//@Autonomous(name="MarvXNothingAutoV2")
 public class MarvXNothingAutoV2 extends LinearOpMode {
 
     MarvXCommonV2 marv;

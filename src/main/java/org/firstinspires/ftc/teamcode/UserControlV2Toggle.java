@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.PwmControl;
 
 import org.firstinspires.ftc.teamcode.MarvXCommonV2;
 
-@TeleOp(name="UserControlV2 TOGGLE")
+//@TeleOp(name="UserControlV2 TOGGLE")
 public class UserControlV2Toggle extends OpMode {
 
     static double LP_HORIZ_M = .33;

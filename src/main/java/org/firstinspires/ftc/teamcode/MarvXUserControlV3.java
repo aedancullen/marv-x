@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name="UserControl 3")
+//@TeleOp(name="UserControl 3")
 public class MarvXUserControlV3 extends OpMode {
 
     static double LP_HORIZ_M = .33;
@@ -26,13 +26,6 @@ public class MarvXUserControlV3 extends OpMode {
 
     public void init() {
         marv = new MarvXCommonV3(hardwareMap, false);
-    }
-
-    public void start() {
-        marv.horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
-        marv.horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
-        marv.drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
-        marv.swop.setPosition(MarvConstantsV3.SWOP_ANGLE_NORMAL);
     }
 
     public void loop() {

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name="DistTest")
+//@TeleOp(name="DistTest")
 public class DistTest extends OpMode {
 
     Rev2mDistanceSensor dist;

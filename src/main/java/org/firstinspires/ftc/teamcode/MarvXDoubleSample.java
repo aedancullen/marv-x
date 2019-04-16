@@ -13,7 +13,7 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="Auto Double")
+//@Autonomous(name="Auto Double")
 public class MarvXDoubleSample extends LinearOpMode {
 
     MarvXCommonV2 marv;

@@ -13,7 +13,7 @@ import com.sun.tools.javac.code.Types;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@Autonomous(name="JustDropAuto")
+//@Autonomous(name="JustDropAuto")
 public class JustDropAuto extends LinearOpMode {
 
     MarvXCommonV2 marv;

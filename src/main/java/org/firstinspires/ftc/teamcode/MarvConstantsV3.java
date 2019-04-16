@@ -17,8 +17,8 @@ public class MarvConstantsV3 {
 
     public static int EXPANDO_DIAG_SAFE_POSITION = 300;
 
-    public static double EXPANDO_DIAG_UP_POWER = 0.75;
-    public static double EXPANDO_DIAG_SAFE_POWER = 0.75;
+    public static double EXPANDO_DIAG_UP_POWER = 1.0;
+    public static double EXPANDO_DIAG_SAFE_POWER = 1.0;
     public static double EXPANDO_DIAG_STALIN_POWER = 0.22;
 
     public static long EXPANDO_DIAG_STALIN_TIME = 500;
@@ -37,14 +37,14 @@ public class MarvConstantsV3 {
     public static double SWOP_ANGLE_SWOPPED;
 
     public static int EXPANDO_HORIZ_UP = 1800;
-    public static int EXPANDO_HORIZ_DOWN = 50;
-    public static int EXPANDO_HORIZ_SAFE = 390;
+    public static int EXPANDO_HORIZ_DOWN = 115;
+    public static int EXPANDO_HORIZ_SAFE = 370;
     public static int EXPANDO_HORIZ_FLYING_LIMIT = EXPANDO_HORIZ_UP / 2;
 
-    public static double HORIZ_LIFT_UP_NEUTRAL = .42;
-    public static double HORIZ_LIFT_UP_WAITING = .90;
+    public static double HORIZ_LIFT_UP_NEUTRAL = .38;
+    public static double HORIZ_LIFT_UP_WAITING = .68;
     public static double HORIZ_LIFT_UP_DUMPING = .90;
-    public static double HORIZ_LIFT_DOWN = 0.16;
+    public static double HORIZ_LIFT_DOWN = 0.14;
 
 
     // UC stuff
@@ -53,17 +53,17 @@ public class MarvConstantsV3 {
     public static long UC_HORIZLIFT_TOWAIT_MS = 500;
     public static long UC_HORIZLIFT_TODUMP_MS = 0;
 
-    public static double UC_HORIZSPIN_EJECT = 0.75;
-    public static double UC_HORIZSPIN_INTAKE = 0.75;
-    public static double UC_HORIZSPIN_TRANSFER = 0.75;
-    public static double UC_HORIZSPIN_HOLD = 0.0;
+    public static double UC_HORIZSPIN_EJECT = 0.85;
+    public static double UC_HORIZSPIN_INTAKE = 0.85;
+    public static double UC_HORIZSPIN_TRANSFER = 0.85;
+    public static double UC_HORIZSPIN_HOLD = 0.15;
 
     public static int UC_EXPANDOHORIZ_BUF = 50;
 
 
     // new expando-horiz state machine - timings in millis
 
-    public static long EHSM_UP = 500;
+    public static long EHSM_UP = 300;
     public static long EHSM_TRANSFER = 250;
 
 }

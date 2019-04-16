@@ -35,7 +35,7 @@ public class MarvXCommonV3 {
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
-    enum AutomationState{STALIN, READY, UP, DROP, UNDROP, DOWN, PAUSE}
+    enum AutomationState{STALIN, READY, UP, UPHOLD, DROP, UNDROP, DOWN, PAUSE}
     public enum DropTarget{FAR, NEAR, MID}
 
     public DropTarget dropTarget = DropTarget.NEAR;
@@ -184,19 +184,16 @@ public class MarvXCommonV3 {
         else if (automationState == AutomationState.UP && lastAutomationState != AutomationState.UP) {
             expandoDiag.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             if (dropTarget == DropTarget.NEAR) {
-                expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_UP_NEAR_POSITION);
                 expandoDiagUpChosenPosition = MarvConstantsV3.EXPANDO_DIAG_UP_NEAR_POSITION;
             }
             else if (dropTarget == DropTarget.FAR) {
-                expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_UP_FAR_POSITION);
                 expandoDiagUpChosenPosition = MarvConstantsV3.EXPANDO_DIAG_UP_FAR_POSITION;
             }
             else if (dropTarget == DropTarget.MID) {
-                expandoDiag.setTargetPosition(MarvConstantsV3.EXPANDO_DIAG_UP_MID_POSITION);
                 expandoDiagUpChosenPosition = MarvConstantsV3.EXPANDO_DIAG_UP_MID_POSITION;
             }
 
-            // NOTE: power set below
+            expandoDiag.setPower(MarvConstantsV3.EXPANDO_DIAG_UP_POWER);
         }
         else if (automationState == AutomationState.DROP && lastAutomationState != AutomationState.DROP) {
             if (dropTarget == DropTarget.NEAR) {
@@ -217,6 +214,7 @@ public class MarvXCommonV3 {
             undropTimer = System.currentTimeMillis();
         }
         else if (automationState == AutomationState.DOWN && lastAutomationState != AutomationState.DOWN) {
+            drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
             expandoDiag.setPower(0);
             expandoDiag.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             expandoDiag.setPower(-MarvConstantsV3.EXPANDO_DIAG_SAFE_POWER);
@@ -250,15 +248,16 @@ public class MarvXCommonV3 {
         else if (automationState == AutomationState.UP) {
             if (expandoDiag.getCurrentPosition() >= expandoDiagUpChosenPosition) {
                 expandoDiag.setPower(0);
+                int posAtStop = expandoDiag.getCurrentPosition();
                 expandoDiag.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                expandoDiag.setTargetPosition(expandoDiag.getCurrentPosition());
+                expandoDiag.setTargetPosition(posAtStop + 50); // bleh
                 expandoDiag.setPower(1);
-                if (goDrop) {
-                    automationState = AutomationState.DROP;
-                }
+                automationState = AutomationState.UPHOLD;
             }
-            else {
-                expandoDiag.setPower(MarvConstantsV3.EXPANDO_DIAG_UP_POWER);
+        }
+        else if (automationState == AutomationState.UPHOLD) {
+            if (goDrop) {
+                automationState = AutomationState.DROP;
             }
         }
         else if (automationState == AutomationState.DROP) {
@@ -291,8 +290,8 @@ public class MarvXCommonV3 {
             expandoHorizL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             expandoHorizR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_DOWN);
-            expandoHorizL.setPower(1);
-            expandoHorizR.setPower(1);
+            expandoHorizL.setPower(0.25);
+            expandoHorizR.setPower(0.25);
             horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizSpinL.setPower(0);
@@ -333,7 +332,7 @@ public class MarvXCommonV3 {
                 expandoHorizL.setPower(0);
                 expandoHorizR.setPower(0);
             }
-            if (done && (automationState != AutomationState.UP && automationState != automationState.DROP)) {
+            if (done && (automationState != AutomationState.UP && automationState != AutomationState.UPHOLD && automationState != automationState.DROP)) {
                 intakeState = IntakeState.HUMAN;
             }
         }
@@ -369,7 +368,7 @@ public class MarvXCommonV3 {
                     expandoHorizR.setPower(humanSlide);
                 }
             }
-            else if (humanSlide < 0 && pos > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
+            else if (humanSlide < 0 && pos > MarvConstantsV3.EXPANDO_HORIZ_SAFE) {
                 expandoHorizL.setPower(humanSlide);
                 expandoHorizR.setPower(humanSlide);
             }
@@ -381,8 +380,12 @@ public class MarvXCommonV3 {
             if (humanUp && pos < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
                 horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
                 horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
+                horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+                horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
             }
             if (humanDown) {
+                horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+                horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
                 horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
                 horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
             }
