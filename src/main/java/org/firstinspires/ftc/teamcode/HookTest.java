@@ -24,6 +24,8 @@ public class HookTest extends OpMode {
         else {
             hook.setPower(0);
         }
+        telemetry.addData("hook", hook.getCurrentPosition());
+        telemetry.update();
     }
 
 }

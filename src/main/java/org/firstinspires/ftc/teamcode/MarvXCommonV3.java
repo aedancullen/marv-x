@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PwmControl;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoControllerEx;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 
 public class MarvXCommonV3 {
 
@@ -32,6 +33,8 @@ public class MarvXCommonV3 {
 
     Servo drop;
     Servo swop;
+
+    AnalogInput dist;
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
@@ -102,6 +105,8 @@ public class MarvXCommonV3 {
     }
 
     public MarvXCommonV3(HardwareMap hardwareMap, boolean isAuto) {
+        dist = hardwareMap.analogInput.get("dist");
+
         fr = hardwareMap.dcMotor.get("fr");
         fr.setDirection(DcMotorSimple.Direction.REVERSE);
 

@@ -46,6 +46,10 @@ public class MarvConstantsV3 {
     public static double HORIZ_LIFT_UP_DUMPING = .90;
     public static double HORIZ_LIFT_DOWN = 0.14;
 
+    // expando vert
+
+    public static int EXPANDO_VERT_STOP = 7300;
+
 
     // UC stuff
 

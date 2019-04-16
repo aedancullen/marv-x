@@ -19,10 +19,13 @@ public class MarvXAutoNearV3 extends LinearOpMode {
     AutopilotHost autopilot;
     AutopilotTracker quadPacer;
 
+    enum HookState{OPEN,LOCK}
+    HookState hookState = HookState.LOCK;
+
     int res;
 
     public void runOpMode() {
-        marv = new MarvXCommonV3(hardwareMap, true);
+        marv = new MarvXCommonV3(hardwareMap, false);
         mineralFind = new MineralFind(hardwareMap);
 
         marv.imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -48,19 +51,56 @@ public class MarvXAutoNearV3 extends LinearOpMode {
                 res = detect;
             }
             telemetry.addData("Mineral", res);
+
+            telemetry.addData("Press BACK to OPEN","");
+            telemetry.addData("Press a JOYSTICK to LOCK","");
             telemetry.update();
             if (isStopRequested()) {
                 mineralFind.detectStopInternal();
                 return;
             }
+
+            if (gamepad2.back) {
+                hookState = HookState.OPEN;
+            }
+            else if (gamepad2.right_stick_button || gamepad2.left_stick_button) {
+                hookState = HookState.LOCK;
+            }
+
+            if (hookState == HookState.OPEN) {
+                if (marv.expandoVert.getCurrentPosition() > -2000) {
+                     marv.expandoVert.setPower(-1);
+                }
+                else {marv.expandoVert.setPower(0);}
+            }
+            else if (hookState == HookState.LOCK) {
+                if (marv.expandoVert.getCurrentPosition() < -5) {
+                    marv.expandoVert.setPower(1);
+                }
+                else {marv.expandoVert.setPower(0);}
+            }
         }
 
         mineralFind.detectStopInternal();
 
-        // drop routine aqui
+        marv.expandoVert.setPower(-1);
+        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && dropRangeIsOk()) {idle();}
+        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && dropRangeIsOk()) {idle();}
+        marv.expandoVert.setPower(0);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
+        while (opModeIsActive()){
+            autopilot.communicate(quadPacer); 
+            autopilot.telemetryUpdate();
+            telemetry.addData("pos", marv.expandoVert.getCurrentPosition());
+            telemetry.update();
+        }
+
+    }
+
+    private boolean dropRangeIsOk() {
+        return (marv.expandoVert.getCurrentPosition() > -MarvConstantsV3.EXPANDO_VERT_STOP);
     }
 
     public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop) {
@@ -90,8 +130,8 @@ public class MarvXAutoNearV3 extends LinearOpMode {
             }
             autopilot.communicate(quadPacer);
 
-            //autopilot.telemetryUpdate();
-            //telemetry.update();
+            autopilot.telemetryUpdate();
+            telemetry.update();
             //AutopilotSystem.visualizerBroadcastRoutine(autopilot);
 
            yxh = autopilot.navigationTick();
