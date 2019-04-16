@@ -56,10 +56,10 @@ public class MarvXCommonV3 {
 
 
     public DcMotor getQuadPacerMotorX() {
-        return bl;
+        return br;
     }
     public DcMotor getQuadPacerMotorY() {
-        return br;
+        return bl;
     }
 
     public void drive(

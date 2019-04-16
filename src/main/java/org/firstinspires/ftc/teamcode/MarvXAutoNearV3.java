@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="Near")
 public class MarvXAutoNearV3 extends LinearOpMode {
 
-    public static double[] ROBOT_INIT_POSITION = new double[3];
-    public static double[] ROBOT_INIT_ATTITUDE = new double[]{-Math.PI/2, 0, 0};
+    public static double[] ROBOT_INIT_POSITION = new double[]{1, 0, 0};
+    public static double[] ROBOT_INIT_ATTITUDE = new double[]{-Math.PI / 2, 0, 0};
 
     MarvXCommonV3 marv;
     MineralFind mineralFind;
@@ -38,11 +38,11 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         marv.imu.initialize(parameters);
 
         autopilot = new AutopilotHost(telemetry);
-        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV2.QUADPACER_POS, MarvConstantsV2.QUADPACER_TPU, marv.imu, 1);
-        ((AutopilotTrackerQP37i)quadPacer).setInverts(true, false);
-        autopilot.setCountsToStable(MarvConstantsV2.AP_COUNTS_TO_STABLE);
-        autopilot.setNavigationUnitsToStable(MarvConstantsV2.AP_NAV_UNITS_TO_STABLE);
-        autopilot.setOrientationUnitsToStable(MarvConstantsV2.AP_ORIENT_UNITS_TO_STABLE);
+        quadPacer = new AutopilotTrackerQP37i(marv.getQuadPacerMotorX(), marv.getQuadPacerMotorY(), MarvConstantsV3.QUADPACER_POS, MarvConstantsV3.QUADPACER_TPU, marv.imu, 1);
+        ((AutopilotTrackerQP37i)quadPacer).setInverts(false, false);
+        autopilot.setCountsToStable(MarvConstantsV3.AP_COUNTS_TO_STABLE);
+        autopilot.setNavigationUnitsToStable(MarvConstantsV3.AP_NAV_UNITS_TO_STABLE);
+        autopilot.setOrientationUnitsToStable(MarvConstantsV3.AP_ORIENT_UNITS_TO_STABLE);
 
         mineralFind.detectInitInternal();
         mineralFind.tfod.activate();
@@ -85,12 +85,17 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
         mineralFind.detectStopInternal();
 
-        marv.expandoVert.setPower(-1);
+        /*marv.expandoVert.setPower(-1);
         while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && dropRangeIsOk()) {idle();}
         while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && dropRangeIsOk()) {idle();}
-        marv.expandoVert.setPower(0);
+        marv.expandoVert.setPower(0);*/
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
+
+        apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
+        apGoTo(new double[] {2.5, 15, 0}, -Math.PI / 2, true, true, false);
+        apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, false);
+        halt();
 
         while (opModeIsActive()){
             autopilot.communicate(quadPacer); 
@@ -112,9 +117,9 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.fail = "n/a";
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
-        seg.navigationGain = 0.035; // something
-        seg.orientationGain = 2.35; // something
-        seg.navigationMax = 0.35;
+        seg.navigationGain = 0.035;
+        seg.orientationGain = 2.35;
+        seg.navigationMax = 0.50; // 0.35
         seg.navigationMin = 0.25;
         seg.orientationMax = 0.30;
         seg.useOrientation = useOrientation;
