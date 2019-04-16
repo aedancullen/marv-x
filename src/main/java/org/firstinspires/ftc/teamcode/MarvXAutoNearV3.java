@@ -63,7 +63,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     }
 
-    public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation) {
+    public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop) {
         AutopilotSegment seg = new AutopilotSegment();
         seg.id = "goToSeg";
         seg.success = "n/a";
@@ -77,20 +77,28 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.orientationMax = 0.30;
         seg.useOrientation = useOrientation;
         seg.useTranslation = useTranslation;
+        seg.fullStop = fullStop;
 
         autopilot.setNavigationTarget(seg);
         autopilot.setNavigationStatus(AutopilotHost.NavigationStatus.RUNNING);
 
+        double [] yxh = null;
+
         while (autopilot.getNavigationStatus() == AutopilotHost.NavigationStatus.RUNNING && opModeIsActive()) {
+            if (yxh != null) {
+                marv.drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
+            }
             autopilot.communicate(quadPacer);
 
             //autopilot.telemetryUpdate();
             //telemetry.update();
             //AutopilotSystem.visualizerBroadcastRoutine(autopilot);
 
-            double[] yxh = autopilot.navigationTick();
-            marv.drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
+           yxh = autopilot.navigationTick();
         }
+    }
+
+    public void halt() {
         marv.drive(0, 0, 0, 0);
     }
 }
