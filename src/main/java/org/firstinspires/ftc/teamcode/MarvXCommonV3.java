@@ -334,7 +334,7 @@ public class MarvXCommonV3 {
                 intakeState = IntakeState.HUMAN;
             }
         }
-        else if (intakeState == IntakeState.HUMAN) { if (automationState != AutomationState.UP && automationState != AutomationState.UPHOLD && automationState != AutomationState.DROP) {
+        else if (intakeState == IntakeState.HUMAN) { if (!transferDone && automationState != AutomationState.UP && automationState != AutomationState.UPHOLD && automationState != AutomationState.DROP) {
 
             if (go) {
                 intakeState = IntakeState.IN1;
