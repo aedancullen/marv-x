@@ -14,6 +14,8 @@ public class MarvXUserControlV4 extends OpMode {
 
     MarvXCommonV3 marv;
 
+    boolean transferPrimed = false;
+
     public void init() {
         marv = new MarvXCommonV3(hardwareMap, false);
     }
@@ -69,7 +71,7 @@ public class MarvXUserControlV4 extends OpMode {
         else {
             transferGo = false;
         }
-        marv.runAutomation(marv.transferGo, !gamepad2.back);
+        marv.runAutomation(transferGo, !gamepad2.back);
 
     }
 
