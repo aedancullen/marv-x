@@ -250,7 +250,7 @@ public class MarvXCommonV3 {
                 expandoDiag.setPower(0);
                 int posAtStop = expandoDiag.getCurrentPosition();
                 expandoDiag.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                expandoDiag.setTargetPosition(posAtStop + 50); // bleh
+                expandoDiag.setTargetPosition(posAtStop + 25); // bleh
                 expandoDiag.setPower(1);
                 automationState = AutomationState.UPHOLD;
             }
@@ -320,8 +320,8 @@ public class MarvXCommonV3 {
         }
         else if (intakeState == IntakeState.TRANSFER && lastIntakeState != IntakeState.TRANSFER) {
             transferTimer = System.currentTimeMillis();
-            horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
-            horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+            horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_TRANSFER);
+            horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_TRANSFER);
         }
 
         lastIntakeState = intakeState;
