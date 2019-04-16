@@ -19,13 +19,13 @@ public class MarvConstantsV3 {
 
     public static double EXPANDO_DIAG_UP_POWER = 1.0;
     public static double EXPANDO_DIAG_SAFE_POWER = 1.0;
-    public static double EXPANDO_DIAG_STALIN_POWER = 0.2;
+    public static double EXPANDO_DIAG_STALIN_POWER = 0.1;
 
     public static long EXPANDO_DIAG_STALIN_TIME = 500;
     public static long EXPANDO_DIAG_DROP_TIME = 1000;
     public static long EXPANDO_DIAG_UNDROP_TIME = 300;
 
-    public static long EXPANDO_DIAG_PAUSE_TIME = 500;
+    public static long EXPANDO_DIAG_PAUSE_TIME = 300;
 
 
     public static double DROP_ANGLE_FLAT = 0.5;
@@ -55,7 +55,7 @@ public class MarvConstantsV3 {
 
     public static double UC_HORIZSPIN_EJECT = 0.85;
     public static double UC_HORIZSPIN_INTAKE = 0.85;
-    public static double UC_HORIZSPIN_TRANSFER = 0.35;
+    public static double UC_HORIZSPIN_TRANSFER = 0.85;
     public static double UC_HORIZSPIN_HOLD = 0.15;
 
     public static int UC_EXPANDOHORIZ_BUF = 50;

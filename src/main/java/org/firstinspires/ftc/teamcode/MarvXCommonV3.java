@@ -290,13 +290,13 @@ public class MarvXCommonV3 {
             expandoHorizL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             expandoHorizR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_DOWN);
-            expandoHorizL.setPower(0.25);
-            expandoHorizR.setPower(0.25);
+            expandoHorizL.setPower(1);
+            expandoHorizR.setPower(1);
             horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizSpinL.setPower(0);
             horizSpinR.setPower(0);
-            transferDone = true; // evil side effect
+            transferDone = true;
         }
         else if (intakeState == IntakeState.HUMAN && lastIntakeState != IntakeState.HUMAN) {
             expandoHorizL.setPower(0);
@@ -401,7 +401,7 @@ public class MarvXCommonV3 {
                 expandoHorizL.setPower(0);
                 expandoHorizR.setPower(0);
             }
-            if (done && System.currentTimeMillis() > in2Timer + MarvConstantsV3.EHSM_UP) {
+            if (done && System.currentTimeMillis() > in2Timer + MarvConstantsV3.EHSM_UP && automationState == AutomationState.READY) {
                 intakeState = IntakeState.TRANSFER;
             }
         }
