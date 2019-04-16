@@ -250,7 +250,7 @@ public class MarvXCommonV3 {
                 expandoDiag.setPower(0);
                 int posAtStop = expandoDiag.getCurrentPosition();
                 expandoDiag.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                expandoDiag.setTargetPosition(posAtStop + 25); // bleh
+                expandoDiag.setTargetPosition(posAtStop + 50); // bleh
                 expandoDiag.setPower(1);
                 automationState = AutomationState.UPHOLD;
             }
@@ -331,12 +331,11 @@ public class MarvXCommonV3 {
             if (done) {
                 expandoHorizL.setPower(0);
                 expandoHorizR.setPower(0);
-            }
-            if (done && (automationState != AutomationState.UP && automationState != AutomationState.UPHOLD && automationState != automationState.DROP)) {
                 intakeState = IntakeState.HUMAN;
             }
         }
-        else if (intakeState == IntakeState.HUMAN) {
+        else if (intakeState == IntakeState.HUMAN) { if (automationState != AutomationState.UP && automationState != AutomationState.UPHOLD && automationState != AutomationState.DROP) {
+
             if (go) {
                 intakeState = IntakeState.IN1;
             }
@@ -389,7 +388,7 @@ public class MarvXCommonV3 {
                 horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
                 horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
             }
-        }
+        }}
         else if (intakeState == IntakeState.IN1) {
             if ((expandoHorizL.getCurrentPosition() + expandoHorizR.getCurrentPosition()) / 2.0 < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
                 intakeState = IntakeState.IN2;
