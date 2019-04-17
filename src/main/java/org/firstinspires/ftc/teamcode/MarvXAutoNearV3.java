@@ -93,11 +93,12 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
         apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
-        apGoTo(new double[] {2.5, 15/2, 0}, -Math.PI / 4, true, true, false);
-        apGoTo(new double[] {2.5, 15, 0}, Math.PI / 2, true, true, false);
-        apGoTo(new double[] {-36, 15, 0}, Math.PI / 2, true, true, false);
+        apGoTo(new double[] {2.5, 15, 0}, -Math.PI / 2, true, true, false);
+        apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, true);
         apGoTo(new double[] {-36, 15, 0}, 11.3*Math.PI / 16, true, false, true);
         halt();
+
+        while(opModeIsActive()){idle();}
 
         /*long lastTime = System.currentTimeMillis();
         while (opModeIsActive()){
@@ -123,9 +124,9 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.025;
-        seg.orientationGain = 2.35;
+        seg.orientationGain = 2.25;
         seg.navigationMax = 0.50;
-        seg.navigationMin = 0.25;
+        seg.navigationMin = 0.20;
         seg.orientationMax = 0.50;
         seg.useOrientation = useOrientation;
         seg.useTranslation = useTranslation;
@@ -139,7 +140,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
         while (autopilot.getNavigationStatus() == AutopilotHost.NavigationStatus.RUNNING && opModeIsActive()) {
             if (yxh != null) {
-                marv.drive(yxh[0], yxh[0], yxh[1], -yxh[2]);
+                marv.drive(yxh[0], yxh[0], 1.5*yxh[1], -yxh[2]);
             }
             autopilot.communicate(quadPacer);
 
