@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 public class MarvConstantsV3 {
 
     public static int QUADPACER_TPU = 150;
-    public static int QUADPACER_SUBSTEPS = 50;
+    public static int QUADPACER_SUBSTEPS = 1;
     public static double[] QUADPACER_POS = new double[] {0, -1.6, 0};
 
     public static int AP_COUNTS_TO_STABLE = 5;
@@ -49,7 +49,7 @@ public class MarvConstantsV3 {
     // expando vert
 
     public static int EXPANDO_VERT_STOP = 7300;
-
+    public static int EXPANDO_VERT_EXTRA = 100;
 
     // UC stuff
 

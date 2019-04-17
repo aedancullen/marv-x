@@ -27,7 +27,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
     int res;
 
     public void runOpMode() {
-        marv = new MarvXCommonV3(hardwareMap, false);
+        marv = new MarvXCommonV3(hardwareMap, true);
         mineralFind = new MineralFind(hardwareMap);
 
         marv.imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -88,14 +88,21 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         /*marv.expandoVert.setPower(-1);
         while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && dropRangeIsOk()) {idle();}
         while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && dropRangeIsOk()) {idle();}
+        int spos = marv.expandoVert.getCurrentPosition();
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && dropRangeIsOk()) {idle();}
         marv.expandoVert.setPower(0);*/
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
         apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {2.5, 15, 0}, -Math.PI / 2, true, true, false);
-        apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, true);
-        apGoTo(new double[] {-36, 15, 0}, 11.3*Math.PI / 16, true, false, true);
+        apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
+
+        apGoTo(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
+        sleep(1000);
+        apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
+        sleep(1000);
+        apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
         halt();
 
         while(opModeIsActive()){idle();}
