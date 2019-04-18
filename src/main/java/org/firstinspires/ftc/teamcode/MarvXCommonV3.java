@@ -330,8 +330,8 @@ public class MarvXCommonV3 {
             setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_SAFE);
             expandoHorizL.setPower(1);
             expandoHorizR.setPower(1);
-            horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
-            horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+            horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+            horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
         }
         else if (intakeState == IntakeState.IN2 && lastIntakeState != IntakeState.IN2) {
             in2Timer = System.currentTimeMillis();

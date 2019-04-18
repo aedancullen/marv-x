@@ -11,15 +11,15 @@ public class MarvConstantsV3 {
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
 
 
-    public static int EXPANDO_DIAG_UP_FAR_POSITION = 1100;
-    public static int EXPANDO_DIAG_UP_MID_POSITION = 1100;
-    public static int EXPANDO_DIAG_UP_NEAR_POSITION = 1100;
+    public static int EXPANDO_DIAG_UP_FAR_POSITION = 1025;
+    public static int EXPANDO_DIAG_UP_MID_POSITION = 1025;
+    public static int EXPANDO_DIAG_UP_NEAR_POSITION = 1200;
 
     public static int EXPANDO_DIAG_SAFE_POSITION = 300;
 
     public static double EXPANDO_DIAG_UP_POWER = 1.0;
     public static double EXPANDO_DIAG_SAFE_POWER = 0.75;
-    public static double EXPANDO_DIAG_STALIN_POWER = 0.2;
+    public static double EXPANDO_DIAG_STALIN_POWER = 0.25;
 
     public static long EXPANDO_DIAG_STALIN_TIME = 500;
     public static long EXPANDO_DIAG_DROP_TIME = 1250;
@@ -34,7 +34,7 @@ public class MarvConstantsV3 {
     public static double DROP_ANGLE_MID = 0.8-0.05;
 
     public static double SWOP_ANGLE_NORMAL = 0.492;
-    public static double SWOP_ANGLE_SWOPPED = 0.80;
+    public static double SWOP_ANGLE_SWOPPED = 0.65;
 
     public static int EXPANDO_HORIZ_UP = 1800;
     public static int EXPANDO_HORIZ_DOWN = 115;
@@ -60,7 +60,7 @@ public class MarvConstantsV3 {
     public static double UC_HORIZSPIN_EJECT = 0.85;
     public static double UC_HORIZSPIN_INTAKE = 0.85;
     public static double UC_HORIZSPIN_TRANSFER = 0.85;
-    public static double UC_HORIZSPIN_HOLD = 0.25;
+    public static double UC_HORIZSPIN_HOLD = 0.15;
 
     public static int UC_EXPANDOHORIZ_BUF = 50;
 
