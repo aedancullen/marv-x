@@ -38,21 +38,21 @@ public class MarvXCommonV3 {
 
     DcMotor.ZeroPowerBehavior lastZeroPowerBehavior;
 
-    enum AutomationState{STALIN, READY, UP, UPHOLD, DROP, UNDROP, DOWN, PAUSE}
+    public enum AutomationState{STALIN, READY, UP, UPHOLD, DROP, UNDROP, DOWN, PAUSE}
     public enum DropTarget{FAR, NEAR, MID}
 
     public DropTarget dropTarget = DropTarget.NEAR;
 
-    AutomationState automationState = AutomationState.DOWN;
-    AutomationState lastAutomationState;
+    public AutomationState automationState = AutomationState.DOWN;
+    public AutomationState lastAutomationState;
 
     // -----
 
-    enum IntakeState{PREP, HUMAN, IN1, IN2, TRANSFER}
-    IntakeState intakeState = IntakeState.PREP;
-    IntakeState lastIntakeState;
+    public enum IntakeState{PREP, HUMAN, IN1, IN2, TRANSFER}
+    public IntakeState intakeState = IntakeState.PREP;
+    public IntakeState lastIntakeState;
 
-    boolean transferDone; // automation link flag
+    public boolean transferDone; // automation link flag
 
 
     public DcMotor getQuadPacerMotorX() {
@@ -288,7 +288,10 @@ public class MarvXCommonV3 {
 
     }
 
-    public void runIntakeAutomation(double humanSlide, boolean humanUp, boolean humanDown, boolean go) {
+    enum HumanState {UP, DOWN}
+    HumanState humanState;
+
+    public void runIntakeAutomation(double humanSlide, boolean humanUp, boolean humanDown, boolean humanStop, boolean humanEject, boolean go) {
         transferDone = false;
 
         if (intakeState == IntakeState.PREP && lastIntakeState != IntakeState.PREP) {
@@ -305,6 +308,7 @@ public class MarvXCommonV3 {
         else if (intakeState == IntakeState.HUMAN && lastIntakeState != IntakeState.HUMAN) {
             expandoHorizL.setPower(0);
             expandoHorizL.setPower(0);
+            humanState = HumanState.UP;
             expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             expandoHorizR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             transferDone = true;
@@ -382,16 +386,31 @@ public class MarvXCommonV3 {
             }
 
             if (humanUp && pos < MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
+                humanState = HumanState.UP;
                 horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
                 horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_NEUTRAL);
-                horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
-                horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
             }
             if (humanDown) {
-                horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
-                horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+                humanState = HumanState.DOWN;
                 horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
                 horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_DOWN);
+            }
+
+            if (humanStop) {
+                horizSpinL.setPower(0);
+                horizSpinR.setPower(0);
+            }
+            else if (humanEject) {
+                horizSpinL.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+                horizSpinR.setPower(-MarvConstantsV3.UC_HORIZSPIN_EJECT);
+            }
+            else if (humanState == HumanState.DOWN) {
+                horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+                horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
+            }
+            else if (humanState == HumanState.UP) {
+                horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+                horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
             }
         }}
         else if (intakeState == IntakeState.IN1) {

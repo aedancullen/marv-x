@@ -58,7 +58,7 @@ public class MarvXUserControlV4 extends OpMode {
             controlDown = false;
         }
 
-        marv.runIntakeAutomation(controlSlide, controlUp, controlDown, gamepad2.a);
+        marv.runIntakeAutomation(controlSlide, controlUp, controlDown, gamepad2.dpad_down, gamepad2.dpad_up, gamepad2.a);
         if (marv.transferDone) {
             transferPrimed = true;
         }

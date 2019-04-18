@@ -39,7 +39,7 @@ public class MarvConstantsV3 {
     public static int EXPANDO_HORIZ_UP = 1800;
     public static int EXPANDO_HORIZ_DOWN = 115;
     public static int EXPANDO_HORIZ_SAFE = 370;
-    public static int EXPANDO_HORIZ_FLYING_LIMIT = EXPANDO_HORIZ_UP / 2;
+    public static int EXPANDO_HORIZ_FLYING_LIMIT = (int)(EXPANDO_HORIZ_UP*0.66);
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .38;
     public static double HORIZ_LIFT_UP_WAITING = .68;
