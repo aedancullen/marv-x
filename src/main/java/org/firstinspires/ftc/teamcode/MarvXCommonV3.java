@@ -387,7 +387,7 @@ public class MarvXCommonV3 {
                     expandoHorizR.setPower(humanSlide);
                 }
             }
-            else if (humanSlide < 0 && pos > MarvConstantsV3.EXPANDO_HORIZ_SAFE) {
+            else if (humanSlide < 0 && pos > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
                 expandoHorizL.setPower(humanSlide);
                 expandoHorizR.setPower(humanSlide);
             }
@@ -435,7 +435,7 @@ public class MarvXCommonV3 {
                 expandoHorizL.setPower(0);
                 expandoHorizR.setPower(0);
             }
-            if (done && System.currentTimeMillis() > in2Timer + MarvConstantsV3.EHSM_UP && automationState == AutomationState.READY) {
+            if (expandoHorizL.getPower() == 0 && System.currentTimeMillis() > in2Timer + MarvConstantsV3.EHSM_UP && automationState == AutomationState.READY) {
                 intakeState = IntakeState.TRANSFER;
             }
         }
