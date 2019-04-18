@@ -19,10 +19,10 @@ public class MarvConstantsV3 {
 
     public static double EXPANDO_DIAG_UP_POWER = 1.0;
     public static double EXPANDO_DIAG_SAFE_POWER = 0.75;
-    public static double EXPANDO_DIAG_STALIN_POWER = 0.1;
+    public static double EXPANDO_DIAG_STALIN_POWER = 0.2;
 
     public static long EXPANDO_DIAG_STALIN_TIME = 500;
-    public static long EXPANDO_DIAG_DROP_TIME = 1000;
+    public static long EXPANDO_DIAG_DROP_TIME = 1500;
     public static long EXPANDO_DIAG_UNDROP_TIME = 300;
 
     public static long EXPANDO_DIAG_PAUSE_TIME = 300;
@@ -33,17 +33,17 @@ public class MarvConstantsV3 {
     public static double DROP_ANGLE_FAR = 0.8-0.05;
     public static double DROP_ANGLE_MID = 0.8-0.05;
 
-    public static double SWOP_ANGLE_NORMAL;
-    public static double SWOP_ANGLE_SWOPPED;
+    public static double SWOP_ANGLE_NORMAL = 0.49;
+    public static double SWOP_ANGLE_SWOPPED = 0.81;
 
     public static int EXPANDO_HORIZ_UP = 1800;
     public static int EXPANDO_HORIZ_DOWN = 115;
-    public static int EXPANDO_HORIZ_SAFE = 370;
+    public static int EXPANDO_HORIZ_SAFE = 385; // 370
     public static int EXPANDO_HORIZ_FLYING_LIMIT = (int)(EXPANDO_HORIZ_UP*0.66);
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .38;
     public static double HORIZ_LIFT_UP_WAITING = .68;
-    public static double HORIZ_LIFT_UP_DUMPING = .90;
+    public static double HORIZ_LIFT_UP_DUMPING = .88; // .90
     public static double HORIZ_LIFT_DOWN = 0.14;
 
     // expando vert

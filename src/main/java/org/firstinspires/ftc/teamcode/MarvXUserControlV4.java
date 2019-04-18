@@ -25,10 +25,10 @@ public class MarvXUserControlV4 extends OpMode {
         horiz = (gamepad1.right_trigger * HP_HORIZ_M) - (gamepad1.left_trigger * HP_HORIZ_M);
         marv.drive(-gamepad1.left_stick_y * HP_DIFF_M, -gamepad1.right_stick_y * HP_DIFF_M, horiz);
 
-        if (gamepad2.a) {
+        if (gamepad2.x) {
             marv.dropTarget = MarvXCommonV3.DropTarget.NEAR;
         }
-        else if (gamepad2.b || gamepad2.x) {
+        else if (gamepad2.b) {
             marv.dropTarget = MarvXCommonV3.DropTarget.MID;
         }
         else if (gamepad2.y) {
