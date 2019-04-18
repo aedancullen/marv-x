@@ -28,10 +28,10 @@ public class MarvConstantsV3 {
     public static long EXPANDO_DIAG_PAUSE_TIME = 300;
 
 
-    public static double DROP_ANGLE_FLAT = 0.5;
-    public static double DROP_ANGLE_NEAR = 0.75;
-    public static double DROP_ANGLE_FAR = 0.8;
-    public static double DROP_ANGLE_MID = 0.8;
+    public static double DROP_ANGLE_FLAT = 0.5-0.05;
+    public static double DROP_ANGLE_NEAR = 0.75-0.05;
+    public static double DROP_ANGLE_FAR = 0.8-0.05;
+    public static double DROP_ANGLE_MID = 0.8-0.05;
 
     public static double SWOP_ANGLE_NORMAL;
     public static double SWOP_ANGLE_SWOPPED;
