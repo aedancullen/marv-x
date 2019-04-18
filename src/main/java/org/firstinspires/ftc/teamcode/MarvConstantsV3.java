@@ -43,7 +43,7 @@ public class MarvConstantsV3 {
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .38;
     public static double HORIZ_LIFT_UP_WAITING = .68;
-    public static double HORIZ_LIFT_UP_DUMPING = .89; // .90
+    public static double HORIZ_LIFT_UP_DUMPING = .88; // .90
     public static double HORIZ_LIFT_DOWN = 0.14;
 
     // expando vert
