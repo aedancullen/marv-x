@@ -62,6 +62,14 @@ public class MarvXCommonV3 {
         return bl;
     }
 
+    public boolean expandoVertCanDrop() {
+        return (expandoVert.getCurrentPosition() > -MarvConstantsV3.EXPANDO_VERT_STOP);
+    }
+
+    public boolean expandoVertCanLift() {
+        return (expandoVert.getCurrentPosition() < -5);
+    }
+
     public void drive(
             double vertL,
             double vertR,

@@ -21,9 +21,23 @@ public class MarvXUserControlV4 extends OpMode {
     }
 
     public void loop() {
+        double rot = 0;
+        if (gamepad1.right_bumper) {rot = LP_DIFF_M;}
+        else if (gamepad1.left_bumper) {rot = -LP_DIFF_M;}
+        
         double horiz;
         horiz = (gamepad1.right_trigger * HP_HORIZ_M) - (gamepad1.left_trigger * HP_HORIZ_M);
-        marv.drive(-gamepad1.left_stick_y * HP_DIFF_M, -gamepad1.right_stick_y * HP_DIFF_M, horiz);
+        marv.drive(-gamepad1.left_stick_y * HP_DIFF_M, -gamepad1.right_stick_y * HP_DIFF_M, horiz, rot);
+
+        if (gamepad1.a && marv.expandoVertCanLift()) {
+            marv.expandoVert.setPower(1);
+        }
+        else if (gamepad1.y && marv.expandoVertCanDrop()) {
+            marv.expandoVert.setPower(-1);
+        }
+        else {
+            marv.expandoVert.setPower(0);
+        }
 
         if (gamepad2.x) {
             marv.dropTarget = MarvXCommonV3.DropTarget.NEAR;

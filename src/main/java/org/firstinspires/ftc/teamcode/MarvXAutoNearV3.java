@@ -76,7 +76,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
                 else {marv.expandoVert.setPower(0);}
             }
             else if (hookState == HookState.LOCK) {
-                if (marv.expandoVert.getCurrentPosition() < -5) {
+                if (marv.expandoVertCanLift()) {
                     marv.expandoVert.setPower(1);
                 }
                 else {marv.expandoVert.setPower(0);}
@@ -86,10 +86,10 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         mineralFind.detectStopInternal();
 
         /*marv.expandoVert.setPower(-1);
-        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && dropRangeIsOk()) {idle();}
-        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && dropRangeIsOk()) {idle();}
+        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
+        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && dropRangeIsOk()) {idle();}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && marv.expandoVertCanDrop()) {idle();}
         marv.expandoVert.setPower(0);*/
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
@@ -129,10 +129,6 @@ public class MarvXAutoNearV3 extends LinearOpMode {
             telemetry.update();
         }*/
 
-    }
-
-    private boolean dropRangeIsOk() {
-        return (marv.expandoVert.getCurrentPosition() > -MarvConstantsV3.EXPANDO_VERT_STOP);
     }
 
     public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop) {
