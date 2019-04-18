@@ -264,6 +264,9 @@ public class MarvXCommonV3 {
             if (goDrop) {
                 automationState = AutomationState.DROP;
             }
+            if (dropTarget == DropTarget.FAR) {
+                swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
+            }
         }
         else if (automationState == AutomationState.DROP) {
             if (System.currentTimeMillis() > dropTimer + MarvConstantsV3.EXPANDO_DIAG_DROP_TIME) {
