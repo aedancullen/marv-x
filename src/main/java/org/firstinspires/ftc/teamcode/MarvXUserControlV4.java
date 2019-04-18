@@ -51,10 +51,10 @@ public class MarvXUserControlV4 extends OpMode {
 
         double controlSlide = 0;
         if (gamepad2.right_trigger > 0 && !gamepad2.right_bumper) {
-            controlSlide = gamepad2.right_trigger;
+            controlSlide = gamepad2.right_trigger * 0.66;
         }
         else if (gamepad2.right_bumper && gamepad2.right_trigger == 0) {
-            controlSlide = -0.8;
+            controlSlide = -0.66;
         }
 
         boolean controlUp;

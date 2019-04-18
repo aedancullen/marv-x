@@ -11,9 +11,9 @@ public class MarvConstantsV3 {
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
 
 
-    public static int EXPANDO_DIAG_UP_FAR_POSITION = 1025;
+    public static int EXPANDO_DIAG_UP_FAR_POSITION = 1225;
     public static int EXPANDO_DIAG_UP_MID_POSITION = 1025;
-    public static int EXPANDO_DIAG_UP_NEAR_POSITION = 1200;
+    public static int EXPANDO_DIAG_UP_NEAR_POSITION = 1025;
 
     public static int EXPANDO_DIAG_SAFE_POSITION = 300;
 
@@ -43,7 +43,7 @@ public class MarvConstantsV3 {
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .38;
     public static double HORIZ_LIFT_UP_WAITING = .68;
-    public static double HORIZ_LIFT_UP_DUMPING = .88; // .90
+    public static double HORIZ_LIFT_UP_DUMPING = .89; // .90
     public static double HORIZ_LIFT_DOWN = 0.14;
 
     // expando vert
@@ -67,7 +67,7 @@ public class MarvConstantsV3 {
 
     // new expando-horiz state machine - timings in millis
 
-    public static long EHSM_UP = 500;
-    public static long EHSM_TRANSFER = 375;
+    public static long EHSM_UP = 400;
+    public static long EHSM_TRANSFER = 400;
 
 }

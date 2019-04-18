@@ -313,8 +313,9 @@ public class MarvXCommonV3 {
             expandoHorizR.setPower(1);
             horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
-            horizSpinL.setPower(0);
-            horizSpinR.setPower(0);
+            horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+            horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
+            transferDone = true;
         }
         else if (intakeState == IntakeState.HUMAN && lastIntakeState != IntakeState.HUMAN) {
             expandoHorizL.setPower(0);
@@ -322,7 +323,7 @@ public class MarvXCommonV3 {
             humanState = HumanState.UP;
             expandoHorizL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             expandoHorizR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            transferDone = true;
+            //transferDone = true;
         }
         else if (intakeState == IntakeState.IN1 && lastIntakeState != IntakeState.IN1) {
             expandoHorizL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -330,8 +331,6 @@ public class MarvXCommonV3 {
             setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_SAFE);
             expandoHorizL.setPower(1);
             expandoHorizR.setPower(1);
-            horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
-            horizSpinR.setPower(MarvConstantsV3.UC_HORIZSPIN_INTAKE);
         }
         else if (intakeState == IntakeState.IN2 && lastIntakeState != IntakeState.IN2) {
             in2Timer = System.currentTimeMillis();
@@ -358,6 +357,7 @@ public class MarvXCommonV3 {
 
             if (go) {
                 intakeState = IntakeState.IN1;
+                humanState = HumanState.DOWN;
             }
 
             int liftState = -1;
