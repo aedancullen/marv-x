@@ -1,3 +1,4 @@
+
 package org.firstinspires.ftc.teamcode;
 
 public class MarvConstantsV3 {
@@ -15,7 +16,7 @@ public class MarvConstantsV3 {
     public static int EXPANDO_DIAG_UP_MID_POSITION = 1025;
     public static int EXPANDO_DIAG_UP_NEAR_POSITION = 1025;
 
-    public static int EXPANDO_DIAG_SAFE_POSITION = 300;
+    public static int EXPANDO_DIAG_SAFE_POSITION = 200;
 
     public static double EXPANDO_DIAG_UP_POWER = 1.0;
     public static double EXPANDO_DIAG_SAFE_POWER = 0.75;
@@ -70,4 +71,11 @@ public class MarvConstantsV3 {
     public static long EHSM_UP = 400;
     public static long EHSM_TRANSFER = 400;
 
+    // auto
+
+    public static int AUTO_MARKER;
+    public static int AUTO_SAMPLE_NEAR;
+    public static int AUTO_SAMPLE_MID;
+    public static int AUTO_SAMPLE_FAR;
+    public static int AUTO_SAMPLE_MORE;
 }

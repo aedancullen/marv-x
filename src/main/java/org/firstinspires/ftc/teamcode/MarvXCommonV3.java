@@ -309,8 +309,8 @@ public class MarvXCommonV3 {
             expandoHorizL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             expandoHorizR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             setExpandoHorizRelative(MarvConstantsV3.EXPANDO_HORIZ_DOWN);
-            expandoHorizL.setPower(1);
-            expandoHorizR.setPower(1);
+            expandoHorizL.setPower(0.25);
+            expandoHorizR.setPower(0.25);
             horizLiftL.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizLiftR.setPosition(MarvConstantsV3.HORIZ_LIFT_UP_WAITING);
             horizSpinL.setPower(MarvConstantsV3.UC_HORIZSPIN_HOLD);
