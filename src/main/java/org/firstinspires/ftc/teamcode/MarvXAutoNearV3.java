@@ -118,13 +118,10 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         }
         marv.runIntakeAutomation(0, false, false, false, true, false);
         sleep(MarvConstantsV3.EHSM_TRANSFER);
-        while (marv.intakeState != MarvXCommonV3.IntakeState.IN2) {
-            marv.runIntakeAutomation(0.0, false, false, true, false, true);
+        while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
+            marv.runIntakeAutomation(-0.66, true, false, true, false, false);
         }
-        marv.intakeState = MarvXCommonV3.IntakeState.PREP;
-        while (marv.intakeState != MarvXCommonV3.IntakeState.HUMAN) {
-            marv.runIntakeAutomation(0.0, false, false, false, false, false);
-        }
+        marv.runIntakeAutomation(0, false, false, false, true, false);
     }
 
     public void sample(int sampleTarget) {

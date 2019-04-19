@@ -26,7 +26,7 @@ public class MarvConstantsV3 {
     public static long EXPANDO_DIAG_DROP_TIME = 1250;
     public static long EXPANDO_DIAG_UNDROP_TIME = 250;
 
-    public static long EXPANDO_DIAG_PAUSE_TIME = 250;
+    public static long EXPANDO_DIAG_PAUSE_TIME = 200;
 
 
     public static double DROP_ANGLE_FLAT = 0.5-0.05;
