@@ -50,7 +50,7 @@ public class MarvConstantsV3 {
     // expando vert
 
     public static int EXPANDO_VERT_STOP = 7300;
-    public static int EXPANDO_VERT_EXTRA = 250;
+    public static int EXPANDO_VERT_EXTRA = 350;
 
     // UC stuff
 

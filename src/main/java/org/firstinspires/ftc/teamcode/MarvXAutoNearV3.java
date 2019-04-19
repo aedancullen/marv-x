@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="Near")
 public class MarvXAutoNearV3 extends LinearOpMode {
 
-    public static double[] ROBOT_INIT_POSITION = new double[]{1, 0, 0};
+    public static double[] ROBOT_INIT_POSITION = new double[]{-1, 0, 0};
     public static double[] ROBOT_INIT_ATTITUDE = new double[]{-Math.PI / 2, 0, 0};
 
     MarvXCommonV3 marv;
@@ -85,30 +85,29 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
         mineralFind.detectStopInternal();
 
-        /*marv.expandoVert.setPower(-1);
+        marv.expandoVert.setPower(-1);
         while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         int spos = marv.expandoVert.getCurrentPosition();
         while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && marv.expandoVertCanDrop()) {idle();}
         marv.expandoVert.setPower(0);
+        autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
-        apGoTo(new double[] {2.5, 0, 0}, -Math.PI / 2, false, true, false);
-        apGoTo(new double[] {2.5, 2.5, 0}, -Math.PI / 2, true, true, false);
+        apGoTo(new double[] {-2, 0, 0}, -Math.PI / 2, false, true, false);
+        apGoTo(new double[] {-2, 2, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36/2, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
 
         apGoTo(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
-        */marker();/*
+        /*marker();
         apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
-        sampleRClose();
+        sampleRClose();*/
         //apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
         halt();
 
         while(opModeIsActive()){idle();}
-
-        */
 
     }
 
