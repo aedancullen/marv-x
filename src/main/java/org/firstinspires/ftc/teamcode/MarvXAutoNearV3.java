@@ -95,15 +95,15 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
-        apGoTo(new double[] {-2, 0, 0}, -Math.PI / 2, false, true, false);
+        apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         //apGoTo(new double[] {-2, 2, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
-
+        halt();
         apGoTo(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
-        marker();
+        halt(); marker();
         apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
-        sampleRClose();
+        halt(); sampleRClose();
         apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
         halt();
 
@@ -149,10 +149,27 @@ public class MarvXAutoNearV3 extends LinearOpMode {
     }
 
     public void sampleLClose() {
+        if (res == 0) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
+        }
+        else if (res == 1 || res == -1) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_MID, true);
+        }
+        else if (res == 2) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_FAR, true);
+        }
     }
 
     public void sampleRClose() {
-        sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
+        if (res == 2) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
+        }
+        else if (res == 1 || res == -1) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_MID, true);
+        }
+        else if (res == 0) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_FAR, true);
+        }
     }
 
     public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop) {
@@ -171,9 +188,9 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.025;
-        seg.orientationGain = 2.25;
+        seg.orientationGain = 2.00;
         seg.navigationMax = 0.50;
-        seg.navigationMin = 0.20;
+        seg.navigationMin = 0.15;
         seg.orientationMax = 0.50;
         seg.useOrientation = useOrientation;
         seg.useTranslation = useTranslation;
