@@ -101,13 +101,13 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
 
         apGoTo(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
-        marker();/*
+        marker();
         apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
-        sampleRClose();*/
-        //apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
+        sampleRClose();
+        apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
         halt();
 
-        while(opModeIsActive()){idle();}
+        while(opModeIsActive()){idleIntakeAutomation();}
 
     }
 
@@ -123,23 +123,47 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         marv.runIntakeAutomation(0, true, false, true, false, false);
     }
 
-    public void sample(int sampleTarget) {
+    public void sample(int sampleTarget, boolean waitDown) {
         while (marv.expandoHorizL.getCurrentPosition() < sampleTarget) {
-            marv.runIntakeAutomation(0.66, false, false, false, false, false);
+            marv.runIntakeAutomation(0.25, false, false, false, false, false);
+            marv.runAutomation(false, false);
         }
-        marv.runIntakeAutomation(0.66, false, true, false, false, false);
+        if (!waitDown) {marv.runIntakeAutomation(0.25, false, true, false, false, false);}
+        else {
+            marv.runIntakeAutomation(0, false, true, false, false, false);
+            sleep((int)((double)MarvConstantsV3.EHSM_UP/2.0));
+            marv.runIntakeAutomation(0.25, false, false, false, false, false);
+        }
         while (marv.expandoHorizL.getCurrentPosition() < sampleTarget + MarvConstantsV3.AUTO_SAMPLE_MORE) {
-            marv.runIntakeAutomation(0.66, false, false, false, false, false);
+            marv.runIntakeAutomation(0.25, false, false, false, false, false);
+            marv.runAutomation(false, false);
         }
-        while (marv.intakeState != MarvXCommonV3.IntakeState.PREP) {
+        while (marv.intakeState != MarvXCommonV3.IntakeState.TRANSFER) {
             marv.runIntakeAutomation(0.0, false, false, false, false, true);
+            marv.runAutomation(false, false);
         }
+    }
+
+    public void idleIntakeAutomation() {
+        marv.runIntakeAutomation(0.0, false, false, false, false, false);
     }
 
     public void sampleLClose() {
     }
 
+    public void sampleRClose() {
+        sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
+    }
+
     public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop) {
+        apGoTo(pos, hdg, useOrientation, useTranslation, fullStop, false);
+    }
+
+    public void apGoToWithIdle(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop) {
+        apGoTo(pos, hdg, useOrientation, useTranslation, fullStop, true);
+    }
+
+    public void apGoTo(double[] pos, double hdg, boolean useOrientation, boolean useTranslation, boolean fullStop, boolean doIdle) {
         AutopilotSegment seg = new AutopilotSegment();
         seg.id = "goToSeg";
         seg.success = "n/a";
@@ -162,6 +186,8 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         long lastTime = System.currentTimeMillis();
 
         while (autopilot.getNavigationStatus() == AutopilotHost.NavigationStatus.RUNNING && opModeIsActive()) {
+            if (doIdle) {idleIntakeAutomation();}
+
             if (yxh != null) {
                 marv.drive(yxh[0], yxh[0], 1.5*yxh[1], -yxh[2]);
             }
