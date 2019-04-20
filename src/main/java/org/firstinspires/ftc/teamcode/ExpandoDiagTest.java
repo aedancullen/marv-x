@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp(name = "ExpandoDiagTest")
 public class ExpandoDiagTest extends OpMode {
@@ -10,6 +11,8 @@ public class ExpandoDiagTest extends OpMode {
 
     public void init() {
         marv = new MarvXCommonV3(hardwareMap, true);
+        marv.expandoHorizL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        marv.expandoHorizR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
     }
 
     public void loop() {

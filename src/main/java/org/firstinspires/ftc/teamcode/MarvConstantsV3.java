@@ -7,7 +7,7 @@ public class MarvConstantsV3 {
     public static int QUADPACER_SUBSTEPS = 1;
     public static double[] QUADPACER_POS = new double[] {0, -1.6, 0};
 
-    public static int AP_COUNTS_TO_STABLE = 5;
+    public static int AP_COUNTS_TO_STABLE = 3;
     public static double AP_NAV_UNITS_TO_STABLE = 0.7;
     public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
 
@@ -75,7 +75,7 @@ public class MarvConstantsV3 {
 
     public static int AUTO_MARKER = 1500;
     public static int AUTO_SAMPLE_NEAR = EXPANDO_HORIZ_DOWN;
-    public static int AUTO_SAMPLE_MID;
-    public static int AUTO_SAMPLE_FAR;
+    public static int AUTO_SAMPLE_MID = 650;
+    public static int AUTO_SAMPLE_FAR = EXPANDO_HORIZ_FLYING_LIMIT;
     public static int AUTO_SAMPLE_MORE = 350;
 }
