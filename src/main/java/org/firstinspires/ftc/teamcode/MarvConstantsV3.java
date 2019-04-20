@@ -73,7 +73,7 @@ public class MarvConstantsV3 {
 
     // auto
 
-    public static int AUTO_MARKER;
+    public static int AUTO_MARKER = 1500;
     public static int AUTO_SAMPLE_NEAR;
     public static int AUTO_SAMPLE_MID;
     public static int AUTO_SAMPLE_FAR;

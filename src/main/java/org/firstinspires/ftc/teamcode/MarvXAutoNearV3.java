@@ -96,12 +96,12 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
         apGoTo(new double[] {-2, 0, 0}, -Math.PI / 2, false, true, false);
-        apGoTo(new double[] {-2, 2, 0}, -Math.PI / 2, true, true, false);
-        apGoTo(new double[] {-36/2, 15, 0}, -Math.PI / 2, true, true, false);
+        //apGoTo(new double[] {-2, 2, 0}, -Math.PI / 2, true, true, false);
+        apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
 
         apGoTo(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
-        /*marker();
+        marker();/*
         apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
         sampleRClose();*/
         //apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
@@ -113,14 +113,14 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     public void marker() {
         while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_MARKER) {
-            marv.runIntakeAutomation(0.66, false, true, true, false, false);
+            marv.runIntakeAutomation(0.25, false, true, true, false, false);
         }
         marv.runIntakeAutomation(0, false, false, false, true, false);
         sleep(MarvConstantsV3.EHSM_TRANSFER);
         while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
-            marv.runIntakeAutomation(-0.66, true, false, true, false, false);
+            marv.runIntakeAutomation(-0.25, false, false, true, false, false);
         }
-        marv.runIntakeAutomation(0, false, false, false, true, false);
+        marv.runIntakeAutomation(0, true, false, true, false, false);
     }
 
     public void sample(int sampleTarget) {
