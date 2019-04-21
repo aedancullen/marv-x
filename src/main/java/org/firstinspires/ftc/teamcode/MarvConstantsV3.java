@@ -16,35 +16,35 @@ public class MarvConstantsV3 {
     public static int EXPANDO_DIAG_UP_MID_POSITION = 1025;
     public static int EXPANDO_DIAG_UP_NEAR_POSITION = 1025;
 
-    public static int EXPANDO_DIAG_SAFE_POSITION = 200;
+    public static int EXPANDO_DIAG_SAFE_POSITION = 300;
 
     public static double EXPANDO_DIAG_UP_POWER = 1.0;
     public static double EXPANDO_DIAG_SAFE_POWER = 0.75;
     public static double EXPANDO_DIAG_STALIN_POWER = 0.25;
 
-    public static long EXPANDO_DIAG_STALIN_TIME = 500;
+    public static long EXPANDO_DIAG_STALIN_TIME = 250;
     public static long EXPANDO_DIAG_DROP_TIME = 1250;
     public static long EXPANDO_DIAG_UNDROP_TIME = 250;
 
-    public static long EXPANDO_DIAG_PAUSE_TIME = 200;
+    public static long EXPANDO_DIAG_PAUSE_TIME = 250;
 
 
-    public static double DROP_ANGLE_FLAT = 0.5-0.05;
-    public static double DROP_ANGLE_NEAR = 0.75-0.05;
-    public static double DROP_ANGLE_FAR = 0.8-0.05;
-    public static double DROP_ANGLE_MID = 0.8-0.05;
+    public static double DROP_ANGLE_FLAT = 0.50;
+    public static double DROP_ANGLE_NEAR = 0.75;
+    public static double DROP_ANGLE_FAR = 0.8;
+    public static double DROP_ANGLE_MID = 0.8;
 
     public static double SWOP_ANGLE_NORMAL = 0.492;
-    public static double SWOP_ANGLE_SWOPPED = 0.65;
+    public static double SWOP_ANGLE_SWOPPED = 0.75;
 
     public static int EXPANDO_HORIZ_UP = 1800;
-    public static int EXPANDO_HORIZ_DOWN = 115;
+    public static int EXPANDO_HORIZ_DOWN = 125;
     public static int EXPANDO_HORIZ_SAFE = 385; // 370
     public static int EXPANDO_HORIZ_FLYING_LIMIT = (int)(EXPANDO_HORIZ_UP*0.66);
 
     public static double HORIZ_LIFT_UP_NEUTRAL = .38;
     public static double HORIZ_LIFT_UP_WAITING = .68;
-    public static double HORIZ_LIFT_UP_DUMPING = .88; // .90
+    public static double HORIZ_LIFT_UP_DUMPING = .885; // .90
     public static double HORIZ_LIFT_DOWN = 0.14;
 
     // expando vert
@@ -68,8 +68,8 @@ public class MarvConstantsV3 {
 
     // new expando-horiz state machine - timings in millis
 
-    public static long EHSM_UP = 400;
-    public static long EHSM_TRANSFER = 400;
+    public static long EHSM_UP = 500;
+    public static long EHSM_TRANSFER = 500;
 
     // auto
 

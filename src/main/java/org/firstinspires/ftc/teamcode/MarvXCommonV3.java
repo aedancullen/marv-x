@@ -43,7 +43,7 @@ public class MarvXCommonV3 {
 
     public DropTarget dropTarget = DropTarget.NEAR;
 
-    public AutomationState automationState = AutomationState.DOWN;
+    public AutomationState automationState = AutomationState.PAUSE;
     public AutomationState lastAutomationState;
 
     // -----
