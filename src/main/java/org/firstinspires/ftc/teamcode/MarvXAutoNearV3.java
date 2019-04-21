@@ -153,10 +153,10 @@ public class MarvXAutoNearV3 extends LinearOpMode {
             sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
         }
         else if (res == 1 || res == -1) {
-            sample(MarvConstantsV3.AUTO_SAMPLE_MID, false);
+            sample(MarvConstantsV3.AUTO_SAMPLE_MID, true);
         }
         else if (res == 2) {
-            sample(MarvConstantsV3.AUTO_SAMPLE_FAR, false);
+            sample(MarvConstantsV3.AUTO_SAMPLE_FAR, true);
         }
     }
 
@@ -168,7 +168,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
             sample(MarvConstantsV3.AUTO_SAMPLE_MID, true);
         }
         else if (res == 0) {
-            sample(MarvConstantsV3.AUTO_SAMPLE_FAR, false);
+            sample(MarvConstantsV3.AUTO_SAMPLE_FAR, true);
         }
     }
 
@@ -188,9 +188,9 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.025;
-        seg.orientationGain = 2.00;
+        seg.orientationGain = 1.92;
         seg.navigationMax = 0.50;
-        seg.navigationMin = 0.15;
+        seg.navigationMin = 0.20;
         seg.orientationMax = 0.50;
         seg.useOrientation = useOrientation;
         seg.useTranslation = useTranslation;
