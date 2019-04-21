@@ -170,6 +170,7 @@ public class MarvXCommonV3 {
         setServoExtendedRange(drop, 500, 2500);
 
         swop = hardwareMap.servo.get("swop");
+        swop.setDirection(Servo.Direction.REVERSE);
         setServoExtendedRange(swop, 500, 2500);
 
     }
@@ -274,6 +275,7 @@ public class MarvXCommonV3 {
             }
             if (dropTarget == DropTarget.FAR) {
                 swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
+                drop.setPosition(0.55);
             }
         }
         else if (automationState == AutomationState.DROP) {
