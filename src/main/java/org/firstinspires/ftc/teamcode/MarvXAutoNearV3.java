@@ -111,7 +111,10 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         marv.runIntakeAutomation(0, true, false, false, false, false);
         apGoToWithIdle(new double[] {0, 12, 0}, 0, true, true, true);
         halt(); turnsample();
-        while(opModeIsActive()){idleIntakeAutomation();}
+        apGoToWithIdle(new double[] {-2, 20, 0}, -0.07, true, true, true);
+        marv.automationState = MarvXCommonV3.AutomationState.UP;
+
+        while(opModeIsActive()){idleIntakeAutomation();marv.runAutomation(false, true);}
 
     }
 
