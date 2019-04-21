@@ -69,7 +69,7 @@ public class MarvConstantsV3 {
     // new expando-horiz state machine - timings in millis
 
     public static long EHSM_UP = 500;
-    public static long EHSM_TRANSFER = 500;
+    public static long EHSM_TRANSFER = 400;
 
     // auto
 
@@ -79,6 +79,6 @@ public class MarvConstantsV3 {
     public static int AUTO_SAMPLE_FAR = 1000;
     public static int AUTO_SAMPLE_MORE = 500;
 
-    public static double EXPANDO_DIAG_DROP_RATE;
-    public static double EXPANDO_DIAG_UNDROP_RATE;
+    public static double EXPANDO_DIAG_DROP_RATE = 0.0025;
+    public static double EXPANDO_DIAG_UNDROP_RATE = 0.0085;
 }

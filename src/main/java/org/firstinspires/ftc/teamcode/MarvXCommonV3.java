@@ -55,6 +55,7 @@ public class MarvXCommonV3 {
     public boolean transferDone; // automation link flag
 
     public double dropGoingToPosition;
+    public double swopGoingToPosition;
 
     public DcMotor getQuadPacerMotorX() {
         return br;
@@ -214,15 +215,18 @@ public class MarvXCommonV3 {
             if (dropTarget == DropTarget.NEAR) {
                 //drop.setPosition(MarvConstantsV3.DROP_ANGLE_NEAR);
                 dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_NEAR;
+                swopGoingToPosition = MarvConstantsV3.SWOP_ANGLE_NORMAL;
             }
             else if (dropTarget == DropTarget.MID) {
                 //drop.setPosition(MarvConstantsV3.DROP_ANGLE_MID);
                 dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_MID;
+                swopGoingToPosition = MarvConstantsV3.SWOP_ANGLE_NORMAL;
             }
             else if (dropTarget == DropTarget.FAR) {
                 //drop.setPosition(MarvConstantsV3.DROP_ANGLE_FAR);
                 dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_FAR;
-                swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
+                //swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
+                swopGoingToPosition = MarvConstantsV3.SWOP_ANGLE_SWOPPED;
             }
             dropTimer = System.currentTimeMillis();
         }
@@ -289,8 +293,12 @@ public class MarvXCommonV3 {
             }
             double dropPosition = drop.getPosition();
             if (dropPosition < dropGoingToPosition) {
-                drop.setPosition(dropPosition - Math.min(dropGoingToPosition-dropPosition, MarvConstantsV3.EXPANDO_DIAG_DROP_RATE));
+                drop.setPosition(dropPosition + Math.min(dropGoingToPosition-dropPosition, MarvConstantsV3.EXPANDO_DIAG_DROP_RATE));
             } 
+            double swopPosition = swop.getPosition();
+            if (swopPosition < swopGoingToPosition) {
+                swop.setPosition(swopPosition + Math.min(swopGoingToPosition-swopPosition, MarvConstantsV3.EXPANDO_DIAG_DROP_RATE));
+            }
         }
         else if (automationState == AutomationState.UNDROP) {
             if (System.currentTimeMillis() > undropTimer + MarvConstantsV3.EXPANDO_DIAG_UNDROP_TIME) {
