@@ -77,5 +77,5 @@ public class MarvConstantsV3 {
     public static int AUTO_SAMPLE_NEAR = EXPANDO_HORIZ_DOWN;
     public static int AUTO_SAMPLE_MID = 650;
     public static int AUTO_SAMPLE_FAR = 1000;
-    public static int AUTO_SAMPLE_MORE = 550;
+    public static int AUTO_SAMPLE_MORE = 650;
 }

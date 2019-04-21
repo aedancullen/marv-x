@@ -26,7 +26,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     int res = -1;
 
-    public boolean doubleSample = true;
+    public boolean doubleSample = false;
 
     public void runOpMode() {
         marv = new MarvXCommonV3(hardwareMap, true);
@@ -114,6 +114,8 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         if (sampleLCloseIsFar()) {apGoTo(new double[] {-36+7, 15+12, 0}, -Math.PI / 2 + 0.07, false, true, false);}
         halt(); sampleLClose();
 
+        apGoToWithIdle(new double[] {-36+7, 15, 0}, 0, true, true, false);
+        apGoTo(new double[] {-8, 15, 0}, 0, true, true, true);
         while(opModeIsActive()){idleIntakeAutomation();}
 
     }
