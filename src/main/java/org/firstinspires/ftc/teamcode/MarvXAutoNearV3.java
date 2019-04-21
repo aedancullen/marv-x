@@ -100,17 +100,33 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, false); // removed -36's -12, last was true
-        apGoToWithIdle(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, true, true); // middle was false
+        apGoToWithIdle(new double[] {-36-10, 15, 0}, 3*Math.PI / 4, true, true, true); // -12 to -10, middle was false
         halt(); marker();
         if (doubleSample) {
-            apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
-            if (sampleRCloseIsFar()) {apGoTo(new double[] {-36-12, 15-7, 0}, Math.PI, false, true, false);}
+            apGoToWithIdle(new double[] {-36-10, 15, 0}, Math.PI, true, false, true); // -12 to -10
+            if (sampleRCloseIsFar()) {apGoToWithIdle(new double[] {-36-10, 15-7, 0}, Math.PI, false, true, false);} // -12 to -10
             halt(); sampleRClose();
         }
-        apGoToWithIdle(new double[] {-36, 15, 0}, 0, true, true, true);
-        apGoTo(new double[] {0, 15, 0}, 0, true, true, true);
-        while(opModeIsActive()){idle();}
+        apGoToWithIdle(new double[] {-36, 12, 0}, 0, true, true, false);
+        marv.runIntakeAutomation(0, true, false, false, false, false);
+        apGoToWithIdle(new double[] {0, 12, 0}, 0, true, true, true);
+        halt(); turnsample();
+        while(opModeIsActive()){idleIntakeAutomation();}
 
+    }
+
+    public void turnsample() {
+        if (res == 0) {
+            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4, true, false, false);
+        }
+        else if (res == 1 || res == -1) {
+            // nothing
+        }
+        else if (res == 2) {
+            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4, true, false, false);
+        }
+        halt();
+        sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
     }
 
     public void marker() {
