@@ -104,7 +104,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         halt(); marker();
         apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
         halt(); sampleRClose();
-        apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2, true, true, true);
+        apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.05, true, true, true);
         halt(); sampleLClose();
 
         while(opModeIsActive()){idleIntakeAutomation();}
