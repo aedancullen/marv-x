@@ -78,4 +78,7 @@ public class MarvConstantsV3 {
     public static int AUTO_SAMPLE_MID = 650;
     public static int AUTO_SAMPLE_FAR = 1000;
     public static int AUTO_SAMPLE_MORE = 500;
+
+    public static double EXPANDO_DIAG_DROP_RATE;
+    public static double EXPANDO_DIAG_UNDROP_RATE;
 }

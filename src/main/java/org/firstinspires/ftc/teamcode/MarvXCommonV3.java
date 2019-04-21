@@ -54,6 +54,7 @@ public class MarvXCommonV3 {
 
     public boolean transferDone; // automation link flag
 
+    public double dropGoingToPosition;
 
     public DcMotor getQuadPacerMotorX() {
         return br;
@@ -211,19 +212,23 @@ public class MarvXCommonV3 {
         }
         else if (automationState == AutomationState.DROP && lastAutomationState != AutomationState.DROP) {
             if (dropTarget == DropTarget.NEAR) {
-                drop.setPosition(MarvConstantsV3.DROP_ANGLE_NEAR);
+                //drop.setPosition(MarvConstantsV3.DROP_ANGLE_NEAR);
+                dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_NEAR;
             }
             else if (dropTarget == DropTarget.MID) {
-                drop.setPosition(MarvConstantsV3.DROP_ANGLE_MID);
+                //drop.setPosition(MarvConstantsV3.DROP_ANGLE_MID);
+                dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_MID;
             }
             else if (dropTarget == DropTarget.FAR) {
-                drop.setPosition(MarvConstantsV3.DROP_ANGLE_FAR);
+                //drop.setPosition(MarvConstantsV3.DROP_ANGLE_FAR);
+                dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_FAR;
                 swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
             }
             dropTimer = System.currentTimeMillis();
         }
         else if (automationState == AutomationState.UNDROP && lastAutomationState != AutomationState.UNDROP) {
-            drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
+            //drop.setPosition(MarvConstantsV3.DROP_ANGLE_FLAT);
+            dropGoingToPosition = MarvConstantsV3.DROP_ANGLE_FLAT;
             swop.setPosition(MarvConstantsV3.SWOP_ANGLE_NORMAL);
             undropTimer = System.currentTimeMillis();
         }
@@ -282,10 +287,18 @@ public class MarvXCommonV3 {
             if (System.currentTimeMillis() > dropTimer + MarvConstantsV3.EXPANDO_DIAG_DROP_TIME) {
                 automationState = AutomationState.UNDROP;
             }
+            double dropPosition = drop.getPosition();
+            if (dropPosition < dropGoingToPosition) {
+                drop.setPosition(dropPosition - Math.min(dropGoingToPosition-dropPosition, MarvConstantsV3.EXPANDO_DIAG_DROP_RATE));
+            } 
         }
         else if (automationState == AutomationState.UNDROP) {
             if (System.currentTimeMillis() > undropTimer + MarvConstantsV3.EXPANDO_DIAG_UNDROP_TIME) {
                 automationState = AutomationState.DOWN;
+            }
+            double dropPosition = drop.getPosition();
+            if (dropPosition > dropGoingToPosition) {
+                drop.setPosition(dropPosition - Math.min(dropPosition-dropGoingToPosition, MarvConstantsV3.EXPANDO_DIAG_UNDROP_RATE));
             }
         }
         else if (automationState == AutomationState.DOWN) {
