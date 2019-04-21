@@ -76,6 +76,6 @@ public class MarvConstantsV3 {
     public static int AUTO_MARKER = 1500;
     public static int AUTO_SAMPLE_NEAR = EXPANDO_HORIZ_DOWN;
     public static int AUTO_SAMPLE_MID = 650;
-    public static int AUTO_SAMPLE_FAR = EXPANDO_HORIZ_FLYING_LIMIT;
+    public static int AUTO_SAMPLE_FAR = 1000;
     public static int AUTO_SAMPLE_MORE = 500;
 }

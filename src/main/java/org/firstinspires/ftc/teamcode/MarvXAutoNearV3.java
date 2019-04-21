@@ -26,7 +26,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     int res = -1;
 
-    public boolean doubleSample = false;
+    public boolean doubleSample = true;
 
     public void runOpMode() {
         marv = new MarvXCommonV3(hardwareMap, true);
@@ -100,22 +100,19 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
         apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
-        halt();
         apGoToWithIdle(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
         halt(); marker();
         if (doubleSample) {
             apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
-            halt(); 
-            if (sampleRCloseIsFar()) {apGoTo(new double[] {-36-12, 15-7, 0}, Math.PI, false, true, false);halt();}
-            sampleRClose();
+            if (sampleRCloseIsFar()) {apGoTo(new double[] {-36-12, 15-7, 0}, Math.PI, false, true, false);}
+            halt(); sampleRClose();
             apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.07, true, true, true);
         }
         else {
             apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.07, true, true, true);
-        }
-        halt(); 
-        if (sampleLCloseIsFar()) {apGoTo(new double[] {-36+7, 15+12, 0}, -Math.PI / 2 + 0.07, false, true, false);halt();}
-        sampleLClose();
+        } 
+        if (sampleLCloseIsFar()) {apGoTo(new double[] {-36+7, 15+12, 0}, -Math.PI / 2 + 0.07, false, true, false);}
+        halt(); sampleLClose();
 
         while(opModeIsActive()){idleIntakeAutomation();}
 
@@ -148,8 +145,8 @@ public class MarvXAutoNearV3 extends LinearOpMode {
             marv.runIntakeAutomation(0.66, false, false, false, false, false);
             marv.runAutomation(false, false);
         }
-        if (sampleTarget >= MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
-            while (marv.expandoHorizL.getCurrentPosition() > sampleTarget) {
+        if (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
+            while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
                 marv.runIntakeAutomation(-0.66, false, false, false, false, false);
             }
             marv.runIntakeAutomation(0, true, false, false, false, false);
