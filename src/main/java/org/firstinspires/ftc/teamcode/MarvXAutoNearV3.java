@@ -26,6 +26,8 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     int res = -1;
 
+    public boolean doubleSample = false;
+
     public void runOpMode() {
         marv = new MarvXCommonV3(hardwareMap, true);
         mineralFind = new MineralFind(hardwareMap);
@@ -102,9 +104,14 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         halt();
         apGoTo(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
         halt(); marker();
-        apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
-        halt(); sampleRClose();
-        apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.05, true, true, true);
+        if (doubleSample) {
+            apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
+            halt(); sampleRClose();
+            apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.05, true, true, true);
+        }
+        else {
+            apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.05, true, true, true);
+        }
         halt(); sampleLClose();
 
         while(opModeIsActive()){idleIntakeAutomation();}
@@ -188,7 +195,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.025;
-        seg.orientationGain = 1.92;
+        seg.orientationGain = 2.00;
         seg.navigationMax = 0.50;
         seg.navigationMin = 0.20;
         seg.orientationMax = 0.50;
