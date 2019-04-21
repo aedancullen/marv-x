@@ -99,24 +99,17 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
-        apGoTo(new double[] {-36-12, 15, 0}, -Math.PI / 2, true, true, true);
-        apGoToWithIdle(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, false, true);
+        apGoTo(new double[] {-36, 15, 0}, -Math.PI / 2, true, true, false); // removed -36's -12, last was true
+        apGoToWithIdle(new double[] {-36-12, 15, 0}, 3*Math.PI / 4, true, true, true); // middle was false
         halt(); marker();
         if (doubleSample) {
             apGoTo(new double[] {-36-12, 15, 0}, Math.PI, true, false, true);
             if (sampleRCloseIsFar()) {apGoTo(new double[] {-36-12, 15-7, 0}, Math.PI, false, true, false);}
             halt(); sampleRClose();
-            apGoToWithIdle(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.07, true, true, true);
         }
-        else {
-            apGoTo(new double[] {-36, 15+12, 0}, -Math.PI / 2 + 0.07, true, true, true);
-        } 
-        if (sampleLCloseIsFar()) {apGoTo(new double[] {-36+7, 15+12, 0}, -Math.PI / 2 + 0.07, false, true, false);}
-        halt(); sampleLClose();
-
-        apGoToWithIdle(new double[] {-36+7, 15, 0}, 0, true, true, false);
-        apGoTo(new double[] {-8, 15, 0}, 0, true, true, true);
-        while(opModeIsActive()){idleIntakeAutomation();}
+        apGoToWithIdle(new double[] {-36, 15, 0}, 0, true, true, true);
+        apGoTo(new double[] {0, 15, 0}, 0, true, true, true);
+        while(opModeIsActive()){idle();}
 
     }
 
@@ -129,6 +122,7 @@ public class MarvXAutoNearV3 extends LinearOpMode {
         while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
             marv.runIntakeAutomation(-0.66, false, false, true, false, false);
         }
+        marv.intakeState = MarvXCommonV3.IntakeState.PREP; // new
         marv.runIntakeAutomation(0, true, false, true, false, false);
     }
 
