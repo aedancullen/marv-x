@@ -117,13 +117,13 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     public void turnsample() {
         if (res == 0) {
-            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4, true, false, false);
+            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4 - 0.07, true, false, false);
         }
         else if (res == 1 || res == -1) {
             // nothing
         }
         else if (res == 2) {
-            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4, true, false, false);
+            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4 + 0.07, true, false, false);
         }
         halt();
         sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
