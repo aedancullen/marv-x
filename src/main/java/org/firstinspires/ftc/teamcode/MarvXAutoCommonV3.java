@@ -9,8 +9,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name="Near")
-public class MarvXAutoNearV3 extends LinearOpMode {
+public class MarvXAutoCommonV3 extends LinearOpMode {
 
     public static double[] ROBOT_INIT_POSITION = new double[]{-1, 0, 0};
     public static double[] ROBOT_INIT_ATTITUDE = new double[]{-Math.PI / 2, 0, 0};
@@ -28,7 +27,9 @@ public class MarvXAutoNearV3 extends LinearOpMode {
 
     public boolean doubleSample = false;
 
-    public void runOpMode() {
+    public void runOpMode() {}
+
+    public void runCrater() {
         marv = new MarvXCommonV3(hardwareMap, true);
         mineralFind = new MineralFind(hardwareMap);
 
