@@ -69,7 +69,7 @@ public class MarvConstantsV3 {
     // new expando-horiz state machine - timings in millis
 
     public static long EHSM_UP = 500;
-    public static long EHSM_TRANSFER = 400;
+    public static long EHSM_TRANSFER = 500;
 
     // auto
 
