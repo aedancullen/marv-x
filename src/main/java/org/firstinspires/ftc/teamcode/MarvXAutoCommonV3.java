@@ -99,7 +99,16 @@ public class MarvXAutoCommonV3 extends LinearOpMode {
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
-        apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
+        apGoTo(new double[] {-2.5, 2.5, 0}, -Math.PI / 2, false, true, false);
+        apGoTo(new double[] {0, 12, 0}, 0, true, true, true);
+        halt();
+        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
+            marv.runIntakeAutomation(0.66, false, false, true, false, false);
+        }
+        marker();
+        turnsample();
+
+        while(opModeIsActive()){idleIntakeAutomation();}
 
     }
 
