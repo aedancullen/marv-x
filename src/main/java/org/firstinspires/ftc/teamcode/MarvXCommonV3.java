@@ -43,7 +43,7 @@ public class MarvXCommonV3 {
 
     public DropTarget dropTarget = DropTarget.NEAR;
 
-    public AutomationState automationState = AutomationState.PAUSE;
+    public AutomationState automationState = AutomationState.DOWN;
     public AutomationState lastAutomationState;
 
     // -----
@@ -284,7 +284,7 @@ public class MarvXCommonV3 {
             }
             if (dropTarget == DropTarget.FAR) {
                 swop.setPosition(MarvConstantsV3.SWOP_ANGLE_SWOPPED);
-                drop.setPosition(0.55);
+                //drop.setPosition(0.55);
             }
         }
         else if (automationState == AutomationState.DROP) {

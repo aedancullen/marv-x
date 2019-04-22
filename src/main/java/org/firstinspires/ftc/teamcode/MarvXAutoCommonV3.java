@@ -8,8 +8,14 @@ import com.evolutionftc.autopilot.AutopilotTrackerQP37i;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class MarvXAutoCommonV3 extends LinearOpMode {
+public class MarvXAutoCommonV3 {
+
+    public HardwareMap hardwareMap;
+    public Telemetry telemetry;
 
     public static double[] ROBOT_INIT_POSITION = new double[]{-1, 0, 0};
     public static double[] ROBOT_INIT_ATTITUDE = new double[]{-Math.PI / 2, 0, 0};
@@ -27,7 +33,15 @@ public class MarvXAutoCommonV3 extends LinearOpMode {
 
     public boolean doubleSample = false;
 
-    public void runOpMode() {}
+    public LinearOpMode runningMode;
+
+    public void sleep(long ms) {runningMode.sleep(ms);}
+    public boolean opModeIsActive() {return runningMode.opModeIsActive();}
+    public boolean isStopRequested() {return runningMode.isStopRequested();}
+    public void idle() {runningMode.idle();}
+
+    public Gamepad gamepad1;
+    public Gamepad gamepad2;
 
     public void runDepot() {
         marv = new MarvXCommonV3(hardwareMap, true);
