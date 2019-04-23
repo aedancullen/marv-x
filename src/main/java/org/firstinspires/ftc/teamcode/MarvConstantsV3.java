@@ -29,7 +29,7 @@ public class MarvConstantsV3 {
     public static long EXPANDO_DIAG_PAUSE_TIME = 250;
 
 
-    public static double DROP_ANGLE_FLAT = 0.50;
+    public static double DROP_ANGLE_FLAT = 0.505;
     public static double DROP_ANGLE_NEAR = 0.75;
     public static double DROP_ANGLE_FAR = 0.8;
     public static double DROP_ANGLE_MID = 0.8;
@@ -73,7 +73,7 @@ public class MarvConstantsV3 {
 
     // auto
 
-    public static int AUTO_MARKER = 1000;
+    public static int AUTO_MARKER = 1500;
     public static int AUTO_SAMPLE_NEAR = EXPANDO_HORIZ_DOWN;
     public static int AUTO_SAMPLE_MID = 650;
     public static int AUTO_SAMPLE_FAR = 1000;

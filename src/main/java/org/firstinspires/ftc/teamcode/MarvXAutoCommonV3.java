@@ -114,12 +114,18 @@ public class MarvXAutoCommonV3 {
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-2.5, 2.5, 0}, -Math.PI / 2, false, true, false);
-        apGoTo(new double[] {0, 10, 0}, 0, true, true, true);
+        apGoToWithIdle(new double[] {0, 8, 0}, 0, true, true, true);
         halt();
         while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
             marv.runIntakeAutomation(0.66, false, false, true, false, false);
         }
         marker();
+        /*marv.intakeState = MarvXCommonV3.IntakeState.PREP;
+        while (marv.intakeState != MarvXCommonV3.IntakeState.HUMAN) {
+            marv.runIntakeAutomation(0, false, false, false, false, false);
+        }
+        marv.runIntakeAutomation(0, true, false, false, false, false);
+        sleep((int)((double)MarvConstantsV3.EHSM_UP/2.0));*/
         turnsample();
 
         while(opModeIsActive()){idleIntakeAutomation();}
@@ -220,13 +226,13 @@ public class MarvXAutoCommonV3 {
 
     public void turnsample() {
         if (res == 0) {
-            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4 - 0.07, true, false, false);
+            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4 - 0.06, true, false, false);
         }
         else if (res == 1 || res == -1) {
             // nothing
         }
         else if (res == 2) {
-            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4 + 0.07, true, false, false);
+            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4 + 0.06, true, false, false);
         }
         halt();
         sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
@@ -234,12 +240,12 @@ public class MarvXAutoCommonV3 {
 
     public void marker() {
         while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_MARKER) {
-            marv.runIntakeAutomation(0.66, false, true, true, false, false);
+            marv.runIntakeAutomation(1.0, false, true, true, false, false);
         }
         marv.runIntakeAutomation(0, false, false, false, true, false);
         sleep(MarvConstantsV3.EHSM_TRANSFER);
         while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
-            marv.runIntakeAutomation(-0.66, true, false, true, false, false);
+            marv.runIntakeAutomation(-1.0, true, false, true, false, false);
         }
         marv.runIntakeAutomation(0, true, false, true, false, false);
     }
@@ -273,7 +279,7 @@ public class MarvXAutoCommonV3 {
     }
 
     public void idleIntakeAutomation() {
-        marv.runIntakeAutomation(0.0, false, false, false, false, false);
+        marv.runIntakeAutomation(0.0, false, false, true, false, false);
     }
 
     public void sampleLClose() {
