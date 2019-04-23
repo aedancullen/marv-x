@@ -112,12 +112,14 @@ public class MarvXAutoCommonV3 {
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
+        mineralFind.detectStopInternal();
+
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-2.5, 2.5, 0}, -Math.PI / 2, false, true, false);
         apGoToWithIdle(new double[] {0, 8, 0}, 0, true, true, true);
         halt();
         while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
-            marv.runIntakeAutomation(0.66, false, false, true, false, false);
+            marv.runIntakeAutomation(1.0, false, false, true, false, false);
         }
         marker();
         /*marv.intakeState = MarvXCommonV3.IntakeState.PREP;
@@ -189,8 +191,6 @@ public class MarvXAutoCommonV3 {
             }
         }
 
-        mineralFind.detectStopInternal();
-
         marv.expandoVert.setPower(-1);
         while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
@@ -200,6 +200,8 @@ public class MarvXAutoCommonV3 {
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
+
+        mineralFind.detectStopInternal();
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
@@ -226,13 +228,13 @@ public class MarvXAutoCommonV3 {
 
     public void turnsample() {
         if (res == 0) {
-            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4 - 0.06, true, false, false);
+            apGoToWithIdle(new double[] {0, 15, 0}, Math.PI / 4 - 0.07, true, false, false);
         }
         else if (res == 1 || res == -1) {
             // nothing
         }
         else if (res == 2) {
-            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4 + 0.06, true, false, false);
+            apGoToWithIdle(new double[] {0, 15, 0}, -Math.PI / 4 + 0.07, true, false, false);
         }
         halt();
         sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
