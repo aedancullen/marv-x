@@ -222,6 +222,10 @@ public class MarvXAutoCommonV3 {
         apGoToWithIdle(new double[] {-2, 18, 0}, -0.08, true, true, true);
         marv.automationState = MarvXCommonV3.AutomationState.UP;
 
+        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
+            marv.runIntakeAutomation(0.5, false, false, false, false, false);
+        }
+
         while(opModeIsActive()){idleIntakeAutomation();marv.runAutomation(false, true);}
 
     }
@@ -254,22 +258,22 @@ public class MarvXAutoCommonV3 {
 
     public void sample(int sampleTarget, boolean waitDown) {
         while (marv.expandoHorizL.getCurrentPosition() < sampleTarget) {
-            marv.runIntakeAutomation(0.66, false, false, false, false, false);
+            marv.runIntakeAutomation(0.5, false, false, false, false, false);
             marv.runAutomation(false, false);
         }
         if (!waitDown) {marv.runIntakeAutomation(0.66, false, true, false, false, false);}
         else {
             marv.runIntakeAutomation(0, false, true, false, false, false);
             sleep((int)((double)MarvConstantsV3.EHSM_UP/2.0));
-            marv.runIntakeAutomation(0.66, false, false, false, false, false);
+            marv.runIntakeAutomation(0.5, false, false, false, false, false);
         }
         while (marv.expandoHorizL.getCurrentPosition() < sampleTarget + MarvConstantsV3.AUTO_SAMPLE_MORE) {
-            marv.runIntakeAutomation(0.66, false, false, false, false, false);
+            marv.runIntakeAutomation(0.5, false, false, false, false, false);
             marv.runAutomation(false, false);
         }
         if (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
             while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
-                marv.runIntakeAutomation(-0.66, false, false, false, false, false);
+                marv.runIntakeAutomation(-0.5, false, false, false, false, false);
             }
             marv.runIntakeAutomation(0, true, false, false, false, false);
             sleep((int)((double)MarvConstantsV3.EHSM_UP/2.0));
@@ -332,7 +336,7 @@ public class MarvXAutoCommonV3 {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.025;
-        seg.orientationGain = 2.00;
+        seg.orientationGain = 1.90;
         seg.navigationMax = 0.50;
         seg.navigationMin = 0.20;
         seg.orientationMax = 0.50;
