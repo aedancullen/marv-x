@@ -49,7 +49,7 @@ public class MarvXCommonV3 {
     // -----
 
     public enum IntakeState{PREP, HUMAN, IN1, IN2, TRANSFER}
-    public IntakeState intakeState = IntakeState.PREP;
+    public IntakeState intakeState = IntakeState.HUMAN;
     public IntakeState lastIntakeState;
 
     public boolean transferDone; // automation link flag

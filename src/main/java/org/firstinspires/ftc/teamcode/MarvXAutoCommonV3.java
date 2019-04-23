@@ -45,6 +45,7 @@ public class MarvXAutoCommonV3 {
 
     public void runDepot() {
         marv = new MarvXCommonV3(hardwareMap, true);
+        marv.intakeState = MarvXCommonV3.IntakeState.PREP;
         mineralFind = new MineralFind(hardwareMap);
 
         marv.imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -136,6 +137,7 @@ public class MarvXAutoCommonV3 {
 
     public void runCrater() {
         marv = new MarvXCommonV3(hardwareMap, true);
+        marv.intakeState = MarvXCommonV3.IntakeState.PREP;
         mineralFind = new MineralFind(hardwareMap);
 
         marv.imu = hardwareMap.get(BNO055IMU.class, "imu");
@@ -224,6 +226,7 @@ public class MarvXAutoCommonV3 {
 
         while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
+            marv.runAutomation(false, true);
         }
 
         while(opModeIsActive()){idleIntakeAutomation();marv.runAutomation(false, true);}
