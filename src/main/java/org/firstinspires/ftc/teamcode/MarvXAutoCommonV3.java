@@ -105,7 +105,7 @@ public class MarvXAutoCommonV3 {
         while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && marv.expandoVertCanDrop()) {idle();}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         marv.expandoVert.setPower(0);
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
@@ -117,12 +117,12 @@ public class MarvXAutoCommonV3 {
         apGoTo(new double[] {-2.5, 2.5, 0}, -Math.PI / 2, false, true, false);
         apGoToWithIdle(new double[] {0, 8, 0}, 0, true, true, true);
         halt();
-        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
+        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID && opModeIsActive()) {
             marv.runIntakeAutomation(1.0, false, false, true, false, false);
         }
         marker();
         /*marv.intakeState = MarvXCommonV3.IntakeState.PREP;
-        while (marv.intakeState != MarvXCommonV3.IntakeState.HUMAN) {
+        while (marv.intakeState != MarvXCommonV3.IntakeState.HUMAN && opModeIsActive()) {
             marv.runIntakeAutomation(0, false, false, false, false, false);
         }
         marv.runIntakeAutomation(0, true, false, false, false, false);
@@ -132,7 +132,7 @@ public class MarvXAutoCommonV3 {
         apGoToWithIdle(new double[] {-36, 13, 0}, 0, true, true, false);
         apGoTo(new double[] {-36-10, 15, 0}, 3*Math.PI / 4, true, true, true);
 
-        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_NEAR) {
+        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_NEAR && opModeIsActive()) {
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
             marv.runAutomation(false, true);
         }
@@ -203,7 +203,7 @@ public class MarvXAutoCommonV3 {
         while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && marv.expandoVertCanDrop()) {idle();}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
         marv.expandoVert.setPower(0);
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
@@ -230,7 +230,7 @@ public class MarvXAutoCommonV3 {
         apGoToWithIdle(new double[] {-2, 18, 0}, -0.08, true, true, true);
         marv.automationState = MarvXCommonV3.AutomationState.UP;
 
-        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID) {
+        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID && opModeIsActive()) {
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
             marv.runAutomation(false, true);
         }
@@ -250,23 +250,28 @@ public class MarvXAutoCommonV3 {
             apGoTo(new double[] {0, 15, 0}, -Math.PI / 4 + 0.075, true, false, true);
         }
         halt();
-        sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
+        if (res == 1 || res == -1) {
+            sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
+        }
+        else {
+            sample(MarvConstantsV3.UC_EXPANDOHORIZ_BUF, true);
+        }
     }
 
     public void marker() {
-        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_MARKER) {
+        while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_MARKER && opModeIsActive()) {
             marv.runIntakeAutomation(1.0, false, true, true, false, false);
         }
         marv.runIntakeAutomation(0, false, false, false, true, false);
         sleep(MarvConstantsV3.EHSM_TRANSFER);
-        while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF) {
+        while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_DOWN + MarvConstantsV3.UC_EXPANDOHORIZ_BUF && opModeIsActive()) {
             marv.runIntakeAutomation(-1.0, true, false, true, false, false);
         }
         marv.runIntakeAutomation(0, true, false, true, false, false);
     }
 
     public void sample(int sampleTarget, boolean waitDown) {
-        while (marv.expandoHorizL.getCurrentPosition() < sampleTarget) {
+        while (marv.expandoHorizL.getCurrentPosition() < sampleTarget && opModeIsActive()) {
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
             marv.runAutomation(false, false);
         }
@@ -276,18 +281,18 @@ public class MarvXAutoCommonV3 {
             sleep((int)((double)MarvConstantsV3.EHSM_UP/2.0));
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
         }
-        while (marv.expandoHorizL.getCurrentPosition() < sampleTarget + MarvConstantsV3.AUTO_SAMPLE_MORE) {
+        while (marv.expandoHorizL.getCurrentPosition() < sampleTarget + MarvConstantsV3.AUTO_SAMPLE_MORE && opModeIsActive()) {
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
             marv.runAutomation(false, false);
         }
         if (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
-            while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT) {
+            while (marv.expandoHorizL.getCurrentPosition() > MarvConstantsV3.EXPANDO_HORIZ_FLYING_LIMIT && opModeIsActive()) {
                 marv.runIntakeAutomation(-0.5, false, false, false, false, false);
             }
             marv.runIntakeAutomation(0, true, false, false, false, false);
             sleep((int)((double)MarvConstantsV3.EHSM_UP/2.0));
         }
-        while (marv.intakeState != MarvXCommonV3.IntakeState.TRANSFER) {
+        while (marv.intakeState != MarvXCommonV3.IntakeState.TRANSFER && opModeIsActive()) {
             marv.runIntakeAutomation(0.0, false, false, false, false, true);
             marv.runAutomation(false, false);
         }
