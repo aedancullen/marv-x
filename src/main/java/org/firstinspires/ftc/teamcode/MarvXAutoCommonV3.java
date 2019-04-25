@@ -29,6 +29,7 @@ public class MarvXAutoCommonV3 {
     enum HookState{OPEN,LOCK}
     HookState hookState = HookState.LOCK;
 
+    int resPre = -1;
     int res = -1;
 
     public boolean doubleSample = false;
@@ -42,6 +43,16 @@ public class MarvXAutoCommonV3 {
 
     public Gamepad gamepad1;
     public Gamepad gamepad2;
+
+    public void mineralUpdate(boolean isPre) {
+        int detect = mineralFind.detectLoopInternal();
+        if (detect != -1) {
+            if (isPre) {resPre = detect;}
+            else {res = detect;}
+        }
+        if (isPre) {telemetry.addData("Mineral", resPre);}
+        else {telemetry.addData("Mineral", res);}
+    }
 
     public void runDepot() {
         marv = new MarvXCommonV3(hardwareMap, true);
@@ -66,11 +77,7 @@ public class MarvXAutoCommonV3 {
         mineralFind.tfod.activate();
 
         while(!opModeIsActive()) {
-            int detect = mineralFind.detectLoopInternal();
-            if (detect != -1) {
-                res = detect;
-            }
-            telemetry.addData("Mineral", res);
+            mineralUpdate(true);
 
             telemetry.addData("Press BACK to OPEN","");
             telemetry.addData("Press a JOYSTICK to LOCK","");
@@ -101,21 +108,22 @@ public class MarvXAutoCommonV3 {
             }
         }
 
+        mineralFind.tfod.shutdown();
+        mineralFind.initTfod();
+        mineralFind.tfod.activate();
+
         marv.expandoVert.setPower(-1);
-        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
-        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
+        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
+        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
         marv.expandoVert.setPower(0);
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
-        int detect = mineralFind.detectLoopInternal();
-        if (detect != -1) {
-            res = detect;
-        }
         mineralFind.detectStopInternal();
+        if (res == -1) {res = resPre;}
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-2.5, 2.5, 0}, -Math.PI / 2, false, true, false);
@@ -168,11 +176,7 @@ public class MarvXAutoCommonV3 {
         mineralFind.tfod.activate();
 
         while(!opModeIsActive()) {
-            int detect = mineralFind.detectLoopInternal();
-            if (detect != -1) {
-                res = detect;
-            }
-            telemetry.addData("Mineral", res);
+            mineralUpdate(true);
 
             telemetry.addData("Press BACK to OPEN","");
             telemetry.addData("Press a JOYSTICK to LOCK","");
@@ -203,22 +207,22 @@ public class MarvXAutoCommonV3 {
             }
         }
 
+        mineralFind.tfod.shutdown();
+        mineralFind.initTfod();
+        mineralFind.tfod.activate();
+
         marv.expandoVert.setPower(-1);
-        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
-        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
+        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
+        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {idle();}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
         marv.expandoVert.setPower(0);
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
-        int detect = mineralFind.detectLoopInternal();
-        if (detect != -1) {
-            res = detect;
-        }
-
         mineralFind.detectStopInternal();
+        if (res == -1) {res = resPre;}
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
         apGoTo(new double[] {-36/3, 15, 0}, -Math.PI / 2, true, true, false);
