@@ -111,6 +111,10 @@ public class MarvXAutoCommonV3 {
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
+        int detect = mineralFind.detectLoopInternal();
+        if (detect != -1) {
+            res = detect;
+        }
         mineralFind.detectStopInternal();
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
@@ -209,6 +213,11 @@ public class MarvXAutoCommonV3 {
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
 
+        int detect = mineralFind.detectLoopInternal();
+        if (detect != -1) {
+            res = detect;
+        }
+
         mineralFind.detectStopInternal();
 
         apGoTo(new double[] {-2.5, 0, 0}, -Math.PI / 2, false, true, false);
@@ -254,7 +263,7 @@ public class MarvXAutoCommonV3 {
             sample(MarvConstantsV3.AUTO_SAMPLE_NEAR, true);
         }
         else {
-            sample(MarvConstantsV3.UC_EXPANDOHORIZ_BUF, true);
+            sample(MarvConstantsV3.AUTO_SAMPLE_NEAR + 2 * MarvConstantsV3.UC_EXPANDOHORIZ_BUF, true);
         }
     }
 

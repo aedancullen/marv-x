@@ -303,6 +303,7 @@ public class MarvXCommonV3 {
         else if (automationState == AutomationState.UNDROP) {
             if (System.currentTimeMillis() > undropTimer + MarvConstantsV3.EXPANDO_DIAG_UNDROP_TIME) {
                 automationState = AutomationState.DOWN;
+                intakeState = IntakeState.HUMAN;
             }
             double dropPosition = drop.getPosition();
             if (dropPosition > dropGoingToPosition) {
