@@ -74,16 +74,16 @@ public class MarvXAutoCommonV3 {
         autopilot.setOrientationUnitsToStable(MarvConstantsV3.AP_ORIENT_UNITS_TO_STABLE);
 
         mineralFind.detectInitInternal();
-        mineralFind.tfod.activate();
+        //mineralFind.tfod.activate();
 
         while(!opModeIsActive()) {
-            mineralUpdate(true);
+            //mineralUpdate(true);
 
             telemetry.addData("Press BACK to OPEN","");
             telemetry.addData("Press a JOYSTICK to LOCK","");
             telemetry.update();
             if (isStopRequested()) {
-                mineralFind.detectStopInternal();
+                //mineralFind.detectStopInternal();
                 return;
             }
 
@@ -108,19 +108,24 @@ public class MarvXAutoCommonV3 {
             }
         }
 
-        mineralFind.tfod.shutdown();
-        mineralFind.initTfod();
+        //mineralFind.tfod.shutdown();
+        //mineralFind.initTfod();
         mineralFind.tfod.activate();
 
         marv.expandoVert.setPower(-1);
-        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
-        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
+        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);telemetry.update();}
+        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);telemetry.update();}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);telemetry.update();}
         marv.expandoVert.setPower(0);
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
+
+        long detectStartTime = System.currentTimeMillis();
+        while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000 && opModeIsActive()) {
+            mineralUpdate(false);telemetry.update();
+        }
 
         mineralFind.detectStopInternal();
         if (res == -1) {res = resPre;}
@@ -173,16 +178,16 @@ public class MarvXAutoCommonV3 {
         autopilot.setOrientationUnitsToStable(MarvConstantsV3.AP_ORIENT_UNITS_TO_STABLE);
 
         mineralFind.detectInitInternal();
-        mineralFind.tfod.activate();
+        //mineralFind.tfod.activate();
 
         while(!opModeIsActive()) {
-            mineralUpdate(true);
+            //mineralUpdate(true);
 
             telemetry.addData("Press BACK to OPEN","");
             telemetry.addData("Press a JOYSTICK to LOCK","");
             telemetry.update();
             if (isStopRequested()) {
-                mineralFind.detectStopInternal();
+                //mineralFind.detectStopInternal();
                 return;
             }
 
@@ -207,19 +212,24 @@ public class MarvXAutoCommonV3 {
             }
         }
 
-        mineralFind.tfod.shutdown();
-        mineralFind.initTfod();
+        //mineralFind.tfod.shutdown();
+        //mineralFind.initTfod();
         mineralFind.tfod.activate();
 
         marv.expandoVert.setPower(-1);
-        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
-        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
+        while (marv.dist.getVoltage() < 2.25 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);telemetry.update();}
+        while (marv.dist.getVoltage() > 2.2 && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);telemetry.update();}
         int spos = marv.expandoVert.getCurrentPosition();
-        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);}
+        while (marv.expandoVert.getCurrentPosition() > spos - MarvConstantsV3.EXPANDO_VERT_EXTRA && opModeIsActive() && marv.expandoVertCanDrop()) {mineralUpdate(false);telemetry.update();}
         marv.expandoVert.setPower(0);
         autopilot.communicate(quadPacer);
         quadPacer.setRobotPosition(ROBOT_INIT_POSITION);
         quadPacer.setRobotAttitude(ROBOT_INIT_ATTITUDE);
+
+        long detectStartTime = System.currentTimeMillis();
+        while (res == -1 && System.currentTimeMillis() - detectStartTime < 3000 && opModeIsActive()) {
+            mineralUpdate(false);telemetry.update();
+        }
 
         mineralFind.detectStopInternal();
         if (res == -1) {res = resPre;}
@@ -238,10 +248,13 @@ public class MarvXAutoCommonV3 {
 
         apGoToWithIdle(new double[] {-36, 12, 0}, 0, true, true, false);
         marv.runIntakeAutomation(0, true, false, false, false, false);
-        apGoTo(new double[] {0, 12, 0}, 0, true, true, true);
+        apGoTo(new double[] {0, 12, 0}, 0, true, true, false); // last was true
+        apGoTo(new double[] {0, 8, 0}, 0, true, true, true);
         halt(); turnsample();
-        apGoToWithIdle(new double[] {-2, 18, 0}, -0.08, true, true, true);
-        marv.automationState = MarvXCommonV3.AutomationState.UP;
+        //apGoToWithIdle(new double[] {-2, 18, 0}, -0.08, true, true, true);
+        //apGoTo(new double[] {0, 12, 0}, 0, true, false, false);
+        halt();
+        //marv.automationState = MarvXCommonV3.AutomationState.UP;
 
         while (marv.expandoHorizL.getCurrentPosition() < MarvConstantsV3.AUTO_SAMPLE_MID && opModeIsActive()) {
             marv.runIntakeAutomation(0.5, false, false, false, false, false);
@@ -363,7 +376,7 @@ public class MarvXAutoCommonV3 {
         seg.navigationTarget = pos;
         seg.orientationTarget = hdg;
         seg.navigationGain = 0.025;
-        seg.orientationGain = 1.90;
+        seg.orientationGain = 1.80; //1.90
         seg.navigationMax = 0.50;
         seg.navigationMin = 0.20;
         seg.orientationMax = 0.50;
@@ -387,6 +400,7 @@ public class MarvXAutoCommonV3 {
 
             long timeNow = System.currentTimeMillis();
             telemetry.addData("FPS", 1000.0 / (timeNow - lastTime));
+            telemetry.addData("Sample", res);
             lastTime = timeNow;
 
             autopilot.telemetryUpdate();

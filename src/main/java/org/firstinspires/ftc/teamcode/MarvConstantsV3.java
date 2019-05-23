@@ -9,7 +9,7 @@ public class MarvConstantsV3 {
 
     public static int AP_COUNTS_TO_STABLE = 3;
     public static double AP_NAV_UNITS_TO_STABLE = 0.7;
-    public static double AP_ORIENT_UNITS_TO_STABLE = 0.025;
+    public static double AP_ORIENT_UNITS_TO_STABLE = 0.05; //0.025
 
 
     public static int EXPANDO_DIAG_UP_FAR_POSITION = 1300;
@@ -34,7 +34,7 @@ public class MarvConstantsV3 {
     public static double DROP_ANGLE_FAR = 0.8;
     public static double DROP_ANGLE_MID = 0.8;
 
-    public static double SWOP_ANGLE_NORMAL = 0.505;
+    public static double SWOP_ANGLE_NORMAL = 0.51;
     public static double SWOP_ANGLE_SWOPPED = 0.90;
 
     public static int EXPANDO_HORIZ_UP = 1800;
